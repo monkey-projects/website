@@ -1,0 +1,7 @@
+{:deps {hiccup/hiccup {:mvn/version "2.0.0-RC3"}}
+ :paths ["src"]
+
+ :aliases
+ {:generate
+  {:exec-fn monkey.ci.site.core/generate
+   :exec-args {:output "target/index.html"}}}}

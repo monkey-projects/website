@@ -9,7 +9,8 @@
   (bc/action-job
    "build"
    (s/bash "clojure -X:build")
-   {:save-artifacts [{:id "site"
+   {:work-dir "site"
+    :save-artifacts [{:id "site"
                       :path "target"}]}))
 
 (def img-base "fra.ocir.io/frjdhmocn5qi")

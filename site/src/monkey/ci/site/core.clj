@@ -26,7 +26,8 @@
   "Copies asset files from the assets dir to destination"
   [dest]
   (println "Copying assets")
-  (fs/copy-tree "../assets" dest {:replace-existing true}))
+  (fs/copy-tree "../assets" dest {:replace-existing true})
+  (fs/copy-tree "assets" dest {:replace-existing true}))
 
 (defn build
   "Builds the entire site by generating html and copying assets."

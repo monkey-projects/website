@@ -76,7 +76,7 @@
           (k [s]
             [:span.text-danger s])]
     (u/code-editor
-     {:style "width: 46rem"}
+     {:style "width: 46rem;"}
      [[:span "(" (p "ns") " build-script"]
       [:span.ps-3 "(" (k ":require") " [monkey.ci.build.core :as bc]))"]
       ""
@@ -92,14 +92,45 @@
 (def shape
   [:div.shape-container
    [:div.shape.shape-bottom.zi-1
-    [:svg {:view-box "0 0 3000 600"
+    [:svg {:viewbox "0 0 3000 600"
            :fill "none"
            :xmlns "http://www.w3.org/2000/svg"}
      [:path {:d "M0 600V350.234L3000 0V600H0Z"
              :fill "#fff"}]]]])
 
+(def clients
+  [:div.container.content-space-b-1.content-space-b-md-3
+   [:div.w-lg-65.text-center.mx-lg-auto
+    [:div.mb-4
+     [:h5 "Built by Developers for Developers"]]]])
+
+(defn- feature [img title desc]
+  [:div.col-md-6.mb-3.mb-md-7
+   [:div.d-sm-flex
+    [:div.flex-shrink-0.mb-3.mb-sm-0
+     [:img.avatar.avatar-xxl.avatar-4x3
+      {:src img}]]
+    [:div.flex-grow-1.ms-sm-5
+     [:span.text-cap "Features"]
+     [:h5 title]
+     [:p desc]]]])
+
 (def features
-  [:div.row])
+  [:div.container.content-space-1.content-space-md-3
+   [:div.row
+    (feature "svg/oc-maintenance.svg"
+             "Builds as Code"
+             "Treat builds as small apps in their own right, with all features that code brings.")
+    (feature "svg/oc-to-do.svg"
+             "Reduce Debugging Time"
+             "Write unit-tests for your build scripts to avoid production issues.")]
+   [:div.row
+    (feature "svg/oc-collaboration.svg"
+             "Easy Extensibility"
+             "Include open-source libraries in your builds to expand functionality.")
+    (feature "svg/oc-on-the-go.svg"
+             "Deploy Without Danger"
+             "Simulate builds locally or in unit tests and avoid problems when deploying your app.")]])
 
 (def content
   "Main page content"
@@ -116,7 +147,8 @@
         "over your build.  Harness the" [:b.mx-1 "power and flexibility"] "of code to deploy applications."]]
       input-card
       code-fragment]]
-    shape]
+    shape
+    clients]
    [:div.border-top.mx-auto {:style "max-width: 25rem;"}]
    features])
 

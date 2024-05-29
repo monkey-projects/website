@@ -31,6 +31,7 @@
        "image"
        {:image "docker.io/monkeyci/kaniko:1.21.0"
         :container/env {"DOCKER_CREDS" creds
+                        ;; Must point to the directory where 'config.json' is in
                         "DOCKER_CONFIG" config-dir}
         ;; Kaniko requires that docker credentials are written to file
         :script [(str "echo $DOCKER_CREDS > " config-file)

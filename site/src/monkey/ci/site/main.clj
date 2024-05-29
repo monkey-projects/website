@@ -136,6 +136,18 @@
              "Deploy Without Danger"
              "Simulate builds locally or in unit tests and avoid problems when deploying your app.")]])
 
+(def call-to-action
+  [:div.bg-soft-primary-light
+   [:div.container.content-space-1.content-space-md-3
+    [:div.row
+     [:div.col-md-5.col-lg-6.mb-5.mb-lg-0
+      [:h3 "Ready to get started?"]
+      [:p.fs-6 "Create a new account to start using the free plan.  No credit card required!"]]
+     [:div.col-md-7.col-lg-6
+      [:a.btn.btn-primary.btn-lg
+       {:href "https://app.monkeyci.com"}
+       "Go To Application"]]]]])
+
 (def content
   "Main page content"
   [:main#content {:role "main"}
@@ -154,7 +166,8 @@
     shape
     clients]
    [:div.border-top.mx-auto {:style "max-width: 25rem;"}]
-   features])
+   features
+   call-to-action])
 
 (def copyright (h/raw "&#169;"))
 

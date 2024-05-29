@@ -78,7 +78,7 @@
     (u/code-editor
      {:style "width: 46rem;"}
      [[:span "(" (p "ns") " build-script"]
-      [:span.ps-3 "(" (k ":require") " [monkey.ci.build.core :as bc]))"]
+      [:span.ps-3 "(" (k ":require") " [monkey.ci.build.core " (k ":as") " bc]))"]
       ""
       [:span "(" (p "def") " unit-test"]
       [:span.ps-3 "(bc/container-job"]
@@ -86,7 +86,7 @@
       [:span.ps-6 "{" (k ":image") " \"docker.io/maven:4.5\""]
       [:span.ps-7 (k ":script") " [\"mvn verify\"]"]
       ""
-      (c";; The jobs to execute")
+      (c ";; The jobs to execute")
       "[unit-test]"])))
 
 (def shape

@@ -21,7 +21,7 @@
   "Generates the container image"
   [ctx]
   (when (build-image? ctx)
-    (let [wd (shell/container-work-dir ctx)
+    (let [wd (s/container-work-dir ctx)
           creds (get (api/build-params ctx) "dockerhub-creds")
           config-file "/tmp/docker-config.json"
           version (or (bc/tag ctx) (get-in ctx [:build :build-id]))

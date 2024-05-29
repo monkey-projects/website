@@ -5,15 +5,14 @@
              [shell :as s]]))
 
 (def site-artifact {:id "site"
-                    :path "target"})
+                    :path "site/target"})
 
 (def build
   "Builds the website files"
   (bc/action-job
    "build"
-   (s/bash "clojure -X:build")
-   {:work-dir "site"
-    :save-artifacts [site-artifact]}))
+   (s/bash "cd site && clojure -X:build")
+   {:save-artifacts [site-artifact]}))
 
 (def img-base "fra.ocir.io/frjdhmocn5qi")
 

@@ -3,7 +3,10 @@
  :paths ["src"]
 
  :aliases
- {:generate
+ {:dev
+  {:extra-paths ["env/dev"]}
+
+  :generate
   {:exec-fn monkey.ci.site.core/generate
    :exec-args {:output "target"}}
 

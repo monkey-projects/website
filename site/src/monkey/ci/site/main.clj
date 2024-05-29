@@ -69,7 +69,34 @@
     [:i.bi.bi-chevron-right.small.ms-1]]])
 
 (def code-fragment
-  (u/code-editor (repeat 15 "Test code") {:style "width: 46rem"}))
+  (letfn [(p [s]
+            [:span.text-primary s])
+          (c [s]
+            [:span.text-muted s])
+          (k [s]
+            [:span.text-danger s])]
+    (u/code-editor
+     {:style "width: 46rem"}
+     [[:span "(" (p "ns") " build-script"]
+      [:span.ps-3 "(" (k ":require") " [monkey.ci.build.core :as bc]))"]
+      ""
+      [:span "(" (p "def") " unit-test"]
+      [:span.ps-3 "(bc/container-job"]
+      [:span.ps-6 "\"unit-test\""]
+      [:span.ps-6 "{" (k ":image") " \"docker.io/maven:4.5\""]
+      [:span.ps-7 (k ":script") " [\"mvn verify\"]"]
+      ""
+      (c";; The jobs to execute")
+      "[unit-test]"])))
+
+(def shape
+  [:div.shape-container
+   [:div.shape.shape-bottom.zi-1
+    [:svg {:view-box "0 0 3000 600"
+           :fill "none"
+           :xmlns "http://www.w3.org/2000/svg"}
+     [:path {:d "M0 600V350.234L3000 0V600H0Z"
+             :fill "#fff"}]]]])
 
 (def content
   "Main page content"
@@ -85,7 +112,8 @@
         "A" [:b.mx-1 "no-nonsense"] "CI/CD platform that gives you" [:b.mx-1 "full control"]
         "over your build.  Harness the" [:b.mx-1 "power and flexibility"] "of code to deploy applications."]]
       input-card
-      code-fragment]]]])
+      code-fragment]]
+    shape]])
 
 (defn main []
   [:html

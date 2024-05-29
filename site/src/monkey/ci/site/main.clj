@@ -1,8 +1,12 @@
 (ns monkey.ci.site.main
-  (:require [monkey.ci.site.utils :as u]))
+  (:require [hiccup2.core :as h]
+            [monkey.ci.site.utils :as u]))
 
 (defn stylesheet [url]
   [:link {:rel "stylesheet" :href url}])
+
+(defn script [file]
+  [:script {:src (str "./js/" file)}])
 
 (def head
   [:head
@@ -152,9 +156,23 @@
    [:div.border-top.mx-auto {:style "max-width: 25rem;"}]
    features])
 
+(def copyright (h/raw "&#169;"))
+
+(def footer
+  [:footer.bg-primary-dark.border-top.border-white-10
+   [:div.container
+    [:div.border-top.border-white-10]
+    [:div.row.align-items-md-end.py-5
+     [:div.col-md.mb-3.mb-md-0
+      [:p.text-white.mb-0
+       copyright " 2024 " [:a.text-white {:href "https://www.monkey-projects.be"} "Monkey Projects BV"]]]]]])
+
 (defn main []
   [:html
    head
    [:body
     header
-    content]])
+    content
+    footer
+    (script "vendor.min.js")
+    (script "theme.min.js")]])

@@ -23,14 +23,13 @@
   (when (build-image? ctx)
     (let [wd (s/container-work-dir ctx)
           creds (get (api/build-params ctx) "dockerhub-creds")
-          config-file "/tmp/docker-config.json"
+          config-file "/kaniko/.docker/config.json"
           version (or (bc/tag ctx) (get-in ctx [:build :build-id]))
           img (str img-base "/website:" version)]
       (bc/container-job
        "image"
        {:image "docker.io/monkeyci/kaniko:1.21.0"
-        :container/env {"DOCKER_CREDS" creds
-                        "DOCKER_CONFIG" config-file}
+        :container/env {"DOCKER_CREDS" creds}
         :script [(str "echo $DOCKER_CREDS > " config-file)
                  (format "/kaniko/executor --destination %s --dockerfile %s --context dir://%s"
                          img (str wd "/Dockerfile") wd)]

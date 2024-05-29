@@ -13,7 +13,7 @@
     :save-artifacts [{:id "site"
                       :path "target"}]}))
 
-(def img-base "fra.ocir.io/frjdhmocn5qi")
+(def img-base "fra.ocir.io/frjdhmocn5qi/website")
 
 (def build-image? (some-fn bc/main-branch? bc/tag))
 
@@ -23,13 +23,16 @@
   (when (build-image? ctx)
     (let [wd (s/container-work-dir ctx)
           creds (get (api/build-params ctx) "dockerhub-creds")
-          config-file "/kaniko/.docker/config.json"
+          config-dir "/kaniko/.docker"
+          config-file (str config-dir "/config.json")
           version (or (bc/tag ctx) (get-in ctx [:build :build-id]))
-          img (str img-base "/website:" version)]
+          img (str img-base ":" version)]
       (bc/container-job
        "image"
        {:image "docker.io/monkeyci/kaniko:1.21.0"
-        :container/env {"DOCKER_CREDS" creds}
+        :container/env {"DOCKER_CREDS" creds
+                        "DOCKER_CONFIG" config-dir}
+        ;; Kaniko requires that docker credentials are written to file
         :script [(str "echo $DOCKER_CREDS > " config-file)
                  (format "/kaniko/executor --destination %s --dockerfile %s --context dir://%s"
                          img (str wd "/Dockerfile") wd)]

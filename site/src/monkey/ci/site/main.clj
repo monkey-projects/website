@@ -98,6 +98,9 @@
      [:path {:d "M0 600V350.234L3000 0V600H0Z"
              :fill "#fff"}]]]])
 
+(def features
+  [:div.row])
+
 (def content
   "Main page content"
   [:main#content {:role "main"}
@@ -113,7 +116,9 @@
         "over your build.  Harness the" [:b.mx-1 "power and flexibility"] "of code to deploy applications."]]
       input-card
       code-fragment]]
-    shape]])
+    shape]
+   [:div.border-top.mx-auto {:style "max-width: 25rem;"}]
+   features])
 
 (defn main []
   [:html

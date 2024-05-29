@@ -4,15 +4,13 @@
              [core :as bc]
              [shell :as s]]))
 
-(def site-artifact {:id "site"
-                    :path "site/target"})
-
 (def build
   "Builds the website files"
   (bc/action-job
    "build"
-   (s/bash "cd site && clojure -X:build")
-   {:save-artifacts [site-artifact]}))
+   (s/bash "clojure -X:build")
+   {:save-artifacts [{:id "site"
+                      :path "target"}]}))
 
 (def img-base "fra.ocir.io/frjdhmocn5qi")
 
@@ -34,7 +32,8 @@
         :script [(str "echo $DOCKER_CREDS > " config-file)
                  (str "/kaniko/executor --destination " img)]
         :dependencies ["build"]
-        :restore-artifacts [site-artifact]}))))
+        :restore-artifacts [{:id "site"
+                             :path "site/target"}]}))))
 
 [build
  image]

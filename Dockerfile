@@ -5,4 +5,5 @@ EXPOSE 18080
 
 ADD nginx.conf /etc/nginx/
 
-ADD public/ /var/www/html/
+# Main website
+ADD site/target/ /var/www/html/

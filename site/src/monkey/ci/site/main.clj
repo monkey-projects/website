@@ -1,4 +1,5 @@
-(ns monkey.ci.site.main)
+(ns monkey.ci.site.main
+  (:require [monkey.ci.site.utils :as u]))
 
 (defn stylesheet [url]
   [:link {:rel "stylesheet" :href url}])
@@ -67,7 +68,11 @@
     "Create a free account"
     [:i.bi.bi-chevron-right.small.ms-1]]])
 
+(def code-fragment
+  (u/code-editor (repeat 15 "Test code") {:style "width: 46rem"}))
+
 (def content
+  "Main page content"
   [:main#content {:role "main"}
    [:div.overflow-hidden
     [:div.bg-primary-dark
@@ -75,11 +80,12 @@
       ;; Heading
       [:div.w-lg-75.text-center.mx-lg-auto.mb-7
        [:h1.display-3.text-white.mb-md-5
-        "The powerful" [:span.ms-1.text-warning "CI/CD pipeline"]]
+        "The powerful" [:span.ms-2.text-warning "CI/CD pipeline"]]
        [:p.lead.text-white-70
         "A" [:b.mx-1 "no-nonsense"] "CI/CD platform that gives you" [:b.mx-1 "full control"]
         "over your build.  Harness the" [:b.mx-1 "power and flexibility"] "of code to deploy applications."]]
-      input-card]]]])
+      input-card
+      code-fragment]]]])
 
 (defn main []
   [:html

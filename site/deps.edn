@@ -1,7 +1,12 @@
-{:deps {hiccup/hiccup {:mvn/version "2.0.0-RC3"}}
+{:deps {hiccup/hiccup {:mvn/version "2.0.0-RC3"}
+        babashka/fs {:mvn/version "0.5.21"}}
  :paths ["src"]
 
  :aliases
  {:generate
   {:exec-fn monkey.ci.site.core/generate
-   :exec-args {:output "target/index.html"}}}}
+   :exec-args {:output "target"}}
+
+  :build
+  {:exec-fn monkey.ci.site.core/build
+   :exec-args {:output "target"}}}}

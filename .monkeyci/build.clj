@@ -21,7 +21,8 @@
   "Generates the container image"
   [ctx]
   (when (build-image? ctx)
-    (let [creds (get (api/build-params ctx) "dockerhub-creds")
+    (let [wd (shell/container-work-dir ctx)
+          creds (get (api/build-params ctx) "dockerhub-creds")
           config-file "/tmp/docker-config.json"
           version (or (bc/tag ctx) (get-in ctx [:build :build-id]))
           img (str img-base "/website:" version)]
@@ -31,7 +32,8 @@
         :container/env {"DOCKER_CREDS" creds
                         "DOCKER_CONFIG" config-file}
         :script [(str "echo $DOCKER_CREDS > " config-file)
-                 (str "/kaniko/executor --destination " img)]
+                 (format "/kaniko/executor --destination %s --dockerfile %s --context dir://%s"
+                         img (str wd "/Dockerfile") wd)]
         :dependencies ["build"]
         :restore-artifacts [{:id "site"
                              :path "site/target"}]}))))

@@ -66,10 +66,10 @@
         :aria-label "Enter email"}]]
      [:button.btn.btn-primary.btn-lg
       {:type "button"}
-      "Get Notified"]]]
+      [:i.bi.bi-envelope-at.me-1] "Get Notified"]]]
    [:a.link.link-light
     {:href "https://app.monkeyci.com"}
-    "Create a free account"
+    "Sign up for free"
     [:i.bi.bi-chevron-right.small.ms-1]]])
 
 (def code-fragment
@@ -93,20 +93,16 @@
       (c ";; The jobs to execute")
       "[unit-test]"])))
 
-(def shape
-  [:div.shape-container
-   [:div.shape.shape-bottom.zi-1
-    [:svg {:viewbox "0 0 3000 600"
-           :fill "none"
-           :xmlns "http://www.w3.org/2000/svg"}
-     [:path {:d "M0 600V350.234L3000 0V600H0Z"
-             :fill "#fff"}]]]])
-
 (def clients
   [:div.container.content-space-b-1.content-space-b-md-3
    [:div.w-lg-65.text-center.mx-lg-auto
     [:div.mb-4
-     [:h5 "Built by Developers for Developers"]]]])
+     [:h5 "Supports the Major Repository Providers and Platforms"]]
+    [:div.row
+     [:div.col.text-center.py-3
+      [:h4.text-primary [:i.bi.bi-github.me-1] "Github"]]
+     #_[:div.col.text-center.py-3
+      [:h4.text-primary "Bitbucket"]]]]])
 
 (defn- feature [img title desc]
   [:div.col-md-6.mb-3.mb-md-7
@@ -136,6 +132,17 @@
              "Deploy Without Danger"
              "Simulate builds locally or in unit tests and avoid problems when deploying your app.")]])
 
+(def mockups
+  [:div.bg-soft-primary-light.pb-4
+   [:div.container.content-space-t-1.content-space-t-md-3
+    [:div.w-lg-65.text-center.mx-lg-auto.mb-7
+     [:h3 "Built by Developers for Developers"]
+     [:p.fs-6
+      "We use" [:a.mx-1 {:href "https://clojure.org"} "Clojure"]
+      "to enable you to generate build scripts super-fast."]]
+    [:div.d-grid.d-sm-flex.justify-content-sm-center.gap-3.mb-7
+     [:a.btn.btn-primary {:href "./docs"} "Explore our Documentation"]]]])
+
 (def call-to-action
   [:div.bg-soft-primary-light
    [:div.container.content-space-1.content-space-md-3
@@ -146,7 +153,27 @@
      [:div.col-md-7.col-lg-6
       [:a.btn.btn-primary.btn-lg
        {:href "https://app.monkeyci.com"}
-       "Go To Application"]]]]])
+       "Go To Application" [:i.bi.bi-chevron-right.ms-1]]]]]])
+
+(def shape-1
+  [:div.shape-container
+   [:div.shape.shape-bottom.zi-1
+    [:svg {:viewbox "0 0 3000 600"
+           :fill "none"
+           :xmlns "http://www.w3.org/2000/svg"}
+     [:path {:d "M0 600V350.234L3000 0V600H0Z"
+             :fill "#fff"}]]]])
+
+(def shape-2
+  [:div.shape-container
+   [:div.shape.shape-bottom.zi-3
+    [:svg {:width 3000
+           :height 500
+           :viewbox "0 0 3000 500"
+           :fill "none"
+           :xmlns "http://www.w3.org/2000/svg"}
+     [:path {:d "M0 500H3000V0L0 500Z"
+             :fill "#fff"}]]]])
 
 (def content
   "Main page content"
@@ -163,10 +190,13 @@
         "over your build.  Harness the" [:b.mx-1 "power and flexibility"] "of code to deploy applications."]]
       input-card
       code-fragment]]
-    shape
+    shape-1
     clients]
    [:div.border-top.mx-auto {:style "max-width: 25rem;"}]
    features
+   mockups
+   ;; TODO More stuff to add here
+   #_shape-2
    call-to-action])
 
 (def copyright (h/raw "&#169;"))

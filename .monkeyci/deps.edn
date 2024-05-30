@@ -1,1 +1,1 @@
-{:deps {com.monkeyci/plugin-monkeyci-infro {:mvn/version "0.1.0-SNAPSHOT"}}}
+{:deps {com.monkeyci/plugin-monkeyci-infra {:mvn/version "0.1.0-SNAPSHOT"}}}

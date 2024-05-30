@@ -18,4 +18,7 @@
     (code-typing-area lines)
     [:div.position-absolute.zi-n1 {:style "top: -3rem; left: -5rem;"}
      [:img.img-fluid {:src "./svg/shape-1-soft-light.svg"
-                      :style "width: 10rem"}]]]])
+                      :style "width: 10rem"}]]
+    [:div.position-absolute.zi-n1 {:style "bottom: -8rem; right: -8rem;"}
+     [:img.img-fluid {:src "./svg/shape-7.svg"
+                      :style "width: 9rem"}]]]])

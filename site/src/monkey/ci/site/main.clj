@@ -57,16 +57,16 @@
     [:div.input-card.input-card-sm.mb-3
      [:div.input-card-form
       [:label.form-label.visually-hidden
-       {:for "requestDemoForm"}
-       "Enter business email"]
+       {:for "subscribe-form"}
+       "Enter email"]
       [:input.form-control.form-control-lg
        {:type "text"
-        :id "requestDemoForm"
-        :placeholder "Enter business email"
-        :aria-label "Enter business email"}]]
+        :id "subscribe-form"
+        :placeholder "Enter email"
+        :aria-label "Enter email"}]]
      [:button.btn.btn-primary.btn-lg
       {:type "button"}
-      "Get notified"]]]
+      "Get Notified"]]]
    [:a.link.link-light
     {:href "https://app.monkeyci.com"}
     "Create a free account"
@@ -178,7 +178,7 @@
     [:div.row.align-items-md-end.py-5
      [:div.col-md.mb-3.mb-md-0
       [:p.text-white.mb-0
-       copyright " 2024 " [:a.text-white {:href "https://www.monkey-projects.be"} "Monkey Projects BV"]]]]]])
+       copyright " 2024 " [:a.link.link-light {:href "https://www.monkey-projects.be"} "Monkey Projects BV"]]]]]])
 
 (defn main []
   [:html

@@ -2,7 +2,8 @@
   (:require [monkey.ci.build
              [api :as api]
              [core :as bc]
-             [shell :as s]]))
+             [shell :as s]]
+            [monkey.ci.plugin.infra :as infra]))
 
 (def build
   "Builds the website files"
@@ -17,6 +18,11 @@
 
 (def build-image? (some-fn bc/main-branch? bc/tag))
 
+(defn img-version
+  "Determines the image version to use in the tag"
+  [ctx]
+  (or (bc/tag ctx) (get-in ctx [:build :build-id])))
+
 (defn image
   "Generates the container image"
   [ctx]
@@ -25,8 +31,7 @@
           creds (get (api/build-params ctx) "dockerhub-creds")
           config-dir "/kaniko/.docker"
           config-file (str config-dir "/config.json")
-          version (or (bc/tag ctx) (get-in ctx [:build :build-id]))
-          img (str img-base ":" version)]
+          img (str img-base ":" (img-version ctx))]
       (bc/container-job
        "image"
        {:image "docker.io/monkeyci/kaniko:1.21.0"
@@ -41,5 +46,24 @@
         :restore-artifacts [{:id "site"
                              :path "site/target"}]}))))
 
+(defn get-env [ctx]
+  (if (bc/tag ctx) :prod :staging))
+
+(def deploy
+  (bc/action-job
+   "deploy"
+   (fn [ctx]
+     (if-let [token (get (api/build-params ctx) "github-token")]
+       ;; Patch the kustomization file
+       (if (infra/patch+commit! (infra/make-client token)
+                                (get-env ctx)
+                                "website"
+                                (img-version ctx))
+         bc/success
+         (assoc bc/failure :message "Unable to patch version in infra repo"))
+       (assoc bc/failure :message "No github token provided")))
+   {:dependencies ["image"]}))
+
 [build
- image]
+ image
+ deploy]

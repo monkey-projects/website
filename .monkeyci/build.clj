@@ -3,7 +3,9 @@
              [api :as api]
              [core :as bc]
              [shell :as s]]
-            [monkey.ci.plugin.infra :as infra]))
+            [monkey.ci.plugin
+             [infra :as infra]
+             [kaniko :as kaniko]]))
 
 (def build
   "Builds the website files"
@@ -27,24 +29,10 @@
   "Generates the container image"
   [ctx]
   (when (build-image? ctx)
-    (let [wd (s/container-work-dir ctx)
-          creds (get (api/build-params ctx) "dockerhub-creds")
-          config-dir "/kaniko/.docker"
-          config-file (str config-dir "/config.json")
-          img (str img-base ":" (img-version ctx))]
-      (bc/container-job
-       "image"
-       {:image "docker.io/monkeyci/kaniko:1.21.0"
-        :container/env {"DOCKER_CREDS" creds
-                        ;; Must point to the directory where 'config.json' is in
-                        "DOCKER_CONFIG" config-dir}
-        ;; Kaniko requires that docker credentials are written to file
-        :script [(str "echo $DOCKER_CREDS > " config-file)
-                 (format "/kaniko/executor --destination %s --dockerfile %s --context dir://%s"
-                         img (str wd "/Dockerfile") wd)]
-        :dependencies ["build"]
-        :restore-artifacts [{:id "site"
-                             :path "site/target"}]}))))
+    (-> (kaniko/image {:target-img (str img-base ":" (img-version ctx))} ctx)
+        (assoc :dependencies ["build"]
+               :restore-artifacts [{:id "site"
+                                    :path "site/target"}]))))
 
 (defn get-env [ctx]
   (if (bc/tag ctx) :prod :staging))

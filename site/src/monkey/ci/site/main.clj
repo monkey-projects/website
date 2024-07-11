@@ -8,6 +8,13 @@
 (defn script [file]
   [:script {:src (str "./js/" file)}])
 
+(defn- make-url [prefix {:keys [base-url]
+                         :or {base-url "monkeyci.com"}}]
+  (format "https://%s.%s" prefix base-url))
+
+(def app-url (partial make-url "app"))
+(def api-url (partial make-url "api"))
+
 (def head
   [:head
    [:meta {:charset "utf-8"}]
@@ -20,7 +27,7 @@
    (stylesheet "./css/theme.min.css?v=1.0")
    (stylesheet "https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css")])
 
-(def header
+(defn header [config]
   [:header#header.navbar.navbar-expand-lg.navbar-end.navbar-absolute-top.navbar-show-hide.navbar-dark
    [:div.container
     [:nav.js-mega-menu.navbar-nav-wrap
@@ -38,13 +45,13 @@
        ;; Log in button
        [:li.nav-item
         [:a.js-animation-link.btn.btn-ghost-light.btn-no-focus.me-2.me-lg-0
-         {:href "https://app.monkeyci.com"
+         {:href (app-url config)
           :role "button"}
          "Log in"]]
        ;; Sign up
        [:li.nav-item
         [:a.js-animation-link.d-none.d-lg-inline-block.btn.btn-primary
-         {:href "https://app.monkeyci.com"
+         {:href (app-url config)
           :role "button"}
          [:i.bi.bi-person-circle.me-1]
          "Sign up"]]]]]]])
@@ -280,11 +287,11 @@
       [:p.text-white.mb-0
        copyright " 2024 " [:a.link.link-light {:href "https://www.monkey-projects.be"} "Monkey Projects BV"]]]]]])
 
-(defn main []
+(defn main [config]
   [:html
    head
    [:body
-    header
+    (header config)
     content
     footer
     (script "vendor.min.js")

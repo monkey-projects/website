@@ -1,5 +1,6 @@
 (ns monkey.ci.site.core
-  (:require [babashka.fs :as fs]
+  (:require [aero.core :as ac]
+            [babashka.fs :as fs]
             [clojure.java.io :as io]
             [hiccup2.core :as h]
             [monkey.ci.site.main :as main]))
@@ -17,20 +18,31 @@
 
 (defn generate
   "Generates HTML from the hiccup code"
-  [{:keys [output]}]
+  [{:keys [output config]}]
   (println "Generating HTML to" (str output))
   (fs/create-dirs output)
-  (generate-file main/main "index.html" output))
+  (generate-file #(main/main config) "index.html" output))
+
+(defn- copy-tree [src dest]
+  (fs/copy-tree src dest {:replace-existing true}))
 
 (defn copy-assets
   "Copies asset files from the assets dir to destination"
   [dest]
   (println "Copying assets to" (str dest))
-  (fs/copy-tree "../assets" dest {:replace-existing true})
-  (fs/copy-tree "assets" dest {:replace-existing true}))
+  (copy-tree "../assets" dest)
+  (copy-tree "assets" dest))
+
+(defn- load-config
+  "If `config` is an existing file, loads it using aero, otherwise just returns it."
+  [config]
+  (if (string? config)
+    (when (fs/exists? config)
+      (ac/read-config config))
+    config))
 
 (defn build
   "Builds the entire site by generating html and copying assets."
-  [{:keys [output] :as args}]
+  [{:keys [output config] :as args}]
   (copy-assets output)
-  (generate args))
+  (generate (assoc args :config (load-config config))))

@@ -7,11 +7,23 @@
              [infra :as infra]
              [kaniko :as kaniko]]))
 
-(def build
+(defn get-env
+  "Determines deployment environment from the build info"
+  [ctx]
+  (if (bc/tag ctx) :prod :staging))
+
+(def config-by-env
+  {:prod
+   {:base-url "monkeyci.com"}
+   :staging
+   {:base-url "staging.monkeyci.com"}})
+
+(defn build
   "Builds the website files"
+  [ctx]
   (bc/action-job
    "build"
-   (s/bash "clojure -X:build")
+   (s/bash (format "clojure -X:build '%s'" (pr-str {:config (get config-by-env (get-env ctx))})))
    {:work-dir "site"
     :save-artifacts [{:id "site"
                       :path "target"}]}))
@@ -33,9 +45,6 @@
         (assoc :dependencies ["build"]
                :restore-artifacts [{:id "site"
                                     :path "site/target"}]))))
-
-(defn get-env [ctx]
-  (if (bc/tag ctx) :prod :staging))
 
 (def deploy
   (bc/action-job

@@ -18,14 +18,14 @@
 (defn generate
   "Generates HTML from the hiccup code"
   [{:keys [output]}]
-  (println "Generating HTML to" output)
+  (println "Generating HTML to" (str output))
   (fs/create-dirs output)
   (generate-file main/main "index.html" output))
 
 (defn copy-assets
   "Copies asset files from the assets dir to destination"
   [dest]
-  (println "Copying assets")
+  (println "Copying assets to" (str dest))
   (fs/copy-tree "../assets" dest {:replace-existing true})
   (fs/copy-tree "assets" dest {:replace-existing true}))
 

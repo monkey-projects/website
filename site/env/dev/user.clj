@@ -4,4 +4,5 @@
 (defn build
   "Builds the site to target directory"
   []
-  (c/build {:output "target"}))
+  (c/build {:output "target"
+            :config {:base-url "staging.monkeyci.com"}}))

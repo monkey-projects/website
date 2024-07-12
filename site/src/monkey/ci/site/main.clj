@@ -8,14 +8,16 @@
 (defn script [file]
   [:script {:src (str "./js/" file)}])
 
-(defn- make-url [prefix {:keys [base-url]
-                         :or {base-url "monkeyci.com"}}]
-  (format "https://%s.%s" prefix base-url))
+(defn- make-url [{:keys [prefix suffix]}
+                 {:keys [base-url]
+                  :or {base-url "monkeyci.com"}}]
+  (cond-> (format "https://%s.%s" prefix base-url)
+    suffix (str suffix)))
 
-(def app-url (partial make-url "app"))
-(def api-url (partial make-url "api"))
+(def app-url (partial make-url {:prefix "app"}))
+(def api-url (some-fn :api-url (partial make-url {:prefix "api" :suffix "/v1"})))
 
-(def head
+(defn head [config]
   [:head
    [:meta {:charset "utf-8"}]
    [:meta
@@ -25,7 +27,9 @@
    (stylesheet "https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap")
    (stylesheet "./css/vendor.min.css")
    (stylesheet "./css/theme.min.css?v=1.0")
-   (stylesheet "https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css")])
+   (stylesheet "https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css")
+   ;; Used in scripts
+   [:script (h/raw (format "var apiUrl='%s';" (api-url config)))]])
 
 (defn header [config]
   [:header#header.navbar.navbar-expand-lg.navbar-end.navbar-absolute-top.navbar-show-hide.navbar-dark
@@ -60,19 +64,19 @@
   [:div.text-center.mx-auto.mb-7
    {:style "max-width: 32rem;"}
    ;; Input Card
-   [:form
+   [:form#register-form
     [:div.input-card.input-card-sm.mb-3
      [:div.input-card-form
       [:label.form-label.visually-hidden
-       {:for "subscribe-form"}
+       {:for "subscribe-email"}
        "Enter email"]
       [:input.form-control.form-control-lg
        {:type "text"
-        :id "subscribe-form"
+        :id "subscribe-email"
         :placeholder "Enter email"
         :aria-label "Enter email"}]]
      [:button.btn.btn-primary.btn-lg
-      {:type "button"}
+      {:type "submit"}
       [:i.bi.bi-envelope-at.me-1] "Get Notified"]]]
    [:a.link.link-light
     {:href "https://app.monkeyci.com"}
@@ -289,10 +293,11 @@
 
 (defn main [config]
   [:html
-   head
+   (head config)
    [:body
     (header config)
     content
     footer
     (script "vendor.min.js")
-    (script "theme.min.js")]])
+    (script "theme.min.js")
+    (script "site.js")]])

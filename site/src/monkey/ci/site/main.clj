@@ -77,11 +77,19 @@
         :aria-label "Enter email"}]]
      [:button.btn.btn-primary.btn-lg
       {:type "submit"}
-      [:i.bi.bi-envelope-at.me-1] "Get Notified"]]]
-   [:a.link.link-light
-    {:href "https://app.monkeyci.com"}
-    "Sign up for free"
-    [:i.bi.bi-chevron-right.small.ms-1]]])
+      [:i.bi.bi-envelope-at.me-1] "Get Notified"]]
+    [:span.small.text-white-50
+     "By submitting your email you agree that we may send you updates about MonkeyCI.  "
+     "You can unsubscribe at any time."]]
+   [:div#registration-ok.text-white.d-none
+    "Thanks!  We'll email you with updates from now on."]
+   [:div#registration-failed.text-white.d-none
+    [:b.me-2 "Whoops, something went wrong."] "Please try again later."]
+   [:div.mt-1
+    [:a.link.link-light
+     {:href "https://app.monkeyci.com"}
+     "Sign up for free"
+     [:i.bi.bi-chevron-right.small.ms-1]]]])
 
 (def code-fragment
   (letfn [(p [s]
@@ -92,6 +100,7 @@
             [:span.text-danger s])]
     (u/code-editor
      {:style "width: 46rem;"}
+     ;; TODO Auto code formatting
      [[:span "(" (p "ns") " build-script"]
       [:span.ps-3 "(" (k ":require") " [monkey.ci.build.core " (k ":as") " bc]))"]
       ""
@@ -112,7 +121,7 @@
     [:div.row
      [:div.col.text-center.py-3
       [:h4.text-primary [:i.bi.bi-github.me-1] "Github"]]
-     #_[:div.col.text-center.py-3
+     [:div.col.text-center.py-3
       [:h4.text-primary "Bitbucket"]]]]])
 
 (defn- feature [img title desc]

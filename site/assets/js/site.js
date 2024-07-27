@@ -1,5 +1,11 @@
 // Javascript functions for the website
 
+function showElement(elName) {
+    var el = document.getElementById(elName);
+    el.classList.remove("d-none");
+    el.classList.add("d-block");
+}
+
 function postRegistration(email) {
     // TODO Get base url from config
     fetch(apiUrl + "/email-registration", {
@@ -11,11 +17,18 @@ function postRegistration(email) {
     }).then((response) => {
 	return response.json();
     }).then((res) => {
-	if (res.status < 400) {
+	if (res.email == email) {
 	    // ok
+	    showElement("registration-ok");
+	}
+	else {
+	    // TODO Error details
+	    showElement("registration-failed");
 	}
     }).catch((error) => {
-	// TODO Handle error
+	// TODO Error details
+	console.log("Error occurred: ", error);
+	showElement("registration-failed");
     });
 }
 

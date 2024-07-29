@@ -49,7 +49,7 @@
        ;; Log in button
        [:li.nav-item
         [:a.js-animation-link.btn.btn-ghost-light.btn-no-focus.me-2.me-lg-0
-         {:href (app-url config)
+         {:href (str (app-url config) "/login")
           :role "button"}
          "Log in"]]
        ;; Sign up
@@ -159,7 +159,9 @@
      [:h3 "Built by Developers for Developers"]
      [:p.fs-6
       "We use" [:a.mx-1 {:href "https://clojure.org"} "Clojure"]
-      "to enable you to generate build scripts super-fast."]]
+      "to enable you to generate build scripts super-fast."
+      [:br]
+      "Check out our" [:a.mx-1 {:href "./docs"} "docs"] "to see how we're approaching this."]]
     [:div.d-grid.d-sm-flex.justify-content-sm-center.gap-3.mb-7
      [:a.btn.btn-primary {:href "./docs"} "Explore our Documentation"]]]])
 

@@ -35,7 +35,7 @@
 (defn img-version
   "Determines the image version to use in the tag"
   [ctx]
-  (or (str "release-" (bc/tag ctx))
+  (or (some->> (bc/tag ctx) (str "release-"))
       (get-in ctx [:build :build-id])))
 
 (defn image

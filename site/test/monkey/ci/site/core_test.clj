@@ -23,12 +23,10 @@
       (is (nil? (sut/build {:output dest}))))
 
     (testing "generates index file"
-      (is (fs/exists? (fs/path dest "index.html"))))))
+      (is (fs/exists? (fs/path dest "index.html"))))
 
-(deftest generate
-  (with-tmp-dir dest
     (testing "applies configured base url"
-      (is (nil? (sut/generate {:output dest
-                               :config {:base-url "test.monkeyci.com"}})))
+      (is (nil? (sut/build {:output dest
+                            :config {:base-url "test.monkeyci.com"}})))
       (is (cs/includes? (slurp (fs/file (fs/path dest "index.html")))
                         "https://app.test.monkeyci.com")))))

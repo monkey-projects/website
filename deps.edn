@@ -1,22 +1,20 @@
 {:deps {aero/aero {:mvn/version "1.1.6"}
         babashka/fs {:mvn/version "0.5.21"}
         hiccup/hiccup {:mvn/version "2.0.0-RC3"}}
- :paths ["src"]
+ :paths ["common/src"]
 
  :aliases
  {:dev
   {:extra-paths ["env/dev"]}
 
-  :generate
-  {:exec-fn monkey.ci.site.core/generate
-   :exec-args {:output "target"}}
+  :site/build
+  {:extra-paths ["site/src"]
+   :exec-fn monkey.ci.site.core/build
+   :exec-args {:output "site/target"}}
 
-  :build
-  {:exec-fn monkey.ci.site.core/build
-   :exec-args {:output "target"}}
-
-  :test
+  :site/test
   {:extra-deps {com.monkeyprojects/build {:mvn/version "0.2.0"}}
+   :extra-paths ["site/src" "common/test" "site/test"]
    :exec-fn monkey.test/all}
 
   :junit

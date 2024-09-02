@@ -1,7 +1,7 @@
 (ns user
   (:require [monkey.ci.site.core :as c]))
 
-(defn build
+(defn build-site
   "Builds the site to target directory"
   []
   (c/build {:output "target"

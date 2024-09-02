@@ -23,10 +23,9 @@
   [ctx]
   (bc/action-job
    "build"
-   (s/bash (format "clojure -X:build '%s'" (pr-str {:config (get config-by-env (get-env ctx))})))
-   {:work-dir "site"
-    :save-artifacts [{:id "site"
-                      :path "target"}]}))
+   (s/bash (format "clojure -X:site/build '%s'" (pr-str {:config (get config-by-env (get-env ctx))})))
+   {:save-artifacts [{:id "site"
+                      :path "site/target"}]}))
 
 (def img-base "fra.ocir.io/frjdhmocn5qi/website")
 

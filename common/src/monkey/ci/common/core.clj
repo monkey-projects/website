@@ -2,8 +2,7 @@
   (:require [aero.core :as ac]
             [babashka.fs :as fs]
             [clojure.java.io :as io]
-            [hiccup2.core :as h]
-            [monkey.ci.site.main :as main]))
+            [hiccup2.core :as h]))
 
 (defn create-parent-dir! [path]
   (.. (io/file path) (getParentFile) (mkdirs)))

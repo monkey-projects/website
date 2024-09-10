@@ -15,7 +15,17 @@
   :site/test
   {:extra-deps {com.monkeyprojects/build {:mvn/version "0.2.0"}}
    :extra-paths ["site/src" "common/test" "site/test"]
-   :exec-fn monkey.test/all}
+   :main-opts ["-m" "kaocha.runner" "--focus" "site"]}
 
+  :docs/build
+  {:extra-paths ["docs/src"]
+   :exec-fn monkey.ci.docs.core/build
+   :exec-args {:output "docs/target"}}
+
+  :docs/test
+  {:extra-deps {com.monkeyprojects/build {:mvn/version "0.2.0"}}
+   :extra-paths ["docs/src" "common/test" "docs/test"]
+   :main-opts ["-m" "kaocha.runner" "--focus" "docs"]}
+  
   :junit
   {:exec-fn monkey.test/junit}}}

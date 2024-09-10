@@ -19,13 +19,16 @@
    {:base-url "staging.monkeyci.com"}})
 
 (defn build
-  "Builds the website files"
-  [ctx]
+  "Builds the website and docs files"
+  [id ctx]
   (bc/action-job
-   "build"
-   (s/bash (format "clojure -X:site/build '%s'" (pr-str {:config (get config-by-env (get-env ctx))})))
-   {:save-artifacts [{:id "site"
-                      :path "site/target"}]}))
+   (str "build-" id)
+   (s/bash (format "clojure -M:%s/build '%s'" id (pr-str {:config (get config-by-env (get-env ctx))})))
+   {:save-artifacts [{:id id
+                      :path (str id "/target")}]}))
+
+(def build-site (partial build "site"))
+(def build-docs (partial build "docs"))
 
 (def img-base "fra.ocir.io/frjdhmocn5qi/website")
 
@@ -42,9 +45,11 @@
   [ctx]
   (when (build-image? ctx)
     (-> (kaniko/image {:target-img (str img-base ":" (img-version ctx))} ctx)
-        (assoc :dependencies ["build"]
+        (assoc :dependencies ["build-site" "build-docs"]
                :restore-artifacts [{:id "site"
-                                    :path "site/target"}]))))
+                                    :path "site/target"}
+                                   {:id "docs"
+                                    :path "docs/target"}]))))
 
 (def deploy
   (bc/action-job
@@ -61,6 +66,7 @@
        (assoc bc/failure :message "No github token provided")))
    {:dependencies ["image"]}))
 
-[build
+[build-site
+ build-docs
  image
  deploy]

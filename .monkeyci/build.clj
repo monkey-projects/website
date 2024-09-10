@@ -18,14 +18,25 @@
    :staging
    {:base-url "staging.monkeyci.com"}})
 
+(defn test
+  "Runs tests for given site"
+  [id ctx]
+  (bc/action-job
+   (str "test-" id)
+   (s/bash (format "clojure -M:%s/test " id))))
+
+(def test-site (partial test "site"))
+(def test-docs (partial test "docs"))
+
 (defn build
   "Builds the website and docs files"
   [id ctx]
   (bc/action-job
    (str "build-" id)
-   (s/bash (format "clojure -M:%s/build '%s'" id (pr-str {:config (get config-by-env (get-env ctx))})))
+   (s/bash (format "clojure -X:%s/build '%s'" id (pr-str {:config (get config-by-env (get-env ctx))})))
    {:save-artifacts [{:id id
-                      :path (str id "/target")}]}))
+                      :path (str id "/target")}]
+    :dependencies [(str "test-" id)]}))
 
 (def build-site (partial build "site"))
 (def build-docs (partial build "docs"))
@@ -68,5 +79,7 @@
 
 [build-site
  build-docs
+ test-site
+ test-docs
  image
  deploy]

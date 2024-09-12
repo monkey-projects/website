@@ -5,7 +5,7 @@
 
  :aliases
  {:dev
-  {:extra-paths ["env/dev"]}
+  {:extra-paths ["env/dev" "site/src" "docs/src"]}
 
   :site/build
   {:extra-paths ["site/src"]

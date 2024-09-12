@@ -8,6 +8,7 @@
     suffix (str suffix)))
 
 (def app-url (partial make-url {:prefix "app"}))
+(def docs-url (partial make-url {:prefix "docs"}))
 (def api-url (some-fn :api-url (partial make-url {:prefix "api" :suffix "/v1"})))
 
 (defn stylesheet [url]

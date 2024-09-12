@@ -102,7 +102,7 @@
              "Deploy Without Danger"
              "Simulate builds locally or in unit tests and avoid problems when deploying your app.")]])
 
-(def mockups
+(defn mockups [config]
   [:div.bg-soft-primary-light {:style {:padding-bottom "20em"}}
    [:div.container.content-space-t-1.content-space-t-md-3
     [:div.w-lg-65.text-center.mx-lg-auto.mb-7
@@ -113,7 +113,7 @@
       [:br]
       "Check out our" [:a.mx-1 {:href "./docs"} "docs"] "to see how we're approaching this."]]
     [:div.d-grid.d-sm-flex.justify-content-sm-center.gap-3.mb-7
-     [:a.btn.btn-primary {:href "./docs"} "Explore our Documentation"]]]])
+     [:a.btn.btn-primary {:href (cc/docs-url config) :target :_blank} "Explore our Documentation"]]]])
 
 (def call-to-action
   [:div.bg-soft-primary-light
@@ -217,7 +217,7 @@
        [:div.tab-pane.fade.show.active
         code-fragment-2]]]]]])
 
-(def content
+(defn content [config]
   "Main page content"
   [:main#content {:role "main"}
    [:div.overflow-hidden
@@ -236,7 +236,7 @@
     clients]
    [:div.border-top.mx-auto {:style "max-width: 25rem;"}]
    features
-   mockups
+   (mockups config)
    shape-2
    features-expanded
    call-to-action])
@@ -246,7 +246,7 @@
    (head config)
    [:body
     (header config)
-    content
+    (content config)
     cc/footer
     (cc/script "vendor.min.js")
     (cc/script "theme.min.js")

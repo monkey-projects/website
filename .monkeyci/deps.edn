@@ -1,2 +1,2 @@
-{:deps {com.monkeyci/plugin-monkeyci-infra {:mvn/version "0.1.0-SNAPSHOT"}
-        com.monkeyci/plugin-kaniko {:mvn/version "0.1.0-SNAPSHOT"}}}
+{:deps {com.monkeyci/plugin-monkeyci-infra {:mvn/version "0.1.1"}
+        com.monkeyci/plugin-kaniko {:mvn/version "0.2.0-SNAPSHOT"}}}

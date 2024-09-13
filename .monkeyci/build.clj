@@ -70,8 +70,7 @@
        ;; Patch the kustomization file
        (if (infra/patch+commit! (infra/make-client token)
                                 (get-env ctx)
-                                "website"
-                                (img-version ctx))
+                                {"website" (img-version ctx)})
          bc/success
          (assoc bc/failure :message "Unable to patch version in infra repo"))
        (assoc bc/failure :message "No github token provided")))

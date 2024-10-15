@@ -3,12 +3,14 @@
 
 Welcome to [MonkeyCI](https://monkeyci.com)!
 
-## Getting Started
+## What?
 
 Suppose you're working on your newest project.  Of course, at some point you will want
 to automatically build it, maybe also deploy it somewhere.  And run your unit tests.
 All automated!  To do this, you will need a [CI/CD](https://en.wikipedia.org/wiki/CI/CD)
 pipeline tool.  And as it happens, [MonkeyCI](https://monkeyci.com) is such a tool!
+
+## Why?
 
 What makes *MonkeyCI* different from other similar tools?  We allow you to use code
 to define your build pipelines.  Most other tools only allow `yaml`.  We also support
@@ -17,6 +19,8 @@ need conditions, maybe even loops.  After a while, your nice yaml script starts 
 look more and more like a coding experiment gone wrong.  Our philosophy is: **for
 coding, use a programming language**!  And our language of choice is [Clojure](https://clojure.org).
 Why Clojure?  Well, you can read [all about that here](/pages/why-clojure).
+
+## Getting Started
 
 Let's show an example of how a *MonkeyCI* build script could look like:
 

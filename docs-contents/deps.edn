@@ -9,6 +9,6 @@
            ;; Start a server serving the blog: `clojure -X:serve`
            ;; Requires tools.deps.alpha 0.9.810+
            :serve {:exec-fn   cryogen.server/serve
-                   :exec-args {:port 3000}}
+                   :exec-args {:port 3001}}
            :fast {:exec-fn   cryogen.server/serve
                   :exec-args {:fast true}}}}

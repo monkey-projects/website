@@ -41,6 +41,12 @@
 (def build-site (partial build "site"))
 (def build-docs (partial build "docs"))
 
+(def build-docs-contents
+  (bc/action-job
+   "build-docs-contents"
+   (s/bash "clojure -M:build")
+   {:work-dir "docs-contents"}))
+
 (def img-base "fra.ocir.io/frjdhmocn5qi/website")
 
 (def build-image? (some-fn bc/main-branch? bc/tag))
@@ -76,9 +82,10 @@
        (assoc bc/failure :message "No github token provided")))
    {:dependencies ["image"]}))
 
-[build-site
- build-docs
- test-site
+[test-site
  test-docs
+ build-site
+ build-docs
+ build-docs-contents
  image
  deploy]

@@ -5,7 +5,8 @@
              [shell :as s]]
             [monkey.ci.plugin
              [infra :as infra]
-             [kaniko :as kaniko]]))
+             [kaniko :as kaniko]
+             [pushover :as p]]))
 
 (defn get-env
   "Determines deployment environment from the build info"
@@ -62,6 +63,7 @@
 
 (def img-base "fra.ocir.io/frjdhmocn5qi/website")
 
+(def release? (comp some? bc/tag))
 (def build-image? (some-fn bc/main-branch? bc/tag))
 
 (defn img-version
@@ -82,7 +84,7 @@
                                     :path "docs-contents/public"}]))))
 
 (defn deploy [ctx]
-  (when (build-image? ctx)
+  (when (and (build-image? ctx) (not (release? ctx)))
     (bc/action-job
      "deploy"
      (fn [ctx]
@@ -95,6 +97,11 @@
            (assoc bc/failure :message "Unable to patch version in infra repo"))
          (assoc bc/failure :message "No github token provided")))
      {:dependencies ["image"]})))
+
+(defn notify [ctx]
+  (when (release? ctx)
+    (p/pushover-msg {:msg (str "Website version " (bc/tag ctx) " has been published.")
+                     :dependencies ["image"]})))
 
 [test-site
  test-docs

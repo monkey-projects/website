@@ -17,7 +17,7 @@ Clojure, we decided to go with that.
 
 ## Mature
 
-Clojure has existed since somewhere around 2007, so that's plenty of time to
+Clojure has existed **since somewhere around 2007**, so that's plenty of time to
 work out any kinks it may have.  Moreover, it's based on [Lisp](https://en.wikipedia.org/wiki/Lisp_(programming_language)),
 which has been around since the late 1950's.  That makes it the second-oldest
 language still in use (after Fortran).  And it still looks good!
@@ -42,7 +42,7 @@ because the entire frontend of *MonkeyCI* is written in ClojureScript!
 ## Easy To Learn
 
 One of the reasons we like Lisp (and by extension, Clojure) so much is it's rediculously
-simple syntax.  It has no real keywords, just "special forms", like `if` and `let`.
+**simple syntax**.  It has no real keywords, just "special forms", like `if` and `let`.
 Just about everything else is a function, and it treats them all the same.  No need
 to break your fingers by constantly having to type curly braces.  Clojure code mainly
 uses round brackets, with some other type of brackets as needed.  For example:
@@ -61,8 +61,8 @@ What we mean by that is that is should be fairly simple to load the build script
 code.  We don't want to have to go through a complicated process of compilation
 and linking for the script to run.  Lisp-like languages have a huge advantage over
 other languages in this regard: the code is actually a *data structure in itself*!
-This opens up a lot of possibilities, and one of them is that you can fairly easily
-load code in your application.  This is one of the features that pushed us towards
+This opens up a lot of possibilities, and one of them is that you can fairly **easily
+load code** in your application.  This is one of the features that pushed us towards
 using Clojure as our scripting code.
 
 ## Downsides
@@ -79,7 +79,7 @@ developers.
 ## Conclusion
 
 So we hope we've convinced you that our choice was not just done using a darts board,
-but we really thought about it.  For some people it may be a turn-off to have to learn
+but **we really thought about it**.  For some people it may be a turn-off to have to learn
 a new language to use *MonkeyCI*, but we hope to have convinced most of you that it's
 not a big leap.  On the contrary, we're sure you love learning new stuff, right?
 Why else would you be here?

@@ -15,7 +15,7 @@ to declare dependencies, like so:
 {:deps {com.monkeyci/plugin-mvn {:mvn/version "1.0.0"}}}
 ```
 
-This is required if you want to use any [plugins](/pages/plugins) in your build script.
+This is required if you want to use any [plugins](/pages/plugins/) in your build script.
 But you can also use it to **include any 3rd party library** in your script, which you
 can then use in action jobs.
 

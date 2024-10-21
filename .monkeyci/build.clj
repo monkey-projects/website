@@ -41,6 +41,14 @@
 (def build-site (partial build "site"))
 (def build-docs (partial build "docs"))
 
+(def build-docs-contents
+  (bc/action-job
+   "build-docs-contents"
+   (s/bash "clojure -M:build")
+   {:work-dir "docs-contents"
+    :save-artifacts [{:id "docs-contents"
+                      :path "public/blog"}]}))
+
 (def img-base "fra.ocir.io/frjdhmocn5qi/website")
 
 (def build-image? (some-fn bc/main-branch? bc/tag))
@@ -59,26 +67,28 @@
         (assoc :dependencies ["build-site" "build-docs"]
                :restore-artifacts [{:id "site"
                                     :path "site/target"}
-                                   {:id "docs"
+                                   {:id "docs-contents"
                                     :path "docs/target"}]))))
 
-(def deploy
-  (bc/action-job
-   "deploy"
-   (fn [ctx]
-     (if-let [token (get (api/build-params ctx) "github-token")]
-       ;; Patch the kustomization file
-       (if (infra/patch+commit! (infra/make-client token)
-                                (get-env ctx)
-                                {"website" (img-version ctx)})
-         bc/success
-         (assoc bc/failure :message "Unable to patch version in infra repo"))
-       (assoc bc/failure :message "No github token provided")))
-   {:dependencies ["image"]}))
+(defn deploy [ctx]
+  (when (build-image? ctx)
+    (bc/action-job
+     "deploy"
+     (fn [ctx]
+       (if-let [token (get (api/build-params ctx) "github-token")]
+         ;; Patch the kustomization file
+         (if (infra/patch+commit! (infra/make-client token)
+                                  (get-env ctx)
+                                  {"website" (img-version ctx)})
+           bc/success
+           (assoc bc/failure :message "Unable to patch version in infra repo"))
+         (assoc bc/failure :message "No github token provided")))
+     {:dependencies ["image"]})))
 
-[build-site
- build-docs
- test-site
+[test-site
  test-docs
+ build-site
+ build-docs
+ build-docs-contents
  image
  deploy]

@@ -58,7 +58,7 @@
    "-M:build"
    {:work-dir "docs-contents"
     :save-artifacts [{:id "docs-contents"
-                      :path "public/blog"}]}))
+                      :path "public"}]}))
 
 (def img-base "fra.ocir.io/frjdhmocn5qi/website")
 

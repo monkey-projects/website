@@ -1,4 +1,5 @@
 {:title "MonkeyCI Documentation"
+ :description "Home"
  :home? true}
 
 Welcome to [MonkeyCI](https://monkeyci.com)!

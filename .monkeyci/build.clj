@@ -79,7 +79,7 @@
                :restore-artifacts [{:id "site"
                                     :path "site/target"}
                                    {:id "docs-contents"
-                                    :path "docs-contents/public/blog"}]))))
+                                    :path "docs-contents/public"}]))))
 
 (defn deploy [ctx]
   (when (build-image? ctx)

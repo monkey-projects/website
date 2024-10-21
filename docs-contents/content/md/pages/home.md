@@ -23,6 +23,13 @@ Why Clojure?  Well, you can read [all about that here](/pages/why-clojure).
 
 ## Getting Started
 
+In *MonkeyCI*, you can create [repositories](/pages/repos), that refer to a
+[Git](https://en.wikipedia.org/wiki/Git) repository that resides on one of the [supported
+platforms](/pages/platforms).  Whenever a build is [triggered](/pages/triggers), it
+will be displayed on the repository page.
+
+### Basic Example
+
 Let's show an example of how a *MonkeyCI* build script could look like:
 
 ```clojure
@@ -86,4 +93,16 @@ about the practical maximum length, due to database storage limitations.
 This is the actual function that will be executed.  It is passed the [script context](/pages/context)
 as an argument, but since we're not using it here, we're replacing it with an `_`.  This
 means more or less *"I know this function receives an argument, but we're not using it right
-now."*
+now."*  In this case, it just prints a message.  This message will be displayed when you
+navigate in the application site to that specific job.
+
+## Conclusion
+
+The above example illustrates in a nutshell how *MonkeyCI* builds work.  If this triggers
+your curiosity, you can learn more by proceeding to one of the following next steps:
+
+ - [A more useful example](/pages/useful-example)
+ - [How to register as a new user](/pages/registration)
+ - [How MonkeyCI works under the hood](/pages/under-the-hood)
+ - [Our sustainability goals](/pages/sustainability)
+

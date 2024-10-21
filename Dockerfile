@@ -8,4 +8,4 @@ ADD nginx.conf /etc/nginx/
 # Main website
 ADD site/target/ /var/www/html/site
 # Docs site
-ADD docs/target/ /var/www/html/docs
+ADD docs-contents/public/blog/ /var/www/html/docs

@@ -41,6 +41,9 @@ This table gives you a basic overview:
   </tbody>
 </table>
 
+So for example, if you have a build that runs for 5 minutes using the default settings
+(1 CPU, 2 GB RAM), it would cost you `5 * (1 + 2) = 15` credits.
+
 ## Why is ARM cheaper than AMD?
 
 Why do we charge twice the price for AMD CPU's?  Because AMD provides two cores
@@ -50,7 +53,7 @@ This makes your builds cheaper and they also consume [less energy](/pages/sustai
 
 ## Commercial Use
 
-*MonkeyCI* is only free for non-commercial use.  Should you want to use it for
+*MonkeyCI* is only **free for non-commercial use**.  Should you want to use it for
 commercial purposes (e.g. to build non-free software), you are kindly asked to
 switch to a paying plan.  You will **still receive the free 5.000 credits** per month,
 and you receive an **additional 2.000 credits per paying user**.

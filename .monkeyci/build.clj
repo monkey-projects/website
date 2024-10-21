@@ -18,12 +18,21 @@
    :staging
    {:base-url "staging.monkeyci.com"}})
 
+(defn- clj-cmd [job-id id cmd & [opts]]
+  (let [m2 (str ".m2-" id)]
+    (bc/action-job
+     job-id
+     (s/bash (format "clojure -Sdeps '{:mvn/local-repo \"%s\"}' %s" m2 cmd))
+     (assoc opts :caches [{:id (str "mvn-" id)
+                           :path m2}]))))
+
 (defn test
   "Runs tests for given site"
   [id ctx]
-  (bc/action-job
+  (clj-cmd
    (str "test-" id)
-   (s/bash (format "clojure -M:%s/test " id))))
+   id
+   (format "-M:%s/test" id)))
 
 (def test-site (partial test "site"))
 (def test-docs (partial test "docs"))
@@ -31,9 +40,10 @@
 (defn build
   "Builds the website and docs files"
   [id ctx]
-  (bc/action-job
+  (clj-cmd
    (str "build-" id)
-   (s/bash (format "clojure -X:%s/build '%s'" id (pr-str {:config (get config-by-env (get-env ctx))})))
+   id
+   (format "-X:%s/build '%s'" id (pr-str {:config (get config-by-env (get-env ctx))}))
    {:save-artifacts [{:id id
                       :path (str id "/target")}]
     :dependencies [(str "test-" id)]}))
@@ -42,9 +52,10 @@
 (def build-docs (partial build "docs"))
 
 (def build-docs-contents
-  (bc/action-job
+  (clj-cmd
    "build-docs-contents"
-   (s/bash "clojure -M:build")
+   "docs-contents"
+   "-M:build"
    {:work-dir "docs-contents"
     :save-artifacts [{:id "docs-contents"
                       :path "public/blog"}]}))

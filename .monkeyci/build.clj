@@ -70,7 +70,7 @@
                                    {:id "docs-contents"
                                     :path "docs/target"}]))))
 
-(def deploy
+(defn deploy [ctx]
   (when (build-image? ctx)
     (bc/action-job
      "deploy"

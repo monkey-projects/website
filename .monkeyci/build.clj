@@ -109,4 +109,5 @@
  build-docs
  build-docs-contents
  image
- deploy]
+ deploy
+ notify]

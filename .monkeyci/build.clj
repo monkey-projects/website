@@ -1,4 +1,4 @@
-(ns monkey.ci.site.build
+(ns build
   (:require [monkey.ci.build
              [api :as api]
              [core :as bc]
@@ -27,16 +27,16 @@
      (assoc opts :caches [{:id (str "mvn-" id)
                            :path m2}]))))
 
-(defn test
+(defn run-tests
   "Runs tests for given site"
-  [id ctx]
+  [id _]
   (clj-cmd
    (str "test-" id)
    id
    (format "-M:%s/test" id)))
 
-(def test-site (partial test "site"))
-(def test-docs (partial test "docs"))
+(def test-site (partial run-tests "site"))
+(def test-docs (partial run-tests "docs"))
 
 (defn build
   "Builds the website and docs files"

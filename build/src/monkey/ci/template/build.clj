@@ -1,4 +1,4 @@
-(ns monkey.ci.common.core
+(ns monkey.ci.template.build
   (:require [aero.core :as ac]
             [babashka.fs :as fs]
             [clojure.java.io :as io]
@@ -30,7 +30,7 @@
   [dest]
   (println "Copying assets to" (str dest))
   (copy-tree "assets" dest)
-  (copy-tree "site/assets" dest))
+  (copy-tree "../assets" dest))
 
 (defn load-config
   "If `config` is an existing file, loads it using aero, otherwise just returns it."
@@ -40,8 +40,15 @@
       (ac/read-config config))
     config))
 
+(defn- resolve-fn [sym]
+  (use (symbol (namespace sym)))
+  (resolve sym))
+
 (defn build
   "Builds the entire site by generating html and copying assets."
-  [output f]
-  (copy-assets output)
-  (generate output f))
+  [{:keys [output site-fn config]}]
+  (if-let [f (resolve-fn site-fn)]
+    (do
+      (copy-assets output)
+      (generate output #(f (load-config config))))
+    (throw (ex-info "Could not resolve site fn" {:site-fn site-fn}))))

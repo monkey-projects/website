@@ -1,6 +1,6 @@
 (ns monkey.ci.site.main
   (:require [hiccup2.core :as h]
-            [monkey.ci.common.components :as cc]
+            [monkey.ci.template.components :as cc]
             [monkey.ci.site.utils :as u]))
 
 (defn head [config]

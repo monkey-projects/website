@@ -19,12 +19,12 @@
    :staging
    {:base-url "staging.monkeyci.com"}})
 
-(defn- clj-cmd [job-id id cmd & [opts]]
-  (let [m2 (str ".m2-" id)]
+(defn- clj-cmd [job-id cache-id cmd & [opts]]
+  (let [m2 (str ".m2-" cache-id)]
     (bc/action-job
      job-id
      (s/bash (format "clojure -Sdeps '{:mvn/local-repo \"%s\"}' %s" m2 cmd))
-     (assoc opts :caches [{:id (str "mvn-" id)
+     (assoc opts :caches [{:id (str "mvn-" cache-id)
                            :path m2}]))))
 
 (defn run-tests

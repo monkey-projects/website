@@ -1,4 +1,4 @@
-(ns monkey.ci.common.components
+(ns monkey.ci.template.components
   (:require [hiccup2.core :as h]))
 
 (defn- make-url [{:keys [prefix suffix]}

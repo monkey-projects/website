@@ -4,12 +4,13 @@
  :aliases
  {:dev
   {:extra-paths ["env/dev" "test"]
-   :override-deps {com.monkeyci/site-template {:local/root "common"}}}
+   :override-deps {com.monkeyci/site-template {:local/root "../common"}}}
 
   :build
-  {:extra-deps {com.monkeyci/template-build {:local/root "build"}}
+  {:extra-deps {com.monkeyci/template-build {:local/root "../build"}}
    :exec-fn monkey.ci.template.build/build
-   :exec-args {:output "target"}}
+   :exec-args {:output "target"
+               :site-fn monkey.ci.site.main/main}}
 
   :test
   {:extra-deps {com.monkeyprojects/build {:mvn/version "0.2.0"}}

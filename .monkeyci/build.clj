@@ -46,7 +46,7 @@
   [id & [{:keys [alias] deps :dependencies}]]
   (fn [ctx]
     (letfn [(maybe-add-deps [job]
-              (let [d (deps ctx)]
+              (let [d (when deps (deps ctx))]
                 (cond-> job
                   d (assoc :dependencies d))))]
       (-> (clj-cmd

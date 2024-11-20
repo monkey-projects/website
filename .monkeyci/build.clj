@@ -44,17 +44,22 @@
 (defn run-tests
   "Runs tests for given site"
   [id & [{:keys [alias] deps :dependencies}]]
-  (fn [ctx]
-    (letfn [(maybe-add-deps [job]
-              (let [d (when deps (deps ctx))]
-                (cond-> job
-                  d (assoc :dependencies d))))]
-      (-> (clj-cmd
-           (str "test-" id)
-           id
-           (format "-X%s:test:junit" (or (some-> alias str) "")))
-          (assoc :work-dir id)
-          (maybe-add-deps)))))
+  (let [art (str id "-junit")]
+    (fn [ctx]
+      (letfn [(maybe-add-deps [job]
+                (let [d (when deps (deps ctx))]
+                  (cond-> job
+                    d (assoc :dependencies d))))]
+        (-> (clj-cmd
+             (str "test-" id)
+             id
+             (format "-X%s:test:junit" (or (some-> alias str) "")))
+            (assoc :work-dir id
+                   :save-artifacts [{:id art
+                                     :path "junit.xml"}]
+                   :junit {:artifact-id art
+                           :path "junit.xml"})
+            (maybe-add-deps))))))
 
 (defn test-common [ctx]
   (when (common-changed? ctx)
@@ -76,19 +81,19 @@
 
 (defn build
   "Builds the website and docs files"
-  [id alias ctx]
+  [id alias artifact ctx]
   (clj-cmd
    (str "build-" id)
    id
    (format "-X%s '%s'" (str alias) (pr-str {:config (get config-by-env (get-env ctx))}))
    {:save-artifacts [{:id id
-                      :path (str id "/target")}]
+                      :path artifact}]
     :dependencies (cond-> [(str "test-" id)]
                     (common-published? ctx) (conj "deploy-common"))
     :work-dir id}))
 
-(def build-site (partial build "site" :build))
-(def build-docs-theme (partial build "docs" :template))
+(def build-site (partial build "site" "target" :build))
+(def build-docs-theme (partial build "docs" "themes/space" :template))
 
 (def build-docs-site
   (clj-cmd
@@ -96,7 +101,7 @@
    "docs-site"
    "-M:cryogen:build"
    {:work-dir "docs"
-    :save-artifacts [{:id "docs-contents"
+    :save-artifacts [{:id "docs"
                       :path "public"}]
     :dependencies ["build-docs"]}))
 
@@ -119,8 +124,8 @@
         (assoc :dependencies ["build-site" "build-docs"]
                :restore-artifacts [{:id "site"
                                     :path "site/target"}
-                                   {:id "docs-contents"
-                                    :path "docs-contents/public"}]))))
+                                   {:id "docs"
+                                    :path "docs/public"}]))))
 
 (defn deploy [ctx]
   (when (and (build-image? ctx) (not (release? ctx)))

@@ -20,7 +20,8 @@
    :exec-fn monkey.test/all}
   
   :junit
-  {:exec-fn monkey.test/junit}
+  {:exec-fn monkey.test/junit
+   :exec-args {:output "junit.xml"}}
   
   ;; Base alias for cryogen site building
   :cryogen

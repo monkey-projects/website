@@ -5,12 +5,12 @@
   <groupId>com.monkeyci</groupId>
   <artifactId>site-template</artifactId>
   <version>0.1.0-SNAPSHOT</version>
-  <name>common</name>
+  <name>site-template</name>
   <dependencies>
     <dependency>
       <groupId>org.clojure</groupId>
       <artifactId>clojure</artifactId>
-      <version>1.12.0</version>
+      <version>1.11.1</version>
     </dependency>
     <dependency>
       <groupId>hiccup</groupId>

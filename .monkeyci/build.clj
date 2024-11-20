@@ -68,7 +68,7 @@
 
 (defn depends-on-common [ctx]
   (when (common-published? ctx)
-    "deploy-common"))
+    ["deploy-common"]))
 
 (def test-site (run-tests "site" {:dependencies depends-on-common}))
 (def test-docs (run-tests "docs" {:alias :template

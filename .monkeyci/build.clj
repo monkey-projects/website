@@ -92,8 +92,8 @@
                     (common-published? ctx) (conj "deploy-common"))
     :work-dir id}))
 
-(def build-site (partial build "site" "target" :build))
-(def build-docs-theme (partial build "docs" "themes/space" :template))
+(def build-site (partial build "site" :build "target"))
+(def build-docs-theme (partial build "docs" :template "themes/space"))
 
 (def build-docs-site
   (clj-cmd

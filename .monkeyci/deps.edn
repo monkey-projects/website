@@ -1,3 +1,4 @@
-{:deps {com.monkeyci/plugin-monkeyci-infra {:mvn/version "0.1.1"}
+{:deps {com.monkeyci/plugin-clj {:mvn/version "0.3.0"}
+        com.monkeyci/plugin-monkeyci-infra {:mvn/version "0.1.2-SNAPSHOT"}
         com.monkeyci/plugin-kaniko {:mvn/version "0.2.0-SNAPSHOT"}
         com.monkeyci/plugin-pushover {:mvn/version "0.1.0-SNAPSHOT"}}}

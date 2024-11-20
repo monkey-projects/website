@@ -4,6 +4,7 @@
              [core :as bc]
              [shell :as s]]
             [monkey.ci.plugin
+             [clj :as clj]
              [infra :as infra]
              [kaniko :as kaniko]
              [pushover :as p]]))
@@ -19,7 +20,17 @@
    :staging
    {:base-url "staging.monkeyci.com"}})
 
-(defn- clj-cmd [job-id cache-id cmd & [opts]]
+(defn touched? [re]
+  (fn [ctx]
+    (bc/touched? ctx re)))
+
+(def common-changed?
+  "True if any of the files in the `common/` dir have changed"
+  (touched? #"^common/.*"))
+
+(defn- clj-cmd
+  "Runs a local clojure command, without starting a container"
+  [job-id cache-id cmd & [opts]]
   (let [m2 (str ".m2-" cache-id)]
     (bc/action-job
      job-id
@@ -29,35 +40,49 @@
 
 (defn run-tests
   "Runs tests for given site"
-  [id _]
-  (clj-cmd
-   (str "test-" id)
-   id
-   (format "-M:%s/test" id)))
+  [id & [alias]]
+  (fn [_]
+    (-> (clj-cmd
+         (str "test-" id)
+         id
+         (format "-X%s:test:junit" (or (some-> alias str) "")))
+        (assoc :work-dir id))))
 
-(def test-site (partial run-tests "site"))
-(def test-docs (partial run-tests "docs"))
+(defn test-common [ctx]
+  (when (common-changed? ctx)
+    ((run-tests "common") ctx)))
+
+(def test-site (run-tests "site"))
+(def test-docs (run-tests "docs" :template))
+
+(defn deploy-common [ctx]
+  (when (common-changed? ctx)
+    (-> ((clj/deps-publish {:publish-job-id "deploy-common"
+                            :test-job-id "test-common"}) ctx)
+        (assoc :work-dir "common"))))
 
 (defn build
   "Builds the website and docs files"
-  [id ctx]
+  [id alias ctx]
   (clj-cmd
    (str "build-" id)
    id
-   (format "-X:%s/build '%s'" id (pr-str {:config (get config-by-env (get-env ctx))}))
+   (format "-X%s '%s'" (str alias) (pr-str {:config (get config-by-env (get-env ctx))}))
    {:save-artifacts [{:id id
                       :path (str id "/target")}]
-    :dependencies [(str "test-" id)]}))
+    :dependencies (cond-> [(str "test-" id)]
+                    (common-changed? ctx) (conj "deploy-common"))
+    :work-dir id}))
 
-(def build-site (partial build "site"))
-(def build-docs (partial build "docs"))
+(def build-site (partial build "site" :build))
+(def build-docs-theme (partial build "docs" :template))
 
-(def build-docs-contents
+(def build-docs-site
   (clj-cmd
-   "build-docs-contents"
-   "docs-contents"
-   "-M:build"
-   {:work-dir "docs-contents"
+   "build-docs-site"
+   "docs-site"
+   "-M:cryogen:build"
+   {:work-dir "docs"
     :save-artifacts [{:id "docs-contents"
                       :path "public"}]}))
 
@@ -103,11 +128,13 @@
     (p/pushover-msg {:msg (str "Website version " (bc/tag ctx) " has been published.")
                      :dependencies ["image"]})))
 
-[test-site
+[test-common
+ deploy-common
+ test-site
  test-docs
  build-site
- build-docs
- build-docs-contents
+ build-docs-theme
+ build-docs-site
  image
  deploy
  notify]

@@ -71,8 +71,8 @@
     (println "Common changed?" (common-changed? ctx))
     (println "Should publish?" (clj/should-publish? {} ctx))
     (when (common-changed? ctx)
-      (-> ((clj/deps-publish conf) ctx)
-          (assoc :work-dir "common")))))
+      (some-> ((clj/deps-publish conf) ctx)
+              (assoc :work-dir "common")))))
 
 (defn depends-on-common [ctx]
   (when (common-published? ctx)

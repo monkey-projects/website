@@ -13,7 +13,7 @@ pipeline tool.  And as it happens, [MonkeyCI](https://monkeyci.com) is such a to
 
 ## Why?
 
-What makes *MonkeyCI* different from other similar tools?  We allow you to use code
+What makes *MonkeyCI* different from other similar tools?  We allow you **to use code**
 to define your build pipelines.  Most other tools only allow `yaml`.  We also support
 this, but only for the basic configurations.  For more complex situations, you will
 need conditions, maybe even loops.  After a while, your nice yaml script starts to

@@ -1,16 +1,44 @@
-{:deps {org.clojure/clojure {:mvn/version "1.12.0"}
-        ring/ring-devel {:mvn/version "1.13.0"}
-        compojure/compojure {:mvn/version "1.7.1"}
-        ring-server/ring-server {:mvn/version "0.5.0"}
-        cryogen-flexmark/cryogen-flexmark {:mvn/version "0.1.5"}
-        cryogen-core/cryogen-core {:mvn/version "0.4.6"}}
+{:deps {org.clojure/clojure {:mvn/version "1.12.0"}}
  
  :aliases
- {;; Run with `clojure -M:build`
-  :build {:main-opts ["-m" "cryogen.core"]}
+ {:dev
+  {:extra-paths ["env/dev"]
+   :override-deps {com.monkeyci/site-template {:local/root "../common"}}}
+
+  ;; Base alias for template building
+  :template
+  {:extra-deps {com.monkeyci/site-template {:mvn/version "0.1.0-SNAPSHOT"}
+                com.monkeyci/template-build {:local/root "../build"}}
+   :exec-fn monkey.ci.template.build/build
+   :exec-args {:output "themes/space"
+               :site-fn monkey.ci.docs.main/main}}
+
+  :test
+  {:extra-deps {com.monkeyprojects/build {:mvn/version "0.2.0"}
+                ch.qos.logback/logback-classic {:mvn/version "1.5.12"}}
+   :extra-paths ["test"]
+   :exec-fn monkey.test/all}
+  
+  :junit
+  {:exec-fn monkey.test/junit}
+  
+  ;; Base alias for cryogen site building
+  :cryogen
+  {:extra-deps {ring/ring-devel {:mvn/version "1.13.0"}
+                compojure/compojure {:mvn/version "1.7.1"}
+                ring-server/ring-server {:mvn/version "0.5.0"}
+                cryogen-flexmark/cryogen-flexmark {:mvn/version "0.1.5"}
+                cryogen-core/cryogen-core {:mvn/version "0.4.6"}}}
+
+  :build
+  {:main-opts ["-m" "cryogen.core"]}
+
   ;; Start a server serving the blog: `clojure -X:serve`
   ;; Requires tools.deps.alpha 0.9.810+
-  :serve {:exec-fn   cryogen.server/serve
-          :exec-args {:port 3001}}
-  :fast {:exec-fn   cryogen.server/serve
-         :exec-args {:fast true}}}}
+  :serve
+  {:exec-fn   cryogen.server/serve
+   :exec-args {:port 3001}}
+
+  :fast
+  {:exec-fn   cryogen.server/serve
+   :exec-args {:fast true}}}}

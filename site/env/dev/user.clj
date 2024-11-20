@@ -1,6 +1,5 @@
 (ns user
-  (:require [monkey.ci.site.core :as sc]
-            [monkey.ci.docs.core :as dc]))
+  (:require [monkey.ci.site.core :as sc]))
 
 (defn build-site
   "Builds the site to target directory"
@@ -9,7 +8,7 @@
              :config {:base-url "staging.monkeyci.com"
                       :api-url "http://localhost:3000"}}))
 
-(defn build-docs
+#_(defn build-docs
   "Builds the docs to target directory"
   []
   (dc/build {:output "docs/target"

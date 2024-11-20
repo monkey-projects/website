@@ -1,5 +1,5 @@
 (ns monkey.ci.docs.main
-  (:require [monkey.ci.common.components :as cc]))
+  (:require [monkey.ci.template.components :as tc]))
 
 (defn content [config]
   [:main#content {:role "main"}
@@ -10,7 +10,7 @@
        [:div.card-body
         [:h1 "Application Documentation"]
         [:p
-         "Welcome to" [:a.ms-1 {:href (cc/app-url config)} "MonkeyCI"]
+         "Welcome to" [:a.ms-1 {:href (tc/app-url config)} "MonkeyCI"]
          "!  So you've finally fed up with tinkering in YAML files and have decided that you want to use"
          [:b.mx-1 "real code"] "to run your build pipelines?  Well, this is the place
          where we will explain all about how to do that."]
@@ -23,11 +23,11 @@
 
 (defn main [config]
   [:html
-   cc/head
+   tc/head
    [:body
-    (cc/header config)
+    (tc/header config)
     (content config)
-    cc/footer
-    (cc/script "vendor.min.js")
-    (cc/script "theme.min.js")
-    (cc/script "site.js")]])
+    tc/footer
+    (tc/script "vendor.min.js")
+    (tc/script "theme.min.js")
+    (tc/script "site.js")]])

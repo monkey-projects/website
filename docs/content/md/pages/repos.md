@@ -13,4 +13,6 @@ can be assigned multiple times, with different values.  This allows you **a lot 
 flexibility** to group your repos.
 
 Builds are run for one specific repository, and when navigating to the repo, you
-get an **overview of all builds** that have been executed for that repo.
+get an **overview of all builds** that have been executed for that repo.  By default,
+they are sorted most-recent-first, but you can change that by clicking on the table
+column headers.

@@ -1,13 +1,5 @@
 {:deps {com.monkeyci/plugin-clj {:mvn/version "0.4.0-SNAPSHOT"}
         com.monkeyci/plugin-monkeyci-infra {:mvn/version "0.1.2-SNAPSHOT"}
         com.monkeyci/plugin-kaniko {:mvn/version "0.2.0-SNAPSHOT"}
-        com.monkeyci/plugin-pushover {:mvn/version "0.1.0-SNAPSHOT"}}
-
- :aliases
- {:test
-  {:extra-deps {com.monkeyci/app {:mvn/version "0.10.0"}
-                com.monkeyprojects/build {:mvn/version "0.2.0"}}
-   :exec-fn monkey.test/all}
-
-  :watch
-  {:exec-fn monkey.test/watch}}}
+        com.monkeyci/plugin-pushover {:mvn/version "0.1.0-SNAPSHOT"}
+        com.monkeyci/test {:mvn/version "0.10.1-SNAPSHOT"}}}

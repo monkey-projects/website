@@ -175,3 +175,13 @@ plugin already exists (which we're working on), the above 30-line script can bec
 That's it!  Really?  Well, it takes a little bit more than that, because in order to
 publish a library, you will probably need credentials of some sort.  That's where
 [build parameters](/pages/params/) come in.
+
+## Testing
+
+The whole goal of *MonkeyCI* is to allow for build scripts with complicated flows.
+Although it's advised to **make things as simple as possible**, sometimes there is a
+minimum of complication necessary to achieve what we want.  In order to still be
+confident when starting a build with a non-trivial flow, you can add [unit tests](/pages/tests/)
+to your build scripts.  You can simply do this by adding them to the `build_test.clj`
+file, next to your `build.clj`.  Then you can **run the unit tests** using the [MonkeyCI
+CLI](/pages/cli/).  The CLI can also be used for [verification](/pages/verification/).

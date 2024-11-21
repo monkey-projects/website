@@ -10,8 +10,8 @@ Build parameters are linked to a [customer](/pages/customer/).  In order to edit
 these parameters, go to the customer screen, and click the "Parameters" button.
 There you will see an overview of your already configured parameters.  Build
 parameters are **grouped in sets**, and each set can contain **multiple parameter
-keys and values**.  A set can also have **labels**, which are used to determine
-which [repository](/pages/repos/) builds have access to which parameters.
+keys and values**.  A set can also have [labels](/pages/labels/), which are used
+to determine which [repository](/pages/repos/) builds have access to which parameters.
 Repositories that have **the same values** for each of the labels defined in
 the parameter set, will gain access to that set at build time.
 

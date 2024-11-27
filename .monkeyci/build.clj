@@ -24,6 +24,8 @@
   (fn [ctx]
     (bc/touched? ctx re)))
 
+;; TODO Also test/deploy common if it's a release
+
 (def common-changed?
   "True if any of the files in the `common/` dir have changed"
   (touched? #"^common/.*"))

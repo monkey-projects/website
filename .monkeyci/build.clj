@@ -2,7 +2,6 @@
   (:require [monkey.ci.build
              [api :as api]
              [core :as bc]
-             [shell :as s]
              [v2 :as m]]
             [monkey.ci.plugin
              [clj :as clj]
@@ -38,7 +37,7 @@
 
 (defn- clj-cmd
   "Runs a clojure command"
-  [job-id cache-id cmd & [opts]]
+  [job-id cache-id cmd]
   (let [m2 (str ".m2-" cache-id)]
     (-> (m/container-job job-id)
         (m/image clj-img)
@@ -126,7 +125,7 @@
   [ctx]
   (when (build-image? ctx)
     (-> (kaniko/image {:target-img (str img-base ":" (img-version ctx))} ctx)
-        (m/depends-on ["build-site" "build-docs"])
+        (m/depends-on ["build-site" "build-docs-site"])
         (m/restore-artifacts [(m/artifact "site" "site/target")
                               (m/artifact "docs" "docs/public")]))))
 

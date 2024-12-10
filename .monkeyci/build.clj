@@ -2,12 +2,15 @@
   (:require [monkey.ci.build
              [api :as api]
              [core :as bc]
-             [shell :as s]]
+             [shell :as s]
+             [v2 :as m]]
             [monkey.ci.plugin
              [clj :as clj]
              [infra :as infra]
              [kaniko :as kaniko]
              [pushover :as p]]))
+
+(def clj-img "docker.io/clojure:tools-deps-bullseye-slim")
 
 (defn get-env
   "Determines deployment environment from the build info"
@@ -34,33 +37,32 @@
   (every-pred common-changed? bc/main-branch?))
 
 (defn- clj-cmd
-  "Runs a local clojure command, without starting a container"
+  "Runs a clojure command"
   [job-id cache-id cmd & [opts]]
   (let [m2 (str ".m2-" cache-id)]
-    (bc/action-job
-     job-id
-     (s/bash (format "clojure -Sdeps '{:mvn/local-repo \"%s\"}' %s" m2 cmd))
-     (assoc opts :caches [{:id (str "mvn-" cache-id)
-                           :path m2}]))))
+    (-> (m/container-job job-id)
+        (m/image clj-img)
+        (m/caches (m/cache (str "mvn-" cache-id) m2))
+        (m/script [(format "clojure -Sdeps '{:mvn/local-repo \"%s\"}' %s" m2 cmd)]))))
 
 (defn run-tests
   "Runs tests for given site"
   [id & [{:keys [alias] deps :dependencies}]]
-  (let [art (str id "-junit")]
+  (let [art (str id "-junit")
+        junit "junit.xml"]
     (fn [ctx]
       (letfn [(maybe-add-deps [job]
                 (let [d (when deps (deps ctx))]
                   (cond-> job
-                    d (assoc :dependencies d))))]
+                    d (m/depends-on d))))]
         (-> (clj-cmd
              (str "test-" id)
              id
              (format "-X%s:test:junit" (or (some-> alias str) "")))
-            (assoc :work-dir id
-                   :save-artifacts [{:id art
-                                     :path "junit.xml"}]
-                   :junit {:artifact-id art
-                           :path "junit.xml"})
+            (m/work-dir id)
+            (m/save-artifacts (m/artifact art junit))
+            (assoc :junit {:artifact-id art
+                           :path junit})
             (maybe-add-deps))))))
 
 (defn test-common [ctx]
@@ -87,28 +89,26 @@
 (defn build
   "Builds the website and docs files"
   [id alias artifact ctx]
-  (clj-cmd
-   (str "build-" id)
-   id
-   (format "-X%s '%s'" (str alias) (pr-str {:config (get config-by-env (get-env ctx))}))
-   {:save-artifacts [{:id id
-                      :path artifact}]
-    :dependencies (cond-> [(str "test-" id)]
-                    (common-published? ctx) (conj "deploy-common"))
-    :work-dir id}))
+  (-> (clj-cmd
+       (str "build-" id)
+       id
+       (format "-X%s '%s'" (str alias) (pr-str {:config (get config-by-env (get-env ctx))})))
+      (m/save-artifacts (m/artifact id artifact))
+      (m/depends-on (cond-> [(str "test-" id)]
+                      (common-published? ctx) (conj "deploy-common")))
+      (m/work-dir id)))
 
 (def build-site (partial build "site" :build "target"))
 (def build-docs-theme (partial build "docs" :template "themes/space"))
 
 (def build-docs-site
-  (clj-cmd
-   "build-docs-site"
-   "docs-site"
-   "-M:cryogen:build"
-   {:work-dir "docs"
-    :save-artifacts [{:id "docs"
-                      :path "public"}]
-    :dependencies ["build-docs"]}))
+  (-> (clj-cmd
+       "build-docs-site"
+       "docs-site"
+       "-M:cryogen:build")
+      (m/work-dir "docs")
+      (m/save-artifacts (m/artifact "docs" "public"))
+      (m/depends-on "build-docs")))
 
 (def img-base "fra.ocir.io/frjdhmocn5qi/website")
 
@@ -126,11 +126,9 @@
   [ctx]
   (when (build-image? ctx)
     (-> (kaniko/image {:target-img (str img-base ":" (img-version ctx))} ctx)
-        (assoc :dependencies ["build-site" "build-docs"]
-               :restore-artifacts [{:id "site"
-                                    :path "site/target"}
-                                   {:id "docs"
-                                    :path "docs/public"}]))))
+        (m/depends-on ["build-site" "build-docs"])
+        (m/restore-artifacts [(m/artifact "site" "site/target")
+                              (m/artifact "docs" "docs/public")]))))
 
 (defn deploy [ctx]
   (when (and (build-image? ctx) (not (release? ctx)))

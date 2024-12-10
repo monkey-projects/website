@@ -11,8 +11,8 @@
   (let [ctx (-> mt/test-ctx
                 (mt/with-changes (mt/modified ["common/src/core.clj"])))]
     
-    (testing "shell command if common files have changed"
-      (is (bc/action-job? (sut/test-common ctx))))
+    (testing "clj container if common files have changed"
+      (is (bc/container-job? (sut/test-common ctx))))
 
     (testing "has `test-common` id"
       (is (= "test-common" (bc/job-id (sut/test-common ctx)))))))
@@ -39,12 +39,12 @@
           (is (= ["test-common"] (:dependencies (sut/deploy-common ctx)))))))))
 
 (deftest test-site
-  (testing "creates action job"
-    (is (bc/action-job? (sut/test-site mt/test-ctx)))))
+  (testing "creates container job"
+    (is (bc/container-job? (sut/test-site mt/test-ctx)))))
 
 (deftest test-docs
-  (testing "creates action job"
-    (is (bc/action-job? (sut/test-docs mt/test-ctx)))))
+  (testing "creates container job"
+    (is (bc/container-job? (sut/test-docs mt/test-ctx)))))
 
 (deftest notify
   (testing "`nil` if not a release tag"

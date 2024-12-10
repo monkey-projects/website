@@ -105,4 +105,5 @@ your curiosity, you can learn more by proceeding to one of the following next st
  - [How to register as a new user](/pages/registration/)
  - [How MonkeyCI works under the hood](/pages/under-the-hood/)
  - [Our sustainability goals](/pages/sustainability/)
+ - [Security](/pages/security/)
 

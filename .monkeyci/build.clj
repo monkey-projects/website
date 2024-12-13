@@ -71,8 +71,6 @@
 (defn deploy-common [ctx]
   (let [conf {:publish-job-id "deploy-common"
               :test-job-id "test-common"}]
-    (println "Common changed?" (common-changed? ctx))
-    (println "Should publish?" (clj/should-publish? {} ctx))
     (when (common-changed? ctx)
       (some-> ((clj/deps-publish conf) ctx)
               (assoc :work-dir "common")))))

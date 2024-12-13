@@ -76,6 +76,15 @@ programming the last few decades, for example by including **lambda's, streams
 and immutability**.  So most functional concepts have become well-known to most
 developers.
 
+## No Magic
+
+Through the use of [macros](https://clojure.org/reference/macros), Clojure offers ways to
+create your own DSL's.  We could have done this for *MonkeyCI* as well, but we have
+chosen to refrain from that for the time being.  This because in our experience using
+macros may be useful, but it also adds a kind of "magic" to your code, which is **often
+hard to understand** for novice users and developers.  Maybe in the future we will create
+a more succinct DSL, but the "pure" Clojure code will always remain available.
+
 ## Conclusion
 
 So we hope we've convinced you that our choice was not just done using a darts board,

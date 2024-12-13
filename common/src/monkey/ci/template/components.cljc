@@ -29,9 +29,11 @@
     {:name "viewport",
      :content "width=device-width, initial-scale=1, shrink-to-fit=no"}]
    [:title "MonkeyCI"]
+   ;; TODO Host locally
    (stylesheet "https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap")
    (stylesheet "./css/vendor.min.css")
    (stylesheet "./css/theme.min.css?v=1.0")
+   ;; TODO Host locally
    (stylesheet "https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css")])
 
 (defn header [config]

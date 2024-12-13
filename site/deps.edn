@@ -4,7 +4,8 @@
  :aliases
  {:dev
   {:extra-paths ["env/dev" "test"]
-   :override-deps {com.monkeyci/site-template {:local/root "../common"}}}
+   :override-deps {com.monkeyci/site-template {:local/root "../common"}}
+   :extra-deps {com.monkeyci/template-build {:local/root "../build"}}}
 
   :build
   {:extra-deps {com.monkeyci/template-build {:local/root "../build"}}

@@ -51,14 +51,13 @@
     (u/code-editor
      {:style "width: 46rem;"}
      ;; TODO Auto code formatting
-     [[:span "(" (p "ns") " build-script"]
-      [:span.ps-3 "(" (k ":require") " [monkey.ci.build.core " (k ":as") " bc]))"]
+     [[:span "(" (p "ns") " build"]
+      [:span.ps-3 "(" (k ":require") " [monkey.ci.build.v2 " (k ":as") " m]))"]
       ""
       [:span "(" (p "def") " unit-test"]
-      [:span.ps-3 "(bc/container-job"]
-      [:span.ps-6 "\"unit-test\""]
-      [:span.ps-6 "{" (k ":image") " \"docker.io/maven:4.5\""]
-      [:span.ps-7 (k ":script") " [\"mvn verify\"]"]
+      [:span.ps-3 "(-> (m/container-job " (k "\"unit-test\"") ")"]
+      [:span.ps-8 "(m/image " (k "\"docker.io/maven:4.5\"") ")"]
+      [:span.ps-8 "(m/script [" (k "\"mvn verify\"") "])))"]
       ""
       (c ";; The jobs to execute")
       "[unit-test]"])))

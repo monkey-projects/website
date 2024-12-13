@@ -27,7 +27,7 @@
    [:body
     (tc/header config)
     (content config)
-    tc/footer
+    (tc/footer config)
     (tc/script "vendor.min.js")
     (tc/script "theme.min.js")
     (tc/script "site.js")]])

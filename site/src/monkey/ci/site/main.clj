@@ -246,7 +246,7 @@
    [:body
     (header config)
     (content config)
-    cc/footer
+    (cc/footer config)
     (cc/script "vendor.min.js")
     (cc/script "theme.min.js")
     (cc/script "site.js")]])

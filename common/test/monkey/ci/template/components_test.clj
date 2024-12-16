@@ -31,3 +31,8 @@
     (is (= "https://www.test.monkeyci.com/test/path"
            (sut/site-url test-config
                          "/test/path")))))
+
+(deftest script-url
+  (testing "build assets js url"
+    (is (= "https://assets.test.monkeyci.com/js/test-script.js"
+           (sut/script-url test-config "test-script.js")))))

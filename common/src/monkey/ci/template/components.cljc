@@ -13,28 +13,29 @@
 
 (def site-url (partial make-url {:prefix "www"}))
 (def app-url (partial make-url {:prefix "app"}))
+(def assets-url (partial make-url {:prefix "assets"}))
 (def docs-url (partial make-url {:prefix "docs"}))
 (def api-url (some-fn :api-url (partial make-url {:prefix "api" :suffix "/v1"})))
+
+(defn script-url [config script]
+  (assets-url config (str "/js/" script)))
 
 (defn stylesheet [url]
   [:link {:rel "stylesheet" :href url}])
 
-(defn script [file]
-  [:script {:src (str "./js/" file)}])
+(defn script [url]
+  [:script {:src url}])
 
-(def head
+(defn head [config]
   [:head
    [:meta {:charset "utf-8"}]
    [:meta
     {:name "viewport",
      :content "width=device-width, initial-scale=1, shrink-to-fit=no"}]
    [:title "MonkeyCI"]
-   ;; TODO Host locally
-   (stylesheet "https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap")
-   (stylesheet "./css/vendor.min.css")
-   (stylesheet "./css/theme.min.css?v=1.0")
-   ;; TODO Host locally
-   (stylesheet "https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css")])
+   (stylesheet (assets-url config "/css/vendor.min.css"))
+   (stylesheet (assets-url config "/css/theme.min.css"))
+   (stylesheet (assets-url config "/css/bootstrap-icons.min.css"))])
 
 (defn header [config]
   [:header#header.navbar.navbar-expand-lg.navbar-end.navbar-absolute-top.navbar-show-hide.navbar-dark
@@ -46,7 +47,7 @@
        :aria-label "MonkeyCI"}
       [:h3.text-white
        [:img.navbar-brand-logo
-        {:src "./img/logo-bw-small.png"
+        {:src (assets-url config "/img/logo-bw-small.png")
          :alt "Logo"}]
        "MonkeyCI"]]
      [:div.navbar-absolute-top-scroller
@@ -99,11 +100,11 @@
     [:div.row.content-space-1
      [:div.col-lg-3.mb-5.mb-lg-0
       [:div.mb-5
-       [:img {:src "/img/monkeyci-white.png" :width "100px"}]
+       [:img {:src (assets-url config "/img/monkeyci-white.png") :width "100px"}]
        [:span.h5.text-light "MonkeyCI"]]]
      (footer-col "Resources"
                  [["Blog" "https://www.monkey-projects.be/blog"]
-                  ["Documentation" "https://docs.monkeyci.com"]])
+                  ["Documentation" (docs-url config)]])
      (footer-col "Company"
                  [["About us" (site-url config "/about")]
                   ["Contact" (site-url config "/contact")]])

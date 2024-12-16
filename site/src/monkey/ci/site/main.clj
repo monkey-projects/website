@@ -4,7 +4,7 @@
             [monkey.ci.site.utils :as u]))
 
 (defn head [config]
-  (conj cc/head
+  (conj (cc/head config)
         ;; Used in scripts
         [:script (h/raw (format "var apiUrl='%s';" (cc/api-url config)))]))
 
@@ -247,6 +247,6 @@
     (header config)
     (content config)
     (cc/footer config)
-    (cc/script "vendor.min.js")
-    (cc/script "theme.min.js")
-    (cc/script "site.js")]])
+    (cc/script (cc/script-url config "vendor.min.js"))
+    (cc/script (cc/script-url config "theme.min.js"))
+    (cc/script "./js/site.js")]])

@@ -7,7 +7,7 @@
                  {:keys [base-url]
                   :or {base-url "monkeyci.com"}}
                  & [path]]
-  (cond-> (format "https://%s.%s" prefix base-url)
+  (cond-> (str "https://" prefix "." base-url)
     suffix (str suffix)
     path (str path)))
 

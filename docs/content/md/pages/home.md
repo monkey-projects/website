@@ -28,79 +28,34 @@ In *MonkeyCI*, you can create [repositories](/pages/repos/), that refer to a
 platforms](/pages/platforms/).  Whenever a build is [triggered](/pages/triggers/), it
 will be displayed on the repository page.
 
-### Basic Example
+### Register
 
-Let's show an example of how a *MonkeyCI* build script could look like:
+First off, go to [the login page](https://app.monkeyci.com/login) and [register as a new
+user](/pages/registration/).  Currently, you can only register if you either have a
+[GitHub](https://github.com) or a [Bitbucket](https://bitbucket.org) account, but we will
+expand this in the future.  Choosing one of these will make it easier for you to start
+watching changes in [repositories](/pages/repos/) hosted on those respective platforms.
 
-```clojure
-(use 'monkey.ci.build.core)
+### Add Repositories
 
-(action-job
- "test-job"
- (fn [_]
-   (println "Hi, I don't do very much.  But it's a start!")))
-```
+*MonkeyCI* uses **webhooks** to get notified of any changes in external repositories.  We
+don't host repositories of our own.  If a repository is *being watched* for changes, and it
+contains a build script in the `/.monkeyci` directory, *MonkeyCI* will **trigger a build**.
+From then on it's totally up to you: what [jobs](/pages/jobs/) are in the build, what
+[artifacts](/pages/artifacts/) are being produced, etc...
 
-This very basic (and, frankly, useless) build script defines a single job that will
-be executed by *MonkeyCI* if you put it in your repository at `/.monkeyci/build.clj`.
+### Examples
 
-Commit the file to your repository, push it to [Github](https://github.com) or
-[Bitbucket](https://bitbucket.org) and log in at [MonkeyCI](https://app.monkeyci.com).
-If it's your first time, a new user will automatically be created and you can also
-create a [new customer](/pages/customer-new/), or [join an existing one](/pages/customer-join/).
-Go ahead, it's [free](/pages/pricing/)!
+For more on how to write build scripts, see the [basic example](/pages/basic-example/) or
+a [more advanced example](/pages/useful-example/).  We also have a [cookbook](/pages/cookbook/)
+for common scenarios.
 
-So, let's analyze the above file line by line.
-```clojure
-(use 'monkey.ci.build.core)
-```
-This tells the script processor to include the core namespace for *MonkeyCI* builds.  This
-is something you will most likely to in every build script.  It contains the most basic
-functionality for setting up a build script in *MonkeyCI*.  There are [other
-ways](https://clojuredocs.org/clojure_core/clojure.core/require) to include a namespace,
-but `use` is the simplest one.  It makes all functions in the target namespace invokable
-from your script file.  Although it's advised to use an alias, for clarity, we'll go
-without one in this example, because it's such a simple file.  But see the [documentation
-for the use expression](https://clojuredocs.org/clojure.core/use) when you have time.
+### Going Further
 
-```clojure
-(action-job
-```
-This declares an action job.  There are **two kinds of jobs** in *MonkeyCI*: *action jobs*
-and *container jobs*.  The first type just runs an arbitrary function in your script, while
-the second type starts a new container job.  Most of the time you will probably use container
-jobs, but especially in the more complicated build scripts, action jobs may pop up as well.
-They are especially well suited to do some intermediate processing that you would otherwise
-have to write a clunky shell script for.  Think of parsing `JSON` documents, composing
-`HTTP` requests, and so on.  Note that these action jobs run inside the Clojure process,
-so you have access to all functionality available to the build script, and you can even
-execute [shell scripts](/pages/shell/) as well!  We'll talk later on how to [include
-additional libraries](/pages/deps/) in your build to broaden the scope even further.
+You can read more by clicking one of the links on the right, or proceed by going to one
+of these pages:
 
-```clojure
- "test-job"
-```
-This is the identifier of that specific job.  Each identifier should be unique over your
-build script, and it is used to display information, but also to declare [dependencies](/pages/dependencies/)
-between jobs.  We advise to keep the name short but descriptive.  You can include **every
-character** in the name, and there is **no real limit** to it's length, but let's say 16MB is
-about the practical maximum length, due to database storage limitations.
-
-```clojure
- (fn [_]
-   (println "Hi, I don't do very much.  But it's a start!")))
-```
-This is the actual function that will be executed.  It is passed the [script context](/pages/context/)
-as an argument, but since we're not using it here, we're replacing it with an `_`.  This
-means more or less *"I know this function receives an argument, but we're not using it right
-now."*  In this case, it just prints a message.  This message will be displayed when you
-navigate in the application site to that specific job.
-
-## Conclusion
-
-The above example illustrates in a nutshell how *MonkeyCI* builds work.  If this triggers
-your curiosity, you can learn more by proceeding to one of the following next steps:
-
+ - [Basic example](/pages/basic-example/)
  - [A more useful example](/pages/useful-example/)
  - [How to register as a new user](/pages/registration/)
  - [How MonkeyCI works under the hood](/pages/under-the-hood/)

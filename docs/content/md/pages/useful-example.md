@@ -13,16 +13,18 @@ This will start the container, presumably from one of the [Maven images](https:/
 check out the code from Git, and then run the configured commands.  Like this:
 
 ```clojure
-(use 'monkey.ci.build.core)
+(ns build
+  (:use [monkey.ci.build.v2]))
 
-(container-job
- "mvn-verify"
- {:image "docker.io/maven:latest"
-  :script ["mvn verify"]})
+(-> (container-job "mvn-verify")
+    (image "docker.io/maven:latest")
+    (script ["mvn verify"]))
 ```
 This is a very rudimentary job configuration.  It uses the `latest` version of the `maven`
 container image from the Docker hub.  It then executes a single-line script that just runs
 `mvn verify`.  You will usually want something more than this from your build, but it's a start.
+For clarity, we're using the Clojure [threading macro](https://clojuredocs.org/clojure_core/clojure.core/-%3E),
+but you could rewrite it in other ways.  We're leaving that as an exercise to the reader!
 
 ## A Second Job
 
@@ -32,14 +34,12 @@ them from the *MonkeyCI* application site.  Configuring a job to produce an arti
 just add a `:save-artifacts` configuration:
 
 ```clojure
-(container-job
- "mvn-verify"
- {:image "docker.io/maven:latest"
-  :script ["mvn verify"]
-  :save-artifacts [{:id "packages"
-                    :path "target"}]})
+(-> (container-job "mvn-verify")
+    (image "docker.io/maven:latest")
+    (script ["mvn verify"])
+    (save-artifacts (artifact "packages" "target")))
 ```
-The `:save-artifacts` configuration holds a list of one or more artifact configurations.
+The `save-artifacts` configuration holds a list of one or more artifact configurations.
 These consist of an `id`, which should be unique over the build, and the `path` where the
 files can be found, **relative to the working directory** of the job.  Assuming the files
 actually exist, they will become available for download when the job completes succesfully.
@@ -56,19 +56,17 @@ This requires two things:
 It could look like this:
 
 ```clojure
-(container-job
- "mvn-publish"
- {:image "docker.io/maven:latest"
-  :script ["mvn deploy:deploy"]
-  :restore-artifacts [{:id "packages"
-                       :path "target"}]
-  :dependencies ["mvn-verify"})
+(-> (container-job "mvn-publish")
+    (image "docker.io/maven:latest")
+    (script ["mvn deploy:deploy"])
+    (restore-artifacts (artifact "packages" "target"))
+    (depends-on ["mvn-verify"}))
 ```
 
 This job looks a lot like the `verify` job, with several differences:
 
  - The `script` has changed slightly, it now executes `mvn deploy:deploy`.
- - Instead of saving an artifact, it restores said artifact to the same location.
+ - Instead of saving an artifact, it **restores** said artifact to the same location.
  - It declares the job **dependent on** the verify job.
 
 If you don't declare the dependency, *MonkeyCI* will execute it **concurrently** with the
@@ -86,29 +84,29 @@ this, we bind each job to a symbol, using [def](https://clojuredocs.org/clojure_
 and at the end of the build script, we refer to them.  The full script then looks like this:
 
 ```clojure
-(use 'monkey.ci.build.core)
+(ns build
+  (:use [monkey.ci.build.v2]))
 
 (def verify
-  (container-job
-   "mvn-verify"
-   {:image "docker.io/maven:latest"
-    :script ["mvn verify"]
-    :save-artifacts [{:id "packages"
-                      :path "target"}]}))
+  (-> (container-job "mvn-verify")
+      (image "docker.io/maven:latest")
+      (script ["mvn verify"])
+      (save-artifacts (artifact "packages" "target"))))
 
 (def publish
-  (container-job
-   "mvn-publish"
-   {:image "docker.io/maven:latest"
-    :script ["mvn deploy:deploy"]
-    :restore-artifacts [{:id "packages"
-                         :path "target"}]
-    :dependencies ["mvn-verify"}))
+  (-> (container-job "mvn-publish")
+      (image "docker.io/maven:latest")
+      (script ["mvn deploy:deploy"])
+      (restore-artifacts (artifact "packages" "target"))
+      (depends-on ["mvn-verify"})))
 
 ;; Last expression holds all the jobs to execute
 [verify
  publish]
 ```
+
+Since this build script has more than one job, we need to explicitly list them all at the
+end.  This is how *MonkeyCI* knows which jobs to execute.
 
 ## Cleaning Up
 
@@ -118,31 +116,25 @@ very similar, so we can group the common stuff into a new function, and let the 
 jobs call that function with some parameters:
 
 ```clojure
-(use 'monkey.ci.build.core)
+(ns build
+  (:use [monkey.ci.build.v2]))
 
-(defn mvn-job [id cmd opts]
-  (container-job
-   id
-   (assoc opts
-          :image "docker.io/maven:latest"
-          :script [(str "mvn " cmd)])))
+(defn mvn-job [id cmd]
+  (-> (container-job id)
+      (image "docker.io/maven:latest")
+      (script [(str "mvn " cmd)])))
 
 (def target-artifact
-  {:id "packages"
-   :path "target"})
+  (artifact "packages" "target"))
 
 (def verify
-  (mvn-job
-   "mvn-verify"
-   "verify"
-   {:save-artifacts [target-artifact]}))
+  (-> (mvn-job "mvn-verify" "verify")
+      (save-artifacts [target-artifact]}))
 
 (def publish
-  (mvn-job
-   "mvn-publish"
-   "deploy:deploy"
-   {:restore-artifacts [target-artifact]
-    :dependencies [(job-id verify)}))
+  (-> (mvn-job "mvn-publish" "deploy:deploy")
+      (restore-artifacts [target-artifact])
+      (depends-on [(job-id verify)})))
 
 ;; Put the jobs in the "resulting" list
 [verify
@@ -167,7 +159,8 @@ plugin already exists (which we're working on), the above 30-line script can bec
 *a lot* shorter, like this:
 
 ```clojure
-(require '[monkey.ci.plugin.mvn])
+(ns build
+  (:use [monkey.ci.plugin.mvn]))
 
 (mvn-lib)
 ```

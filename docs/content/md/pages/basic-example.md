@@ -25,7 +25,7 @@ Go ahead, it's [free](/pages/pricing/)!
 So, let's analyze the above file line by line.
 ```clojure
 (ns build
-  (:use [monkey.ci.build.core]))
+  (:use [monkey.ci.build.v2]))
 ```
 This is the **namespace declaration** and tells the script processor to include the `v2`
 namespace for *MonkeyCI* builds.  This is currently the most recent version of the

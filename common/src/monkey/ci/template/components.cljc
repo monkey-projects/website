@@ -1,6 +1,7 @@
 (ns monkey.ci.template.components
   (:require [clojure.string :as cs]
-            #?(:clj [hiccup2.core :as h])
+            #?(:clj [hiccup2.core :as h]
+               :cljs [goog.string :as gstr])
             [monkey.ci.template.icons :as i]))
 
 (defn- make-url [{:keys [prefix suffix]}
@@ -68,7 +69,7 @@
 
 (def copyright
   #?(:clj (h/raw "&#169;")
-     :cljs "&#169;"))
+     :cljs (gstr/unescapeEntities "&#169;")))
 
 (defn- footer-col [header links]
   (letfn [(footer-link [[lbl url]]

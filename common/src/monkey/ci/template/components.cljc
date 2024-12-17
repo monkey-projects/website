@@ -48,7 +48,7 @@
        :aria-label "MonkeyCI"}
       [:h3.text-white
        [:img.navbar-brand-logo
-        {:src (assets-url config "/img/logo-bw-small.png")
+        {:src (assets-url config "/img/monkeyci-black.png")
          :alt "Logo"}]
        "MonkeyCI"]]
      [:div.navbar-absolute-top-scroller

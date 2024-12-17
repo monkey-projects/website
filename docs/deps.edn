@@ -3,12 +3,12 @@
  :aliases
  {:dev
   {:extra-paths ["env/dev"]
-   :override-deps {com.monkeyci/site-template {:local/root "../common"}}
-   :extra-deps {com.monkeyci/template-build {:local/root "../build"}}}
+   :extra-deps {com.monkeyci/site-template {:local/root "../common"}
+                com.monkeyci/template-build {:local/root "../build"}}}
 
   ;; Base alias for template building
   :template
-  {:extra-deps {com.monkeyci/site-template {:mvn/version "0.1.0-SNAPSHOT"}
+  {:extra-deps {com.monkeyci/site-template {:mvn/version "0.1.1-SNAPSHOT"}
                 com.monkeyci/template-build {:local/root "../build"}}
    :exec-fn monkey.ci.template.build/build
    :exec-args {:output "themes/space"

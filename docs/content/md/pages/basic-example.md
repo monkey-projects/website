@@ -39,7 +39,7 @@ for the use expression](https://clojuredocs.org/clojure.core/use) when you have 
 
 Although you're not required to create a new namespace called `build`, it's the cleanest
 way.  Generally the name of the file should be the same as the namespace it holds, and it
-will be necessary if you want to write [unit tests](/pages/testing/), but more on that
+will be necessary if you want to write [unit tests](/pages/tests/), but more on that
 later.
 
 ```clojure

@@ -80,6 +80,8 @@
        [:li.nav-item
         (sign-up-btn config)]]]]]])
 
+(def ^:deprecated header header-dark)
+
 (def copyright
   #?(:clj (h/raw "&#169;")
      :cljs (gstr/unescapeEntities "&#169;")))

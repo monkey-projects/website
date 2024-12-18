@@ -6,10 +6,10 @@
 (def test-config
   {:base-url "test.monkeyci.com"})
 
-(deftest header
+(deftest header-dark
   (testing "creates header component"
     (is (= :header
-           (-> (sut/header test-config)
+           (-> (sut/header-dark test-config)
                (first)
                (name)
                (cs/split #"#")

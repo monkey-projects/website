@@ -1,6 +1,63 @@
 (ns monkey.ci.docs.main
   (:require [monkey.ci.template.components :as tc]))
 
+(defn header
+  "Renders header with dark background"
+  [config]
+  [:header#header.navbar.navbar-expand-lg.navbar-end.navbar-light.bg-white
+   [:div.container
+    [:nav.js-mega-menu.navbar-nav-wrap
+     ;; Logo
+     [:a.navbar-brand
+      {:href "./index.html"
+       :aria-label "MonkeyCI"}
+      (tc/logo-black config)]
+     [:div
+      [:h1.display-5 "MonkeyCI"]
+      [:p.lead "Documentation Center"]]
+     [:div.navbar-absolute-top-scroller
+      [:ul.navbar-nav
+       [:li.nav-divider]
+       ;; Log in button
+       [:li.nav-item
+        [:a.js-animation-link.btn.btn-ghost-light.btn-no-focus.me-2.me-lg-0.text-primary
+         {:href (tc/app-url config "/login")
+          :role "button"}
+         "Log in"]]
+       ;; Sign up
+       [:li.nav-item
+        (tc/sign-up-btn config)]]]]]])
+
+(defn search-bar []
+  [:div.bg-primary-dark.overflow-hidden
+   [:div.container.position-relative.content-space-1
+    ;; Search form, does nothing for now
+    [:div.w-lg-75.mx-lg-auto
+     [:form
+      [:div.input-card
+       [:div.input-card-form
+        [:label.form-label.visually-hidden {:for :answers-form}
+         "Search for answers"]
+        [:input.form-control {:type :text
+                              :id :answers-form
+                              :placeholder "Search for answers"
+                              :aria-label "Search for answers"}]]
+       [:button.btn.btn-primary.btn-icon {:type :button}
+        [:i.bi-search]]]]]
+    [:div.position-absolute
+     {:style {:top "-6rem"
+              :left "-6rem"}}
+     [:img {:src "./svg/shape-1-soft-light.svg"
+            :alt "SVG"
+            :width 500
+            :style {:width "12rem"}}]]
+    [:div.position-absolute
+     {:style {:bottom "-6rem"
+              :right "-7rem"}}
+     [:img {:src "./svg/shape-7-soft-light.svg"
+            :alt "SVG"
+            :width 250}]]]])
+
 (defn content [config]
   [:div.bg-primary-light
    [:div.container.position-relative.zi-2.content-space-b-1.content-space-t-2.content-space-md-3
@@ -21,13 +78,14 @@
 
 (defn main [config]
   [:html
-   (tc/head config)
+   (tc/head (assoc config :title "MonkeyCI: Documentation"))
    [:body
+    (header config)
     [:main {:role :main}
+     (search-bar)
      [:div.overflow-hidden
       [:div.d-flex.flex-column.min-vh-100
        [:div.container
-        (tc/header config)
         (content config)]
        [:div.mt-auto
         (tc/footer config)]]]]

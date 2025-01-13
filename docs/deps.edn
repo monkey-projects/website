@@ -4,7 +4,8 @@
  {:dev
   {:extra-paths ["env/dev"]
    :extra-deps {com.monkeyci/site-template {:local/root "../common"}
-                com.monkeyci/template-build {:local/root "../build"}}}
+                com.monkeyci/template-build {:local/root "../build"}}
+   :override-deps {com.monkeyci/site-template {:local/root "../common"}}}
 
   ;; Base alias for template building
   :template
@@ -26,7 +27,8 @@
   
   ;; Base alias for cryogen site building
   :cryogen
-  {:extra-deps {aleph/aleph {:mvn/version "0.8.2"}
+  {:extra-paths ["env/cryogen"]
+   :extra-deps {aleph/aleph {:mvn/version "0.8.2"}
                 ring/ring-devel {:mvn/version "1.13.0"}
                 compojure/compojure {:mvn/version "1.7.1"}
                 ring-server/ring-server {:mvn/version "0.5.0"}

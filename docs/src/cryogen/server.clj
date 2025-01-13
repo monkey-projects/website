@@ -1,10 +1,12 @@
 (ns cryogen.server
   (:require
-    [compojure.core :refer [GET defroutes]]
+   [aleph
+    [http :as aleph]
+    [netty :as netty]]
+   [compojure.core :refer [GET defroutes]]
     [compojure.route :as route]
     [ring.util.response :refer [redirect file-response]]
     [ring.util.codec :refer [url-decode]]
-    [ring.server.standalone :as ring-server]
     [cryogen-core.watcher :refer [start-watcher! start-watcher-for-changes!]]
     [cryogen-core.plugins :refer [load-plugins]]
     [cryogen-core.compiler :refer [compile-assets-timed]]
@@ -75,7 +77,7 @@
 (defn serve
   "Entrypoint for running via tools-deps (clojure)"
   [{:keys [fast join?] :as opts}]
-  (ring-server/serve
+  #_(ring-server/serve
     handler
     (merge
       {:join? (if (some? join?) join? true)
@@ -83,7 +85,9 @@
        :open-browser? true
        :auto-refresh? fast ; w/o fast it would often try to reload the page before it has been fully compiled
        :refresh-paths [(:public-dest @resolved-config)]}
-      opts)))
+      opts))
+  (cond-> (aleph/start-server handler opts)
+    join? (netty/wait-for-close)))
 
 (defn -main [& args]
   (serve {:port 3000 :fast ((set args) "fast")}))

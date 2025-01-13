@@ -26,7 +26,8 @@
   
   ;; Base alias for cryogen site building
   :cryogen
-  {:extra-deps {ring/ring-devel {:mvn/version "1.13.0"}
+  {:extra-deps {aleph/aleph {:mvn/version "0.8.2"}
+                ring/ring-devel {:mvn/version "1.13.0"}
                 compojure/compojure {:mvn/version "1.7.1"}
                 ring-server/ring-server {:mvn/version "0.5.0"}
                 cryogen-flexmark/cryogen-flexmark {:mvn/version "0.1.5"}

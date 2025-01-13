@@ -3,7 +3,6 @@
   (:require [babashka.fs :as fs]
             [clojure.edn :as edn]
             [clojure.java.io :as io]
-            [clojure.tools.logging :as log]
             [nextjournal.markdown :as md]
             [nextjournal.markdown.transform :as mdt]))
 
@@ -26,7 +25,6 @@
     r))
 
 (defn- transform-heading [ctx {:keys [attrs] :as node}]
-  (log/info "Transforming header:" node)
   (-> node
       ;; Transform all h1 headers into h4
       (update :heading-level + 3)

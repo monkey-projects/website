@@ -115,7 +115,9 @@
 (defn content [config]
   (render-md config "home"))
 
-(defn main [config]
+(defn page
+  "Renders a markdown page, returns the resulting hiccup structure"
+  [{:keys [page] :as config}]
   [:html
    (tc/head (assoc config :title "MonkeyCI: Documentation Center"))
    [:body
@@ -133,3 +135,8 @@
         (tc/footer config)]]]]
     (tc/script (tc/script-url config "vendor.min.js"))
     (tc/script (tc/script-url config "theme.min.js"))]])
+
+(defn main [config]
+  (page (assoc config
+               :page {:file "home"
+                      :location []})))

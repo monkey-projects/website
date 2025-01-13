@@ -1,20 +1,21 @@
 {:title "MonkeyCI Documentation"
  :description "Home"
- :related [["basic example" "Basic example"]
+ :related [["basic-example" "Basic example"]
            ["useful-example" "A more useful example"]
 	   ["registration" "How to register as a new user"]
 	   ["under-the-hood" "How MonkeyCI works under the hood"]
 	   ["sustainability" "Our sustainability goals"]
 	   ["security" "Security"]]}
 
-Welcome to [MonkeyCI](https://monkeyci.com)!
+Welcome to the [MonkeyCI](https://monkeyci.com) documentation center!
 
-## What?
+## What is MonkeyCI?
 
 Suppose you're working on your newest project.  Of course, at some point you will want
 to automatically build it, maybe also deploy it somewhere.  And run your unit tests.
 All automated!  To do this, you will need a [CI/CD](https://en.wikipedia.org/wiki/CI/CD)
-pipeline tool.  And as it happens, [MonkeyCI](https://monkeyci.com) is such a tool!
+pipeline tool.  And as it happens, [MonkeyCI](https://monkeyci.com) is such a tool!  But
+with some differences.
 
 ## Why?
 

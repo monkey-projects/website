@@ -3,6 +3,7 @@
   (:require [babashka.fs :as fs]
             [clojure.edn :as edn]
             [clojure.java.io :as io]
+            [clojure.tools.logging :as log]
             [nextjournal.markdown :as md]
             [nextjournal.markdown.transform :as mdt]))
 
@@ -24,6 +25,15 @@
   (->reader [r]
     r))
 
+(defn- transform-heading [ctx {:keys [attrs] :as node}]
+  (log/info "Transforming header:" node)
+  (-> node
+      ;; Transform all h1 headers into h4
+      (update :heading-level + 3)
+      (mdt/heading-markup)
+      (conj attrs)
+      (mdt/into-markup ctx node)))
+
 (defn parse
   "Parses the given markdown content and returns it as a hiccup style structure.
    Any leading edn structure is added to the metadata."
@@ -35,10 +45,13 @@
                  (edn/read r)
                  (catch Exception ex
                    (if (.startsWith (ex-message ex) "No dispatch macro")
-                     (.reset b) ; No edn at start, so ignore it
+                     (.reset b)        ; No edn at start, so ignore it
                      (throw ex))))
           s (slurp b)]
       (assoc meta
-             :contents (-> s
-                           (md/parse)
-                           (mdt/->hiccup))))))
+             :contents (->> s
+                            (md/parse)
+                            (mdt/->hiccup
+                             (assoc mdt/default-hiccup-renderers
+                                    :heading transform-heading
+                                    :plain (partial mdt/into-markup [:span]))))))))

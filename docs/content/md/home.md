@@ -1,6 +1,11 @@
 {:title "MonkeyCI Documentation"
  :description "Home"
- :home? true}
+ :related [["basic example" "Basic example"]
+           ["useful-example" "A more useful example"]
+	   ["registration" "How to register as a new user"]
+	   ["under-the-hood" "How MonkeyCI works under the hood"]
+	   ["sustainability" "Our sustainability goals"]
+	   ["security" "Security"]]}
 
 Welcome to [MonkeyCI](https://monkeyci.com)!
 
@@ -49,16 +54,3 @@ From then on it's totally up to you: what [jobs](/pages/jobs/) are in the build,
 For more on how to write build scripts, see the [basic example](/pages/basic-example/) or
 a [more advanced example](/pages/useful-example/).  We also have a [cookbook](/pages/cookbook/)
 for common scenarios.
-
-### Going Further
-
-You can read more by clicking one of the links on the right, or proceed by going to one
-of these pages:
-
- - [Basic example](/pages/basic-example/)
- - [A more useful example](/pages/useful-example/)
- - [How to register as a new user](/pages/registration/)
- - [How MonkeyCI works under the hood](/pages/under-the-hood/)
- - [Our sustainability goals](/pages/sustainability/)
- - [Security](/pages/security/)
-

@@ -1,5 +1,9 @@
 (ns monkey.ci.docs.main
-  (:require [monkey.ci.template.components :as tc]))
+  (:require [babashka.fs :as fs]
+            [monkey.ci.docs.md :as md]
+            [monkey.ci.template
+             [components :as tc]
+             [icons :as i]]))
 
 (defn header
   "Renders header with dark background"
@@ -58,23 +62,58 @@
             :alt "SVG"
             :width 250}]]]])
 
+(defn breadcrumb [path]
+  (letfn [(bc-item [{:keys [path label]}]
+            [:li.breadcrumb-item
+             [:a {:href path} label]])]
+    [:nav
+     (->> path
+          (concat [{:path "/"
+                    :label "Home"}])
+          (map bc-item)
+          (into [:ol.breadcrumb.mb-0]))]))
+
+(defn- related-articles [related]
+  (let [rows (partition-all 2 related)]
+    (letfn [(render-col [items]
+              [:div.col-sm-6
+               (->> items
+                    (remove nil?)
+                    (map render-item)
+                    (into [:ul.list-unstyled.list-py-2.mb-0]))])
+            (render-item [[path lbl]]
+              [:li.d-flex
+               [:div.flex-shrink-0
+                (i/icon :file-earmark)]
+               [:div.flex-grow-1.ms-2
+                [:a.text-body {:href path} lbl]]])]
+      [:div.container.content-space-t-1.mb-7
+       [:div.w-lg-75.mx-lg-auto
+        [:div.text-center.mb-7
+         [:h4 "Related articles"]]
+        [:div.row
+         (render-col (map first rows))
+         (render-col (map second rows))]]])))
+
+(def default-content-dir "content/md")
+
+(defn- render-md
+  "Renders markdown to be included in a html page"
+  [config f]
+  (let [path (fs/path (get config :content-dir default-content-dir) (str f ".md"))
+        {:keys [title contents related]} (md/parse path)]
+    ;; TODO Do something with the metadata
+    [:div
+     [:div.container.content-space-1
+      [:div.w-lg-75.mx-lg-auto
+       (when title
+         [:h2.h3 title])
+       contents]]
+     (when (not-empty related)
+       (related-articles related))]))
+
 (defn content [config]
-  [:div.bg-primary-light
-   [:div.container.position-relative.zi-2.content-space-b-1.content-space-t-2.content-space-md-3
-    [:div.card
-     [:div.card-body
-      [:h1 "Application Documentation"]
-      [:p
-       "Welcome to" [:a.ms-1 {:href (tc/app-url config)} "MonkeyCI"]
-       "!  So you're finally fed up with tinkering in YAML files and have decided that you want to use"
-       [:b.mx-1 "real code"] "to run your build pipelines?  Well, this is the place
-         where we will explain all about how to do that."]
-      [:p
-       "Note that this documentation is still a work in progress.  If you think that anything should"
-       "be explained more thoroughly or have encountered an error, you can either"
-       [:a.mx-1 {:href "https://github.com/monkey-projects/website/issues" :target :_blank} "create an issue"]
-       "or" [:a.mx-1 {:href "https://github.com/monkey-projects/website/pulls" :target :_blank} "fix it yourself"]
-       "by creating a pull request."]]]]])
+  (render-md config "home"))
 
 (defn main [config]
   [:html
@@ -83,10 +122,13 @@
     (header config)
     [:main {:role :main}
      (search-bar)
+     [:div.border-bottom
+      [:div.container.py-4
+       [:div.w-lg-75.mx-lg-auto
+        (breadcrumb [])]]]
      [:div.overflow-hidden
       [:div.d-flex.flex-column.min-vh-100
-       [:div.container
-        (content config)]
+       (content config)       
        [:div.mt-auto
         (tc/footer config)]]]]
     (tc/script (tc/script-url config "vendor.min.js"))

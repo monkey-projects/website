@@ -1,4 +1,5 @@
-{:deps {org.clojure/clojure {:mvn/version "1.12.0"}}
+{:deps {org.clojure/clojure {:mvn/version "1.12.0"}
+        io.github.nextjournal/markdown {:mvn/version "0.6.157"}}
  
  :aliases
  {:dev
@@ -23,27 +24,4 @@
   
   :junit
   {:exec-fn monkey.test/junit
-   :exec-args {:output "junit.xml"}}
-  
-  ;; Base alias for cryogen site building
-  :cryogen
-  {:extra-paths ["env/cryogen"]
-   :extra-deps {aleph/aleph {:mvn/version "0.8.2"}
-                ring/ring-devel {:mvn/version "1.13.0"}
-                compojure/compojure {:mvn/version "1.7.1"}
-                ring-server/ring-server {:mvn/version "0.5.0"}
-                cryogen-flexmark/cryogen-flexmark {:mvn/version "0.1.5"}
-                cryogen-core/cryogen-core {:mvn/version "0.4.6"}}}
-
-  :build
-  {:main-opts ["-m" "cryogen.core"]}
-
-  ;; Start a server serving the blog: `clojure -X:serve`
-  ;; Requires tools.deps.alpha 0.9.810+
-  :serve
-  {:exec-fn   cryogen.server/serve
-   :exec-args {:port 3001}}
-
-  :fast
-  {:exec-fn   cryogen.server/serve
-   :exec-args {:fast true}}}}
+   :exec-args {:output "junit.xml"}}}}

@@ -66,7 +66,7 @@
       [:h1 "Application Documentation"]
       [:p
        "Welcome to" [:a.ms-1 {:href (tc/app-url config)} "MonkeyCI"]
-       "!  So you've finally fed up with tinkering in YAML files and have decided that you want to use"
+       "!  So you're finally fed up with tinkering in YAML files and have decided that you want to use"
        [:b.mx-1 "real code"] "to run your build pipelines?  Well, this is the place
          where we will explain all about how to do that."]
       [:p
@@ -78,7 +78,7 @@
 
 (defn main [config]
   [:html
-   (tc/head (assoc config :title "MonkeyCI: Documentation"))
+   (tc/head (assoc config :title "MonkeyCI: Documentation Center"))
    [:body
     (header config)
     [:main {:role :main}

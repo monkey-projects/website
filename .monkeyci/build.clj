@@ -95,7 +95,7 @@
       (m/work-dir id)))
 
 (def build-site (partial build "site" :build "target"))
-(def build-docs-theme (partial build "docs" :build "target/site"))
+(def build-docs (partial build "docs" :build "target/site"))
 
 (def img-base "fra.ocir.io/frjdhmocn5qi/website")
 
@@ -113,7 +113,7 @@
   [ctx]
   (when (build-image? ctx)
     (-> (kaniko/image {:target-img (str img-base ":" (img-version ctx))} ctx)
-        (m/depends-on ["build-site" "build-docs-site"])
+        (m/depends-on ["build-site" "build-docs"])
         (m/restore-artifacts [(m/artifact "site" "site/target")
                               (m/artifact "docs" "docs/target/site")]))))
 
@@ -142,7 +142,7 @@
  test-site
  test-docs
  build-site
- build-docs-theme
+ build-docs
  image
  deploy
  notify]

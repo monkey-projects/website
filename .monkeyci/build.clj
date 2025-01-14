@@ -80,8 +80,7 @@
     ["deploy-common"]))
 
 (def test-site (run-tests "site" {:dependencies depends-on-common}))
-(def test-docs (run-tests "docs" {:alias :template
-                                  :dependencies depends-on-common}))
+(def test-docs (run-tests "docs" {:dependencies depends-on-common}))
 
 (defn build
   "Builds the website and docs files"
@@ -96,7 +95,7 @@
       (m/work-dir id)))
 
 (def build-site (partial build "site" :build "target"))
-(def build-docs-theme (partial build "docs" :template "themes/space"))
+(def build-docs-theme (partial build "docs" :build "target/site"))
 
 (def build-docs-site
   (-> (clj-cmd
@@ -125,7 +124,7 @@
     (-> (kaniko/image {:target-img (str img-base ":" (img-version ctx))} ctx)
         (m/depends-on ["build-site" "build-docs-site"])
         (m/restore-artifacts [(m/artifact "site" "site/target")
-                              (m/artifact "docs" "docs/public")]))))
+                              (m/artifact "docs" "docs/target/site")]))))
 
 (defn deploy [ctx]
   (when (and (build-image? ctx) (not (release? ctx)))

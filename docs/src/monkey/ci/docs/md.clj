@@ -3,6 +3,7 @@
   (:require [babashka.fs :as fs]
             [clojure.edn :as edn]
             [clojure.java.io :as io]
+            [clojure.tools.logging :as log]
             [nextjournal.markdown :as md]
             [nextjournal.markdown.transform :as mdt]))
 
@@ -32,6 +33,11 @@
       (conj attrs)
       (mdt/into-markup ctx node)))
 
+(defn- transform-code [ctx {:keys [info] :as node}]
+  [:pre {:class (cond-> "viewer-code not-prose mb-2"
+                  info (str " language-" info))}
+   (mdt/into-markup [:code] ctx node)])
+
 (defn parse
   "Parses the given markdown content and returns it as a hiccup style structure.
    Any leading edn structure is added to the metadata."
@@ -52,4 +58,5 @@
                             (mdt/->hiccup
                              (assoc mdt/default-hiccup-renderers
                                     :heading transform-heading
-                                    :plain (partial mdt/into-markup [:span]))))))))
+                                    :plain (partial mdt/into-markup [:span])
+                                    :code transform-code)))))))

@@ -4,6 +4,15 @@
              [components :as tc]
              [icons :as i]]))
 
+(defn head [config]
+  (-> (tc/head (assoc config :title "MonkeyCI: Documentation Center"))
+      ;; TODO Put in local assets
+      ;; See https://github.com/highlightjs/highlight.js/tree/main/src/styles for more styles
+      (conj (tc/stylesheet "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css"))
+      (conj (tc/script "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"))
+      (conj (tc/script "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/clojure.min.js"))
+      (conj [:script "hljs.highlightAll();"])))
+
 (defn header
   "Renders header with dark background"
   [config]
@@ -50,14 +59,14 @@
     [:div.position-absolute
      {:style {:top "-6rem"
               :left "-6rem"}}
-     [:img {:src "./svg/shape-1-soft-light.svg"
+     [:img {:src "/svg/shape-1-soft-light.svg"
             :alt "SVG"
             :width 500
             :style {:width "12rem"}}]]
     [:div.position-absolute
      {:style {:bottom "-6rem"
               :right "-7rem"}}
-     [:img {:src "./svg/shape-7-soft-light.svg"
+     [:img {:src "/svg/shape-7-soft-light.svg"
             :alt "SVG"
             :width 250}]]]])
 
@@ -110,7 +119,7 @@
   "Given a parsed markdown structure, renders it into the resulting hiccup structure"
   [md config]
   [:html
-   (tc/head (assoc config :title "MonkeyCI: Documentation Center"))
+   (head config)
    [:body
     (header config)
     [:main {:role :main}

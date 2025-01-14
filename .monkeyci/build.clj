@@ -97,15 +97,6 @@
 (def build-site (partial build "site" :build "target"))
 (def build-docs-theme (partial build "docs" :build "target/site"))
 
-(def build-docs-site
-  (-> (clj-cmd
-       "build-docs-site"
-       "docs-site"
-       "-M:cryogen:build")
-      (m/work-dir "docs")
-      (m/save-artifacts (m/artifact "docs" "public"))
-      (m/depends-on "build-docs")))
-
 (def img-base "fra.ocir.io/frjdhmocn5qi/website")
 
 (def release? (comp some? bc/tag))
@@ -152,7 +143,6 @@
  test-docs
  build-site
  build-docs-theme
- build-docs-site
  image
  deploy
  notify]

@@ -26,7 +26,7 @@
     (generate-file f output)
     output))
 
-(defn- copy-tree [src dest]
+(defn copy-tree [src dest]
   (fs/copy-tree src dest {:replace-existing true}))
 
 (defn copy-assets

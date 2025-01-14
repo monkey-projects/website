@@ -5,5 +5,5 @@
   "Builds the docs to target directory"
   []
   (db/build-all {:output "target/site"
-                 :base-url "staging.monkeyci.com"
-                 :api-url "http://localhost:3000"}))
+                 :config {:base-url "staging.monkeyci.com"
+                          :api-url "http://localhost:3000"}}))

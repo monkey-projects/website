@@ -49,7 +49,7 @@
               (log/debug "Generating output for" f)
               (let [md (-> (md/parse f)
                            (add-location f))
-                    html (m/md->page md config)
+                    html (m/md->page md (:config config))
                     out (output-path md f config)]
                 (tb/write-html html out)
                 out))
@@ -62,5 +62,8 @@
               (gen-subs)))))
 
 (defn build-all [config]
-  (let [src (get-input config)]
-    (build-dir config src)))
+  (let [src (get-input config)
+        res (build-dir config src)]
+    ;; Only copy local assets, the others are pulled from the assets server
+    (tb/copy-tree "assets" (:output config))
+    res))

@@ -14,7 +14,7 @@ RUN cd /tmp/bootstrap* \
 # Main website
 ADD site/target/ /var/www/html/site
 # Docs site
-ADD docs/public/ /var/www/html/docs
+ADD docs/target/site/ /var/www/html/docs
 # Monkey projects static site
 ADD monkey-projects/assets/ /var/www/html/monkey-projects
 

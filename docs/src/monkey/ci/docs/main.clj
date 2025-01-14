@@ -1,33 +1,138 @@
 (ns monkey.ci.docs.main
-  (:require [monkey.ci.template.components :as tc]))
+  (:require [babashka.fs :as fs]
+            [monkey.ci.template
+             [components :as tc]
+             [icons :as i]]))
 
-(defn content [config]
-  [:main#content {:role "main"}
-   [:div.overflow-hidden
-    [:div.bg-primary-dark
-     [:div.container.position-relative.zi-2.content-space-b-1.content-space-t-2.content-space-md-3
-      [:div.card
-       [:div.card-body
-        [:h1 "Application Documentation"]
-        [:p
-         "Welcome to" [:a.ms-1 {:href (tc/app-url config)} "MonkeyCI"]
-         "!  So you've finally fed up with tinkering in YAML files and have decided that you want to use"
-         [:b.mx-1 "real code"] "to run your build pipelines?  Well, this is the place
-         where we will explain all about how to do that."]
-        [:p
-         "Note that this documentation is still a work in progress.  If you think that anything should"
-         "be explained more thoroughly or have encountered an error, you can either"
-         [:a.mx-1 {:href "https://github.com/monkey-projects/website/issues" :target :_blank} "create an issue"]
-         "or" [:a.mx-1 {:href "https://github.com/monkey-projects/website/pulls" :target :_blank} "fix it yourself"]
-         "by creating a pull request."]]]]]]])
+(defn head [config]
+  (-> (tc/head (assoc config :title "MonkeyCI: Documentation Center"))
+      ;; TODO Put in local assets
+      ;; See https://github.com/highlightjs/highlight.js/tree/main/src/styles for more styles
+      (conj (tc/stylesheet "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css"))
+      (conj (tc/script "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"))
+      (conj (tc/script "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/clojure.min.js"))
+      (conj [:script "hljs.highlightAll();"])))
 
-(defn main [config]
+(defn header
+  "Renders header with dark background"
+  [config]
+  [:header#header.navbar.navbar-expand-lg.navbar-end.navbar-light.bg-white
+   [:div.container
+    [:nav.js-mega-menu.navbar-nav-wrap
+     ;; Logo
+     [:a.navbar-brand
+      {:href "./index.html"
+       :aria-label "MonkeyCI"}
+      (tc/logo-black config)]
+     [:div
+      [:h1.display-5 "MonkeyCI"]
+      [:p.lead "Documentation Center"]]
+     [:div.navbar-absolute-top-scroller
+      [:ul.navbar-nav
+       [:li.nav-divider]
+       ;; Log in button
+       [:li.nav-item
+        [:a.js-animation-link.btn.btn-ghost-light.btn-no-focus.me-2.me-lg-0.text-primary
+         {:href (tc/app-url config "/login")
+          :role "button"}
+         "Log in"]]
+       ;; Sign up
+       [:li.nav-item
+        (tc/sign-up-btn config)]]]]]])
+
+(defn search-bar []
+  [:div.bg-primary-dark.overflow-hidden
+   [:div.container.position-relative.content-space-1
+    ;; Search form, does nothing for now, so it's disabled
+    #_[:div.w-lg-75.mx-lg-auto
+     [:form
+      [:div.input-card
+       [:div.input-card-form
+        [:label.form-label.visually-hidden {:for :answers-form}
+         "Search for answers"]
+        [:input.form-control {:type :text
+                              :id :answers-form
+                              :placeholder "Search for answers"
+                              :aria-label "Search for answers"}]]
+       [:button.btn.btn-primary.btn-icon {:type :button}
+        [:i.bi-search]]]]]
+    [:div.position-absolute
+     {:style {:top "-6rem"
+              :left "-6rem"}}
+     [:img {:src "/svg/shape-1-soft-light.svg"
+            :alt "SVG"
+            :width 500
+            :style {:width "12rem"}}]]
+    [:div.position-absolute
+     {:style {:bottom "-6rem"
+              :right "-7rem"}}
+     [:img {:src "/svg/shape-7-soft-light.svg"
+            :alt "SVG"
+            :width 250}]]]])
+
+(defn breadcrumb [path]
+  (letfn [(bc-item [{:keys [path label]}]
+            [:li.breadcrumb-item
+             [:a {:href path} label]])]
+    [:nav
+     (->> path
+          (concat [{:path "/"
+                    :label "Home"}])
+          (map bc-item)
+          (into [:ol.breadcrumb.mb-0]))]))
+
+(defn- related-articles [related]
+  (let [rows (partition-all 2 related)]
+    (letfn [(render-col [items]
+              [:div.col-sm-6
+               (->> items
+                    (remove nil?)
+                    (map render-item)
+                    (into [:ul.list-unstyled.list-py-2.mb-0]))])
+            (render-item [[path lbl]]
+              [:li.d-flex
+               [:div.flex-shrink-0
+                (i/icon :file-earmark)]
+               [:div.flex-grow-1.ms-2
+                [:a.text-body {:href path} lbl]]])]
+      [:div.container.content-space-t-1.mb-7
+       [:div.w-lg-75.mx-lg-auto
+        [:div.text-center.mb-7
+         [:h4 "Related articles"]]
+        [:div.row
+         (render-col (map first rows))
+         (render-col (map second rows))]]])))
+
+(defn- render-md
+  "Renders markdown to be included in a html page"
+  [{:keys [title contents related]} config]
+  [:div
+   [:div.container.content-space-1
+    [:div.w-lg-75.mx-lg-auto
+     (when title
+       [:h2.h3 title])
+     contents]]
+   (when (not-empty related)
+     (related-articles related))])
+
+(defn md->page
+  "Given a parsed markdown structure, renders it into the resulting hiccup structure"
+  [md config]
   [:html
-   tc/head
+   (head config)
    [:body
-    (tc/header config)
-    (content config)
-    (tc/footer config)
-    (tc/script "vendor.min.js")
-    (tc/script "theme.min.js")
-    (tc/script "site.js")]])
+    (header config)
+    [:main {:role :main}
+     (search-bar)
+     [:div.border-bottom
+      [:div.container.py-4
+       [:div.w-lg-75.mx-lg-auto
+        (breadcrumb (:location md))]]]
+     [:div.overflow-hidden
+      [:div.d-flex.flex-column.min-vh-100
+       (render-md md config)       
+       [:div.mt-auto
+        (tc/footer config)]]]]
+    (tc/script (tc/script-url config "vendor.min.js"))
+    (tc/script (tc/script-url config "theme.min.js"))]])
+

@@ -33,12 +33,31 @@
    [:meta
     {:name "viewport",
      :content "width=device-width, initial-scale=1, shrink-to-fit=no"}]
-   [:title "MonkeyCI"]
+   [:title (or (:title config) "MonkeyCI")]
    (stylesheet (assets-url config "/css/vendor.min.css"))
    (stylesheet (assets-url config "/css/theme.min.css"))
    (stylesheet (assets-url config "/css/bootstrap-icons.min.css"))])
 
-(defn header [config]
+(defn sign-up-btn [config]
+  [:a.js-animation-link.d-none.d-lg-inline-block.btn.btn-primary
+   {:href (app-url config)
+    :role "button"}
+   [:i.bi.bi-person-circle.me-1]
+   "Sign up"])
+
+(defn logo-white [config]
+  [:img.navbar-brand-logo
+   {:src (assets-url config "/img/monkeyci-white.png")
+    :alt "Logo"}])
+
+(defn logo-black [config]
+  [:img.navbar-brand-logo
+   {:src (assets-url config "/img/monkeyci-black.png")
+    :alt "Logo"}])
+
+(defn header-dark
+  "Renders header with dark background"
+  [config]
   [:header#header.navbar.navbar-expand-lg.navbar-end.navbar-absolute-top.navbar-show-hide.navbar-dark
    [:div.container
     [:nav.js-mega-menu.navbar-nav-wrap
@@ -47,9 +66,7 @@
       {:href "./index.html"
        :aria-label "MonkeyCI"}
       [:h3.text-white
-       [:img.navbar-brand-logo
-        {:src (assets-url config "/img/logo-bw-small.png")
-         :alt "Logo"}]
+       (logo-white config)
        "MonkeyCI"]]
      [:div.navbar-absolute-top-scroller
       [:ul.navbar-nav
@@ -61,11 +78,9 @@
          "Log in"]]
        ;; Sign up
        [:li.nav-item
-        [:a.js-animation-link.d-none.d-lg-inline-block.btn.btn-primary
-         {:href (app-url config)
-          :role "button"}
-         [:i.bi.bi-person-circle.me-1]
-         "Sign up"]]]]]]])
+        (sign-up-btn config)]]]]]])
+
+(def ^:deprecated header header-dark)
 
 (def copyright
   #?(:clj (h/raw "&#169;")

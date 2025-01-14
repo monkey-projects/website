@@ -7,7 +7,7 @@
              [md :as md]]
             [monkey.ci.template.build :as tb]))
 
-(def default-content-dir "content/md")
+(def default-content-dir "content")
 
 (defn- get-input [config]
   (get config :input default-content-dir))

@@ -1,23 +1,19 @@
 {:deps {org.clojure/clojure {:mvn/version "1.12.0"}
         org.clojure/tools.logging {:mvn/version "1.3.0"}
+        com.monkeyci/site-template {:mvn/version "0.1.1-SNAPSHOT"}
+        com.monkeyci/template-build {:local/root "../build"}
         io.github.nextjournal/markdown {:mvn/version "0.6.157"}}
  
  :aliases
  {:dev
   {:extra-paths ["env/dev"]
    :extra-deps {ch.qos.logback/logback-classic {:mvn/version "1.5.12"}
-                com.monkeyci/site-template {:local/root "../common"}
-                com.monkeyci/template-build {:local/root "../build"}
                 org.clojure/tools.namespace {:mvn/version "1.5.0"}}
    :override-deps {com.monkeyci/site-template {:local/root "../common"}}}
 
-  ;; Base alias for template building
-  :template
-  {:extra-deps {com.monkeyci/site-template {:mvn/version "0.1.1-SNAPSHOT"}
-                com.monkeyci/template-build {:local/root "../build"}}
-   :exec-fn monkey.ci.template.build/build
-   :exec-args {:output "themes/space"
-               :site-fn monkey.ci.docs.main/main}}
+  :build
+  {:exec-fn monkey.ci.docs.build/build-all
+   :exec-args {:output "target/site"}}
 
   :test
   {:extra-deps {com.monkeyprojects/build {:mvn/version "0.2.0"}}

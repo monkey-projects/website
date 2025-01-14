@@ -9,6 +9,6 @@
              [:li.breadcrumb-item [:a {:href "/"} "Home"]]]]
            (sut/breadcrumb [])))))
 
-(deftest main
+(deftest md->page
   (testing "generates html page"
-    (is (= :html (first (sut/main {}))))))
+    (is (= :html (first (sut/md->page [:h1 "test page"] {}))))))

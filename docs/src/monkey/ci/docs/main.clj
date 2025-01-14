@@ -1,6 +1,5 @@
 (ns monkey.ci.docs.main
   (:require [babashka.fs :as fs]
-            [monkey.ci.docs.md :as md]
             [monkey.ci.template
              [components :as tc]
              [icons :as i]]))
@@ -35,8 +34,8 @@
 (defn search-bar []
   [:div.bg-primary-dark.overflow-hidden
    [:div.container.position-relative.content-space-1
-    ;; Search form, does nothing for now
-    [:div.w-lg-75.mx-lg-auto
+    ;; Search form, does nothing for now, so it's disabled
+    #_[:div.w-lg-75.mx-lg-auto
      [:form
       [:div.input-card
        [:div.input-card-form
@@ -95,29 +94,21 @@
          (render-col (map first rows))
          (render-col (map second rows))]]])))
 
-(def default-content-dir "content/md")
-
 (defn- render-md
   "Renders markdown to be included in a html page"
-  [config f]
-  (let [path (fs/path (get config :content-dir default-content-dir) (str f ".md"))
-        {:keys [title contents related]} (md/parse path)]
-    ;; TODO Do something with the metadata
-    [:div
-     [:div.container.content-space-1
-      [:div.w-lg-75.mx-lg-auto
-       (when title
-         [:h2.h3 title])
-       contents]]
-     (when (not-empty related)
-       (related-articles related))]))
+  [{:keys [title contents related]} config]
+  [:div
+   [:div.container.content-space-1
+    [:div.w-lg-75.mx-lg-auto
+     (when title
+       [:h2.h3 title])
+     contents]]
+   (when (not-empty related)
+     (related-articles related))])
 
-(defn content [config]
-  (render-md config "home"))
-
-(defn page
-  "Renders a markdown page, returns the resulting hiccup structure"
-  [{:keys [page] :as config}]
+(defn md->page
+  "Given a parsed markdown structure, renders it into the resulting hiccup structure"
+  [md config]
   [:html
    (tc/head (assoc config :title "MonkeyCI: Documentation Center"))
    [:body
@@ -127,16 +118,12 @@
      [:div.border-bottom
       [:div.container.py-4
        [:div.w-lg-75.mx-lg-auto
-        (breadcrumb [])]]]
+        (breadcrumb (:location md))]]]
      [:div.overflow-hidden
       [:div.d-flex.flex-column.min-vh-100
-       (content config)       
+       (render-md md config)       
        [:div.mt-auto
         (tc/footer config)]]]]
     (tc/script (tc/script-url config "vendor.min.js"))
     (tc/script (tc/script-url config "theme.min.js"))]])
 
-(defn main [config]
-  (page (assoc config
-               :page {:file "home"
-                      :location []})))

@@ -1,5 +1,6 @@
 {:title "MonkeyCI Documentation"
  :description "Home"
+ :home? true
  :related [["basic-example" "Basic example"]
            ["useful-example" "A more useful example"]
 	   ["registration" "How to register as a new user"]

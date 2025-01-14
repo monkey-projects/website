@@ -1,8 +1,10 @@
-{:title "Pricing"}
+{:title "Pricing"
+ :related [["sustainability" "Our sustainability goals"]
+           ["caching" "Build caches"]]}
 
 [MonkeyCI](https://monkeyci.com) is free to use up to a certain level.  We strive
 to allow our users to be able to use it for non-commercial projects.  Every user
-can [create one customer](/pages/customer-new) for free.  And each customer receives
+can [create one customer](customer-new) for free.  And each customer receives
 **5.000 credits per month** to spend on their builds.
 
 ## Credits
@@ -10,7 +12,7 @@ can [create one customer](/pages/customer-new) for free.  And each customer rece
 How are credits used?  Credits are **consumed by CPU minutes, memory and storage**.
 How many credits are required per minute for a build is determined by the amount
 of memory you allocate, the number of CPU's, which architecture you use (ARM or AMD)
-and how many data you want to store in [caches](/pages/caching) and [artifacts](/pages/artifacts).
+and how many data you want to store in [caches](caching) and [artifacts](artifacts).
 
 This table gives you a basic overview:
 
@@ -48,8 +50,8 @@ So for example, if you have a build that runs for 5 minutes using the default se
 
 Why do we charge twice the price for AMD CPU's?  Because AMD provides two cores
 in their CPU, so you have essentially **double the computing capacity**.  Unless you
-[explicitly override](/pages/jobs) the CPU type, *MonkeyCI* will use ARM CPU's.
-This makes your builds cheaper and they also consume [less energy](/pages/sustainability).
+[explicitly override](jobs) the CPU type, *MonkeyCI* will use ARM CPU's.
+This makes your builds cheaper and they also consume [less energy](sustainability).
 
 ## Commercial Use
 

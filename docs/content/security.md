@@ -1,4 +1,5 @@
-{:title "Security"}
+{:title "Security"
+ :related [["params" "Build parameters"]]}
 
 For any publicly accessible application, security is important.  *MonkeyCI* is no different.
 We generally **advise against using any kind of sensitive or private information** in your builds.
@@ -7,7 +8,7 @@ they're public.  But we also realize that in order to do decent integration test
 it's often unavoidable to put credentials or ssh keys in build parameters.  *MonkeyCI* ensures
 that this information is only visible to the appropriate users.  To this end, the build
 parameter values and ssh keys are **encrypted at rest**.  This means they are stored in
-an encrypted manner in the database.  It's only when [editing them](/pages/params/) or when
+an encrypted manner in the database.  It's only when [editing them](params/) or when
 using them in a build that the become decrypted.
 
 The encryption key is safely stored in a vault with strict access restrictions.  In addition,

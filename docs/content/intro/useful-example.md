@@ -1,5 +1,8 @@
 {:title "A more useful example"
- :tags ["examples"]}
+ :tags ["examples"]
+ :related [["basic-example" "Basic example"]
+           ["plugins" "Plugins"]
+	   ["tests" "Unit tests"]]}
 
 While the [tutorial](/) explains a little bit of how build scripts in *MonkeyCI* work,
 it's not useful in the real world.  Let's assume you're working on a
@@ -29,7 +32,7 @@ but you could rewrite it in other ways.  We're leaving that as an exercise to th
 ## A Second Job
 
 Suppose we want to be able to download the resulting `jar` files from this build.  In order to
-do this, we need to expose them as [artifacts](/pages/artifacts/).  This will allow us to download
+do this, we need to expose them as [artifacts](artifacts/).  This will allow us to download
 them from the *MonkeyCI* application site.  Configuring a job to produce an artifact is simple,
 just add a `:save-artifacts` configuration:
 
@@ -151,8 +154,8 @@ dependency between `publish` and `verify`.
 Since `Java` and `Maven` are used by millions of developers in countless projects all
 over the world, it is a bit silly that they all should have to rewrite the above code
 for all their projects.  *MonkeyCI* offers a solution for this in the form of
-[plugins](/pages/plugins/)!  With these you can create a **reusable library** that
-provides commonly used functionality that can be [included](/pages/deps/) by other
+[plugins](plugins/)!  With these you can create a **reusable library** that
+provides commonly used functionality that can be [included](deps/) by other
 developers in their projects.  And since it uses the same infrastructure as any other
 Java library, you can use any existing tools that help with that.  Assuming such a
 plugin already exists (which we're working on), the above 30-line script can become
@@ -167,14 +170,14 @@ plugin already exists (which we're working on), the above 30-line script can bec
 
 That's it!  Really?  Well, it takes a little bit more than that, because in order to
 publish a library, you will probably need credentials of some sort.  That's where
-[build parameters](/pages/params/) come in.
+[build parameters](params/) come in.
 
 ## Testing
 
 The whole goal of *MonkeyCI* is to allow for build scripts with complicated flows.
 Although it's advised to **make things as simple as possible**, sometimes there is a
 minimum of complication necessary to achieve what we want.  In order to still be
-confident when starting a build with a non-trivial flow, you can add [unit tests](/pages/tests/)
+confident when starting a build with a non-trivial flow, you can add [unit tests](tests/)
 to your build scripts.  You can simply do this by adding them to the `build_test.clj`
 file, next to your `build.clj`.  Then you can **run the unit tests** using the [MonkeyCI
-CLI](/pages/cli/).  The CLI can also be used for [verification](/pages/verification/).
+CLI](cli/).  The CLI can also be used for [verification](verification/).

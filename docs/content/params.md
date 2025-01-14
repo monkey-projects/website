@@ -1,4 +1,5 @@
-{:title "Build parameters"}
+{:title "Build parameters"
+ :related [["labels" "Labels"]]}
 
 Build parameters are a way to configure your builds, without having to put this
 configuration in your build script itself.  It is typically used for **sensitive
@@ -6,12 +7,12 @@ information** like credentials or signing keys.
 
 ## Configuring
 
-Build parameters are linked to a [customer](/pages/customer/).  In order to edit
+Build parameters are linked to a [customer](customer/).  In order to edit
 these parameters, go to the customer screen, and click the "Parameters" button.
 There you will see an overview of your already configured parameters.  Build
 parameters are **grouped in sets**, and each set can contain **multiple parameter
-keys and values**.  A set can also have [labels](/pages/labels/), which are used
-to determine which [repository](/pages/repos/) builds have access to which parameters.
+keys and values**.  A set can also have [labels](labels/), which are used
+to determine which [repository](repos/) builds have access to which parameters.
 Repositories that have **the same values** for each of the labels defined in
 the parameter set, will gain access to that set at build time.
 

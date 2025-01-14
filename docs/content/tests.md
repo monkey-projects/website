@@ -1,4 +1,5 @@
-{:title "Build Script Tests"}
+{:title "Build Script Tests"
+ :related [["cli" "The command-line interface"]]}
 
 As with all coding, or actually, with *everything*, you want to test things
 before you roll them out.  Similar to your production code, which *of course*
@@ -36,7 +37,7 @@ require everything from the `clojure.test` namespace, which contains the Clojure
 test framework.  Each unit test is put in a `deftest` block, and can contain as
 many assertions as you like, but there has to be at least one.
 
-In order to run the unit tests, you can run the [CLI](/pages/cli/) from your repository
+In order to run the unit tests, you can run the [CLI](cli/) from your repository
 directory:
 ```bash
 $ monkeyci build test

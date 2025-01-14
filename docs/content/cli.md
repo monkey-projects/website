@@ -1,4 +1,5 @@
-{:title "Command-line Interface"}
+{:title "Command-line Interface"
+ :related [["tests" "Unit tests"]]}
 
 Next to a graphical user interface, *MonkeyCI* also provides a command-line
 interface (or **CLI**).  The CLI can be used to trigger builds, run them locally,
@@ -57,7 +58,7 @@ that local builds do not count towards your credit consumption, and it will also
 register on the main application.  Artifacts and caches are not downloaded or published.
 
 This can be useful to run a one-of, or try something out.  For actual testing it's better
-to write [unit tests](/pages/tests).
+to write [unit tests](tests).
 
 ### verify
 
@@ -68,4 +69,4 @@ of the build script itself, and will flag any syntax errors or warnings.
 ### test
 
 Runs any unit tests that you may have configured on your build script.  See [unit
-tests](/pages/tests/) for more details.
+tests](tests/) for more details.

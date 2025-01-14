@@ -3,7 +3,7 @@
 
 Plugins are a way to extend *MonkeyCI*'s functionality.  Basically, they are
 no more than **regular Clojure libraries** that you can include in your build using
-the [deps.edn](/pages/deps/).  In order to use a plugin, you have to `require` or
+the [deps.edn](deps/).  In order to use a plugin, you have to `require` or
 `use` the relevant namespace in your build script, and then invoke the provided
 functions.  There is **no magic**, it's simple to use!
 
@@ -81,7 +81,7 @@ information in your build configuration that the plugin requires.  Each extensio
 some **configuration key**.  *MonkeyCI* will try to look up the appropriate extension for the
 configuration key and then invoke it's before or after step.  In case of the JUnit plugin, it
 is linked to the `:junit` configuration key, where it expects to find the id of the
-[artifact](/pages/artifacts/) holding the `junit.xml` file, and it's path therein.
+[artifact](artifacts/) holding the `junit.xml` file, and it's path therein.
 
 For example:
 ```clojure

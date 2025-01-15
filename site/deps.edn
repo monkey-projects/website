@@ -15,7 +15,7 @@
 
   :test
   {:extra-deps {com.monkeyprojects/build {:mvn/version "0.2.0"}
-                ch.qos.logback/logback-classic {:mvn/version "1.5.12"}}
+                ch.qos.logback/logback-classic {:mvn/version "1.5.16"}}
    :extra-paths ["test"]
    :exec-fn monkey.test/all}
   

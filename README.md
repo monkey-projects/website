@@ -9,7 +9,7 @@ Currently this repository contains these sites:
 
   - Static [Monkey Projects website](https://www.monkey-projects.be)
   - Static [MonkeyCI website](https://www.monkeyci.com)
-  - [Documentation site](https://docs.monkeyci.com), using [Cryogen](https://cryogenweb.org)
+  - [Documentation site](https://docs.monkeyci.com)
 
 The [MonkeyCI application](https://app.monkeyci.com) can be found in [another
 repository](https://github.com/monkey-projects/monkeyci).

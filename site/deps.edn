@@ -1,4 +1,4 @@
-{:deps {com.monkeyci/site-template {:mvn/version "0.1.1"}}
+{:deps {com.monkeyci/site-template {:mvn/version "0.1.2-SNAPSHOT"}}
  :paths ["src"]
 
  :aliases

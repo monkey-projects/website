@@ -125,8 +125,8 @@
                  [["About us" (site-url config "/about")]
                   ["Contact" (site-url config "/contact")]])
      (footer-col "Legal"
-                 [["Terms of use" "todo"]
-                  ["Privacy policy" "todo"]])
+                 [["Terms of use" (site-url config "/terms-of-use")]
+                  ["Privacy policy" (site-url config "/privacy-policy")]])
      [:div.border-top.border-white-10]]
     [:div.row.align-items-md-end.py-5
      [:div.col-md.mb-3.mb-md-0

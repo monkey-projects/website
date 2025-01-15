@@ -47,7 +47,7 @@
               (assoc md :location (location md f config)))
             (gen-file [f]
               (log/debug "Generating output for" f)
-              (let [md (-> (md/parse f)
+              (let [md (-> (md/parse f (:config config))
                            (add-location f))
                     html (m/md->page md (:config config))
                     out (output-path md f config)]

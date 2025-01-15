@@ -13,10 +13,13 @@
 
   :build
   {:exec-fn monkey.ci.docs.build/build-all
-   :exec-args {:output "target/site"}}
+   :exec-args {:output "target/site"
+               :config {:path-prefix "/"}}}
 
   :test
-  {:extra-deps {com.monkeyprojects/build {:mvn/version "0.2.0"}}
+  {:extra-deps {com.monkeyprojects/build {:mvn/version "0.2.0"}
+                com.rpl/specter {:mvn/version "1.1.4"}
+                hiccup-find/hiccup-find {:mvn/version "2022.10.03"}}
    :extra-paths ["test"]
    :exec-fn monkey.test/all}
   

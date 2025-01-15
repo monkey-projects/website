@@ -6,4 +6,5 @@
   []
   (db/build-all {:output "target/site"
                  :config {:base-url "staging.monkeyci.com"
-                          :api-url "http://localhost:3000"}}))
+                          :api-url "http://localhost:3000"
+                          :path-prefix "/"}}))

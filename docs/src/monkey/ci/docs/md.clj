@@ -38,10 +38,22 @@
                   info (str " language-" info))}
    (mdt/into-markup [:code] ctx node)])
 
+(defn- relative? [x]
+  (nil? (re-matches #"^(http://|https://|/).*$" x)))
+
+(defn- transform-link
+  "Prepends any configured path prefix to relative paths"
+  [{:keys [path-prefix]} ctx {:keys [attrs] :as node}]
+  (letfn [(convert-path [p]
+            (cond->> p
+              (relative? p) (str path-prefix)))]
+    (mdt/into-markup [:a {:href (convert-path (:href attrs))}] ctx node)))
+
 (defn parse
   "Parses the given markdown content and returns it as a hiccup style structure.
-   Any leading edn structure is added to the metadata."
-  [content]
+   Any leading edn structure is added to the metadata.  Extra options can be
+   specified for transformations."
+  [content & [opts]]
   (with-open [b (java.io.BufferedReader. (->reader content))
               r (java.io.PushbackReader. b)]
     (let [meta (try
@@ -59,4 +71,5 @@
                              (assoc mdt/default-hiccup-renderers
                                     :heading transform-heading
                                     :plain (partial mdt/into-markup [:span])
-                                    :code transform-code)))))))
+                                    :code transform-code
+                                    :link (partial transform-link opts))))))))

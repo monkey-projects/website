@@ -1,7 +1,9 @@
 (ns monkey.ci.docs.md-test
   (:require [clojure.test :refer [deftest testing is]]
             [clojure.java.io :as io]
+            [com.rpl.specter :as s]
             [babashka.fs :as fs]
+            [hiccup-find.core :as hf]
             [monkey.ci.docs.md :as sut]))
 
 (deftest parse
@@ -34,4 +36,29 @@
                pr-str
                (str "\nTest contents")
                (sut/parse)
-               :title)))))
+               :title))))
+
+  (testing "rewrites relative links to include configured prefix"
+    (is (= "/test-prefix/a/b/c"
+           (->> (sut/parse "{}\n[test link](a/b/c)" {:path-prefix "/test-prefix/"})
+                :contents
+                ;; Look up the href for the first :a tag
+                (hf/hiccup-find [:a])
+                (s/select [(s/nthpath 0 1) :href])
+                first))))
+
+  (testing "leaves absolute refs unchanged"
+    (is (= "/a/b/c"
+           (->> (sut/parse "{}\n[test link](/a/b/c)" {:path-prefix "/test-prefix/"})
+                :contents
+                (hf/hiccup-find [:a])
+                (s/select [(s/nthpath 0 1) :href])
+                first))))
+
+  (testing "leaves external urls unchanged"
+    (is (= "http://a/b/c"
+           (->> (sut/parse "{}\n[test link](http://a/b/c)" {:path-prefix "/test-prefix/"})
+                :contents
+                (hf/hiccup-find [:a])
+                (s/select [(s/nthpath 0 1) :href])
+                first)))))

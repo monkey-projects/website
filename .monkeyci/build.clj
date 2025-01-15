@@ -18,9 +18,11 @@
 
 (def config-by-env
   {:prod
-   {:base-url "monkeyci.com"}
+   {:base-url "monkeyci.com"
+    :path-prefix "/"}
    :staging
-   {:base-url "staging.monkeyci.com"}})
+   {:base-url "staging.monkeyci.com"
+    :path-prefix "/"}})
 
 (defn touched? [re]
   (fn [ctx]

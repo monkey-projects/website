@@ -7,8 +7,11 @@
  :aliases
  {:dev
   {:extra-paths ["env/dev"]
-   :extra-deps {ch.qos.logback/logback-classic {:mvn/version "1.5.16"}
-                org.clojure/tools.namespace {:mvn/version "1.5.0"}}
+   :extra-deps {aleph/aleph {:mvn/version "0.8.2"}
+                ch.qos.logback/logback-classic {:mvn/version "1.5.16"}
+                hawk/hawk {:mvn/version "0.2.11"}
+                org.clojure/tools.namespace {:mvn/version "1.5.0"}
+                ring/ring {:mvn/version "1.13.0"}}
    :override-deps {com.monkeyci/site-template {:local/root "../common"}}}
 
   :build

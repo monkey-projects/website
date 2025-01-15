@@ -1,4 +1,6 @@
-{:title "Why Clojure?"}
+{:title "Why Clojure?"
+ :related [["intro/basic-example" "Basic example"]
+           ["intro/useful-example" "A more advanced example"]]}
 
 Why have we chosen [Clojure](https://clojure.org) as our main build pipeline
 language and not a more well-known language like Java, C# or Javascript?  Well,
@@ -87,8 +89,8 @@ a more succinct DSL, but the "pure" Clojure code will always remain available.
 
 ## Conclusion
 
-So we hope we've convinced you that our choice was not just done using a darts board,
-but **we really thought about it**.  For some people it may be a turn-off to have to learn
+So you see that our choice was not just done using a darts board, but **we really
+thought about it**.  For some people it may be a turn-off to have to learn
 a new language to use *MonkeyCI*, but we hope to have convinced most of you that it's
-not a big leap.  On the contrary, we're sure you love learning new stuff, right?
-Why else would you be here?
+not a big leap.  On the contrary, we're sure you love learning new stuff, right?  And
+you also want to become more efficient?  Why else would you be here?

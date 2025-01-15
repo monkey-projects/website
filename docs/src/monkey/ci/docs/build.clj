@@ -47,12 +47,15 @@
               (assoc md :location (location md f config)))
             (gen-file [f]
               (log/debug "Generating output for" f)
-              (let [md (-> (md/parse f (:config config))
-                           (add-location f))
-                    html (m/md->page md (:config config))
-                    out (output-path md f config)]
-                (tb/write-html html out)
-                out))
+              (try
+                (let [md (-> (md/parse f (:config config))
+                             (add-location f))
+                      html (m/md->page md (:config config))
+                      out (output-path md f config)]
+                  (tb/write-html html out)
+                  out)
+                (catch Exception ex
+                  (log/warn "Failed to process file" f ":" (ex-message ex)))))
             (gen-subs []
               (mapcat (partial build-dir config) subdirs))]
       (concat (->> files

@@ -1,6 +1,6 @@
 {:title "Basic Example"
  :tags ["examples"]
- :related [["useful-example" "A more useful example"]
+ :related [["intro/useful-example" "A more useful example"]
            ["registration" "How to register as a new user"]
 	   ["under-the-hood" "How MonkeyCI works under the hood"]
 	   ["sustainability" "Our sustainability goals"]

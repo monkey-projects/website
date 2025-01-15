@@ -81,7 +81,7 @@
           (map bc-item)
           (into [:ol.breadcrumb.mb-0]))]))
 
-(defn- related-articles [related]
+(defn- related-articles [related {:keys [path-prefix]}]
   (let [rows (partition-all 2 related)]
     (letfn [(render-col [items]
               [:div.col-sm-6
@@ -94,7 +94,8 @@
                [:div.flex-shrink-0
                 (i/icon :file-earmark)]
                [:div.flex-grow-1.ms-2
-                [:a.text-body {:href path} lbl]]])]
+                [:a.text-body {:href (cond->> path
+                                       path-prefix (str path-prefix))} lbl]]])]
       [:div.container.content-space-t-1.mb-7
        [:div.w-lg-75.mx-lg-auto
         [:div.text-center.mb-7
@@ -113,7 +114,7 @@
        [:h2.h3 title])
      contents]]
    (when (not-empty related)
-     (related-articles related))])
+     (related-articles related config))])
 
 (defn md->page
   "Given a parsed markdown structure, renders it into the resulting hiccup structure"

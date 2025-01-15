@@ -12,11 +12,12 @@ Welcome to the [MonkeyCI](https://monkeyci.com) documentation center!
 
 ## What is MonkeyCI?
 
+*MonkeyCI* is a [CI/CD](https://en.wikipedia.org/wiki/CI/CD) pipeline runner that allows
+you to use code instead of `yaml` for configuration.
+
 Suppose you're working on your newest project.  Of course, at some point you will want
 to automatically build it, maybe also deploy it somewhere.  And run your unit tests.
-All automated!  To do this, you will need a [CI/CD](https://en.wikipedia.org/wiki/CI/CD)
-pipeline tool.  And as it happens, [MonkeyCI](https://monkeyci.com) is such a tool!  But
-with some differences.
+All automated!  *MonkeyCI* allows you to do all those things, and more!
 
 ## Why?
 
@@ -51,8 +52,11 @@ contains a build script in the `/.monkeyci` directory, *MonkeyCI* will **trigger
 From then on it's totally up to you: what [jobs](jobs/) are in the build, what
 [artifacts](artifacts/) are being produced, etc...
 
-### Examples
+### Your First Build Script
 
-For more on how to write build scripts, see the [basic example](intro/basic-example/) or
-a [more advanced example](intro/useful-example/).  We also have a [cookbook](cookbook/)
+Now it's time to write your first build script!  The best way to learn how to do that is
+by looking at some examples.
+
+First take a look at the [basic example](intro/basic-example/).  After that, you can
+move on to a [more advanced example](intro/useful-example/).  We also have a [cookbook](cookbook/)
 for common scenarios.

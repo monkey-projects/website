@@ -1,5 +1,6 @@
 {:title "Build parameters"
- :related [["labels" "Labels"]]}
+ :related [["labels" "Labels"]
+           ["securit" "Security"]]}
 
 Build parameters are a way to configure your builds, without having to put this
 configuration in your build script itself.  It is typically used for **sensitive

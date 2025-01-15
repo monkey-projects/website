@@ -1,4 +1,8 @@
-{:title "User Registration"}
+{:title "User Registration"
+ :related [["customer-new" "Create a new customer"]
+           ["pricing" "Pricing"]
+	   ["params" "Build parameters"]
+	   ["watch" "Watch builds"]]}
 
 Registering as a new user is easy: simply login using one of the provided
 authentication methods.  Currently, this means either using [GitHub](https://github.com)
@@ -9,4 +13,4 @@ at most one free customer](customer-new/).  From then on, this customer will
 be used as the default.  You can also [request access to other customers](customer-join/).
 
 As soon as you have created or joined a customer, you can start [watching builds](watch/),
-configure [build parameters](params/) or ssh keys.
+configure [build parameters](params/) or [ssh keys](ssh-keys/).

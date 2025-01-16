@@ -70,10 +70,15 @@
             :alt "SVG"
             :width 250}]]]])
 
-(defn breadcrumb [path]
+(defn- apply-prefix [path {:keys [path-prefix]}]
+  (-> (cond->> path
+        path-prefix (str path-prefix))
+      (.replaceAll "//" "/")))
+
+(defn breadcrumb [path conf]
   (letfn [(bc-item [{:keys [path label]}]
             [:li.breadcrumb-item
-             [:a {:href path} label]])]
+             [:a {:href (apply-prefix path conf)} label]])]
     [:nav
      (->> path
           (concat [{:path "/"
@@ -81,7 +86,7 @@
           (map bc-item)
           (into [:ol.breadcrumb.mb-0]))]))
 
-(defn- related-articles [related {:keys [path-prefix]}]
+(defn- related-articles [related conf]
   (let [rows (partition-all 2 related)]
     (letfn [(render-col [items]
               [:div.col-sm-6
@@ -94,8 +99,7 @@
                [:div.flex-shrink-0
                 (i/icon :file-earmark)]
                [:div.flex-grow-1.ms-2
-                [:a.text-body {:href (cond->> path
-                                       path-prefix (str path-prefix))} lbl]]])]
+                [:a.text-body {:href (apply-prefix path conf)} lbl]]])]
       [:div.container.content-space-t-1.mb-7
        [:div.w-lg-75.mx-lg-auto
         [:div.text-center.mb-7
@@ -128,7 +132,7 @@
      [:div.border-bottom
       [:div.container.py-4
        [:div.w-lg-75.mx-lg-auto
-        (breadcrumb (:location md))]]]
+        (breadcrumb (:location md) config)]]]
      [:div.overflow-hidden
       [:div.d-flex.flex-column.min-vh-100
        (render-md md config)       

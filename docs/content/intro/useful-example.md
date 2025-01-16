@@ -4,8 +4,8 @@
            ["plugins" "Plugins"]
 	   ["tests" "Unit tests"]]}
 
-While the [tutorial](/) explains a little bit of how build scripts in *MonkeyCI* work,
-it's not useful in the real world.  Let's assume you're working on a
+While the [tutorial](intro/basic-example) explains a little bit of how build scripts
+in *MonkeyCI* work, it's not useful in the real world.  Let's assume you're working on a
 [Java](https://en.wikipedia.org/wiki/Java_(programming_language)) project that uses
 [Maven](https://en.wikipedia.org/wiki/Apache_Maven) as it's build tool.  In order
 to run your unit tests and eventually build your code, you need to run the appropriate
@@ -63,7 +63,7 @@ It could look like this:
     (image "docker.io/maven:latest")
     (script ["mvn deploy:deploy"])
     (restore-artifacts (artifact "packages" "target"))
-    (depends-on ["mvn-verify"}))
+    (depends-on ["mvn-verify"]))
 ```
 
 This job looks a lot like the `verify` job, with several differences:
@@ -101,7 +101,7 @@ and at the end of the build script, we refer to them.  The full script then look
       (image "docker.io/maven:latest")
       (script ["mvn deploy:deploy"])
       (restore-artifacts (artifact "packages" "target"))
-      (depends-on ["mvn-verify"})))
+      (depends-on ["mvn-verify"])))
 
 ;; Last expression holds all the jobs to execute
 [verify
@@ -137,7 +137,7 @@ jobs call that function with some parameters:
 (def publish
   (-> (mvn-job "mvn-publish" "deploy:deploy")
       (restore-artifacts [target-artifact])
-      (depends-on [(job-id verify)})))
+      (depends-on [(job-id verify)])))
 
 ;; Put the jobs in the "resulting" list
 [verify

@@ -1,5 +1,7 @@
 {:title "Artifacts"
- :related [["caches" "Caches"]]}
+ :related [["caching" "Caching"]
+           ["intro/basic-example" "Basic example"]
+           ["intro/useful-example" "A more useful example"]]}
 
 Job artifacts serve two purposes:
 

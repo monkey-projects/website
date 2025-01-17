@@ -54,10 +54,25 @@ Explaining all about the `clojure.test` framework is beyond the scope of this
 documentation, but you can read more about it in the [official
 documentation](https://clojure.github.io/clojure/clojure.test-api.html).
 
+## Watching For Changes
+
+When using TDD, you often will want to constantly run your unit tests as you do
+changes to your build script.  This way you get **immediate feedback** which is a major
+requirement for doing TDD correctly.  To this end, *MonkeyCI* provides a way to
+"watch" for file changes, simply by specifying an extra flag to the CLI:
+
+```bash
+$ monkeyci build test --watch
+```
+
+This will start the test process, but it will keep on running and every time it
+detects a source file change (either of your build code, or your test file), it will
+re-run the relevant tests.
+
 ## Conclusion
 
 If you have a complicated build script, it's very useful (and reassuring) to also
 have a suite of unit tests to verify them.  But it's really a good idea to do it
-even for the simple build scripts.  It ensures that your build script does what you
-want it to do, even in more obscure or less likely situations.  This is especially
+even for the simple build scripts.  It ensures that **your build script does what you
+want it to do**, even in more obscure or less likely situations.  This is especially
 important for production builds!

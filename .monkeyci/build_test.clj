@@ -48,13 +48,15 @@
   (testing "creates container job"
     (is (bc/container-job? (sut/test-docs mt/test-ctx)))))
 
-(deftest error-page
-  (let [job (sut/error-page mt/test-ctx)]
+(deftest build-site
+  (let [job (sut/build-site mt/test-ctx)]
     (testing "creates container job"
       (is (bc/container-job? job)))
-
-    (testing "runs in site dir"
-      (is (= "site" (m/work-dir job))))))
+    
+    (testing "renders site and 404 page"
+      (is (= 2 (-> job
+                   (m/script)
+                   (count)))))))
 
 (deftest notify
   (testing "`nil` if not a release tag"

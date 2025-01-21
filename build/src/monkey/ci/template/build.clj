@@ -56,6 +56,7 @@
 (defn page
   "Generates a single page, does not copy assets."
   [{:keys [output site-fn config]}]
+  (println "Building:" site-fn)
   (if-let [f (resolve-fn site-fn)]
     (generate output #(f (load-config config)))
     (throw (ex-info "Could not resolve site fn" {:site-fn site-fn}))))

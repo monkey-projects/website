@@ -37,14 +37,15 @@
 (def common-published?
   (every-pred common-changed? bc/main-branch?))
 
-(defn- clj-cmd
-  "Runs a clojure command"
-  [job-id cache-id cmd]
+(defn- clj-cmds
+  "Runs one or more clojure commands"
+  [job-id cache-id & cmds]
   (let [m2 (str ".m2-" cache-id)]
     (-> (m/container-job job-id)
         (m/image clj-img)
         (m/caches (m/cache (str "mvn-" cache-id) m2))
-        (m/script [(format "clojure -Sdeps '{:mvn/local-repo \"%s\"}' %s" m2 cmd)]))))
+        (m/script (->> cmds
+                       (mapv (partial format "clojure -Sdeps '{:mvn/local-repo \"%s\"}' %s" m2)))))))
 
 (defn run-tests
   "Runs tests for given site"
@@ -56,7 +57,7 @@
                 (let [d (when deps (deps ctx))]
                   (cond-> job
                     d (m/depends-on d))))]
-        (-> (clj-cmd
+        (-> (clj-cmds
              (str "test-" id)
              id
              (format "-X%s:test:junit" (or (some-> alias str) "")))
@@ -85,23 +86,20 @@
 (def test-docs (run-tests "docs" {:dependencies depends-on-common}))
 
 (defn build
-  "Builds the website and docs files"
-  [id alias artifact ctx]
-  (-> (clj-cmd
+  "Builds static website files"
+  [id aliases artifact ctx]
+  (-> (apply clj-cmds
        (str "build-" id)
        id
-       (format "-X%s '%s'" (str alias) (pr-str {:config (get config-by-env (get-env ctx))})))
+       (map #(format "-X%s '%s'" (str %) (pr-str {:config (get config-by-env (get-env ctx))}))
+            aliases))
       (m/save-artifacts (m/artifact id artifact))
       (m/depends-on (cond-> [(str "test-" id)]
                       (common-published? ctx) (conj "deploy-common")))
       (m/work-dir id)))
 
-(def build-site (partial build "site" :build "target"))
-(def build-docs (partial build "docs" :build "target/site"))
-
-(defn error-page [ctx]
-  (-> (build "error-page" :page/not-found "target/error-404.html" ctx)
-      (m/work-dir "site")))
+(def build-site (partial build "site" [:build :page/not-found] "target"))
+(def build-docs (partial build "docs" [:build] "target/site"))
 
 (def img-base "fra.ocir.io/frjdhmocn5qi/website")
 
@@ -121,8 +119,7 @@
     (-> (kaniko/image {:target-img (str img-base ":" (img-version ctx))} ctx)
         (m/depends-on ["build-site" "build-docs"])
         (m/restore-artifacts [(m/artifact "site" "site/target")
-                              (m/artifact "docs" "docs/target/site")
-                              (m/artifact "error-page" "site/target/error-404.html")]))))
+                              (m/artifact "docs" "docs/target/site")]))))
 
 (defn deploy [ctx]
   (when (and (build-image? ctx) (not (release? ctx)))
@@ -150,7 +147,6 @@
  test-docs
  build-site
  build-docs
- error-page
  image
  deploy
  notify]

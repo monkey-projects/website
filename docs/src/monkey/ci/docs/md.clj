@@ -49,6 +49,8 @@
               (relative? p) (str path-prefix)))]
     (mdt/into-markup [:a {:href (convert-path (:href attrs))}] ctx node)))
 
+(def transform-quote (partial mdt/into-markup [:blockquote.blockquote.blockquote-sm.mb-2]))
+
 (defn parse
   "Parses the given markdown content and returns it as a hiccup style structure.
    Any leading edn structure is added to the metadata.  Extra options can be
@@ -65,11 +67,14 @@
                      (throw ex))))
           s (slurp b)]
       (assoc meta
-             :contents (->> s
-                            (md/parse)
-                            (mdt/->hiccup
-                             (assoc mdt/default-hiccup-renderers
-                                    :heading transform-heading
-                                    :plain (partial mdt/into-markup [:span])
-                                    :code transform-code
-                                    :link (partial transform-link opts))))))))
+             :contents
+             (->> s
+                  (md/parse)
+                  (mdt/->hiccup
+                   (assoc mdt/default-hiccup-renderers
+                          :heading transform-heading
+                          :plain (partial mdt/into-markup [:span])
+                          :code transform-code
+                          :link (partial transform-link opts)
+                          :blockquote transform-quote
+                          :table (partial mdt/into-markup [:table.table]))))))))

@@ -138,3 +138,14 @@
       [:ul.list-inline.mb-0
        (social-link :github "https://github.com/monkey-projects/monkeyci")
        (social-link :slack "https://monkeyci.slack.com")]]]]])
+
+(defn not-found
+  "Generates a page not found component"
+  [config]
+  [:div.container.text-center
+   [:img.img-fluid.mb-5
+    {:src (assets-url config "/svg/oc-error.svg")
+     :alt "Not found image"
+     :style {:width "30rem;"}}]
+   [:p "The page you are looking for does not exist!"]
+   [:a.btn.btn-primary {:href "/"} "Go back home"]])

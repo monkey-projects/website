@@ -36,3 +36,7 @@
   (testing "build assets js url"
     (is (= "https://assets.test.monkeyci.com/js/test-script.js"
            (sut/script-url test-config "test-script.js")))))
+
+(deftest not-found
+  (testing "generates component"
+    (is (vector? (sut/not-found {})))))

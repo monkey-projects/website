@@ -50,7 +50,7 @@ later.
 ```clojure
 (action-job
 ```
-This declares an action job.  There are **two kinds of jobs** in *MonkeyCI*: *action jobs*
+This declares an action [job](jobs).  There are **two kinds of jobs** in *MonkeyCI*: *action jobs*
 and *container jobs*.  The first type just runs an arbitrary function in your script, while
 the second type starts a new container job.  Most of the time you will probably use container
 jobs, but especially in the more complicated build scripts, action jobs may pop up as well.
@@ -83,4 +83,4 @@ navigate in the application site to that specific job.
 ## Conclusion
 
 The above example illustrates in a nutshell how *MonkeyCI* builds work.  If this triggers
-your curiosity, you can learn more by proceeding to one of the related articles.
+your curiosity, **you can learn more** by proceeding to one of the related articles.

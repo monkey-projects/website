@@ -6,11 +6,10 @@
 
 (defn head [config]
   (-> (tc/head (assoc config :title "MonkeyCI: Documentation Center"))
-      ;; TODO Put in local assets
       ;; See https://github.com/highlightjs/highlight.js/tree/main/src/styles for more styles
-      (conj (tc/stylesheet "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css"))
-      (conj (tc/script "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"))
-      (conj (tc/script "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/clojure.min.js"))
+      (conj (tc/stylesheet "/css/github-dark.min.css"))
+      (conj (tc/script "/js/highlight.min.js"))
+      (conj (tc/script "/js/clojure.min.js"))
       (conj [:script "hljs.highlightAll();"])))
 
 (defn header
@@ -21,7 +20,7 @@
     [:nav.js-mega-menu.navbar-nav-wrap
      ;; Logo
      [:a.navbar-brand
-      {:href "./index.html"
+      {:href "/"
        :aria-label "MonkeyCI"}
       (tc/logo-black config)]
      [:div

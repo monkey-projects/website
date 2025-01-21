@@ -99,6 +99,10 @@
 (def build-site (partial build "site" :build "target"))
 (def build-docs (partial build "docs" :build "target/site"))
 
+(defn error-page [ctx]
+  (-> (build "error-page" :page/not-found "target/error-404.html" ctx)
+      (m/work-dir "site")))
+
 (def img-base "fra.ocir.io/frjdhmocn5qi/website")
 
 (def release? (comp some? bc/tag))
@@ -117,7 +121,8 @@
     (-> (kaniko/image {:target-img (str img-base ":" (img-version ctx))} ctx)
         (m/depends-on ["build-site" "build-docs"])
         (m/restore-artifacts [(m/artifact "site" "site/target")
-                              (m/artifact "docs" "docs/target/site")]))))
+                              (m/artifact "docs" "docs/target/site")
+                              (m/artifact "error-page" "site/target/error-404.html")]))))
 
 (defn deploy [ctx]
   (when (and (build-image? ctx) (not (release? ctx)))
@@ -145,6 +150,7 @@
  test-docs
  build-site
  build-docs
+ error-page
  image
  deploy
  notify]

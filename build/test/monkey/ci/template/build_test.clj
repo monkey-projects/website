@@ -24,3 +24,4 @@
                              :config {:base-url "test.monkeyci.com"}})))
       (is (cs/includes? (slurp (fs/file (fs/path dest "index.html")))
                         "test.monkeyci.com")))))
+

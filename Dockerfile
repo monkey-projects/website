@@ -17,7 +17,8 @@ ADD site/target/ /var/www/html/site
 ADD docs/target/site/ /var/www/html/docs
 # Monkey projects static site
 ADD monkey-projects/assets/ /var/www/html/monkey-projects
-# TODO Error pages
+# Error pages
+ADD site/target/error-404.html /var/www/html/
 
 FROM docker.io/nginx:1.27
 

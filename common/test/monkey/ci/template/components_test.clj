@@ -40,3 +40,8 @@
 (deftest not-found
   (testing "generates component"
     (is (vector? (sut/not-found {})))))
+
+(deftest not-found-page
+  (testing "generates html page"
+    (is (= :html (-> (sut/not-found-page {})
+                     first)))))

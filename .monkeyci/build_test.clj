@@ -2,7 +2,9 @@
   (:require [clojure.test :refer [deftest testing is]]
             [build :as sut]
             [monkey.ci.test :as mt]
-            [monkey.ci.build.core :as bc]))
+            [monkey.ci.build
+             [core :as bc]
+             [v2 :as m]]))
 
 (deftest test-common
   (testing "`nil` if common is unchanged"
@@ -45,6 +47,14 @@
 (deftest test-docs
   (testing "creates container job"
     (is (bc/container-job? (sut/test-docs mt/test-ctx)))))
+
+(deftest error-page
+  (let [job (sut/error-page mt/test-ctx)]
+    (testing "creates container job"
+      (is (bc/container-job? job)))
+
+    (testing "runs in site dir"
+      (is (= "site" (m/work-dir job))))))
 
 (deftest notify
   (testing "`nil` if not a release tag"

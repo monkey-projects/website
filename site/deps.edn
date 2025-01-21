@@ -9,9 +9,16 @@
 
   :build
   {:extra-deps {com.monkeyci/template-build {:local/root "../build"}}
-   :exec-fn monkey.ci.template.build/build
+   :exec-fn monkey.ci.template.build/site
    :exec-args {:output "target"
                :site-fn monkey.ci.site.main/main}}
+
+  :page/not-found
+  ;; Generates the error-404 page
+  {:extra-deps {com.monkeyci/template-build {:local/root "../build"}}
+   :exec-fn monkey.ci.template.build/page
+   :exec-args {:output "target/error-404.html"
+               :site-fn monkey.ci.template.components/not-found-page}}
 
   :test
   {:extra-deps {com.monkeyprojects/build {:mvn/version "0.2.0"}

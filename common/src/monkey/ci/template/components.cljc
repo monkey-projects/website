@@ -82,6 +82,32 @@
 
 (def ^:deprecated header header-dark)
 
+(defn header-light
+  "Renders generic header with light background"
+  [config]
+  [:header#header.navbar.navbar-expand-lg.navbar-end.navbar-light.bg-white
+   [:div.container
+    [:nav.js-mega-menu.navbar-nav-wrap
+     ;; Logo
+     [:a.navbar-brand
+      {:href "/"
+       :aria-label "MonkeyCI"}
+      (logo-black config)]
+     [:div
+      [:h1.display-5 "MonkeyCI"]]
+     [:div.navbar-absolute-top-scroller
+      [:ul.navbar-nav
+       [:li.nav-divider]
+       ;; Log in button
+       [:li.nav-item
+        [:a.js-animation-link.btn.btn-ghost-light.btn-no-focus.me-2.me-lg-0.text-primary
+         {:href (app-url config "/login")
+          :role "button"}
+         "Log in"]]
+       ;; Sign up
+       [:li.nav-item
+        (sign-up-btn config)]]]]]])
+
 (def copyright
   #?(:clj (h/raw "&#169;")
      :cljs (gstr/unescapeEntities "&#169;")))
@@ -131,7 +157,7 @@
     [:div.row.align-items-md-end.py-5
      [:div.col-md.mb-3.mb-md-0
       [:p.text-white.mb-0
-       copyright " 2024 " [:a.link-light {:href "https://www.monkey-projects.be"} "Monkey Projects"]]]
+       copyright " 2025 " [:a.link-light {:href "https://www.monkey-projects.be"} "Monkey Projects"]]]
      [:div.col-md.d-md-flex.justify-content-md-end
       (when-let [v (:version config)]
         [:p.text-primary-light.mb-0.small.me-2.pt-2 "version " v])
@@ -149,3 +175,18 @@
      :style {:width "30rem;"}}]
    [:p "The page you are looking for does not exist!"]
    [:a.btn.btn-primary {:href "/"} "Go back home"]])
+
+(defn not-found-page
+  "Generates a full html page containing the not-found component.  This is a generic
+   page because it is unaware of the context it's displayed in."
+  [config]
+  [:html
+   (head config)
+   [:body
+    (header-light config)
+    [:main {:role :main}
+     [:div.overflow-hidden
+      [:div.d-flex.flex-column.min-vh-100
+       (not-found config)
+       [:div.mt-auto
+        (footer config)]]]]]])

@@ -53,11 +53,17 @@
     (fn? sym)
     sym))
 
-(defn build
-  "Builds the entire site by generating html and copying assets."
+(defn page
+  "Generates a single page, does not copy assets."
   [{:keys [output site-fn config]}]
   (if-let [f (resolve-fn site-fn)]
-    (do
-      (copy-assets output)
-      (generate output #(f (load-config config))))
+    (generate output #(f (load-config config)))
     (throw (ex-info "Could not resolve site fn" {:site-fn site-fn}))))
+
+(defn site
+  "Builds the entire site by generating html and copying assets."
+  [{:keys [output] :as opts}]
+  (copy-assets output)
+  (page opts))
+
+(def build site)

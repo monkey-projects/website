@@ -13,7 +13,7 @@
       (conj [:script "hljs.highlightAll();"])))
 
 (defn header
-  "Renders header with dark background"
+  "Renders docs header"
   [config]
   [:header#header.navbar.navbar-expand-lg.navbar-end.navbar-light.bg-white
    [:div.container

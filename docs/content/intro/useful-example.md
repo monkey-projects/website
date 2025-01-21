@@ -2,7 +2,8 @@
  :tags ["examples"]
  :related [["basic-example" "Basic example"]
            ["plugins" "Plugins"]
-	   ["tests" "Unit tests"]]}
+	   ["tests" "Unit tests"]
+	   ["artifacts" "Artifacts"]]}
 
 While the [tutorial](intro/basic-example) explains a little bit of how build scripts
 in *MonkeyCI* work, it's not useful in the real world.  Let's assume you're working on a

@@ -41,7 +41,7 @@
       (is (not-empty (hf/hiccup-find [:footer] page)))))
 
   (testing "adds table of contents if provided"
-    (is (not-empty (->> {:toc [["path" "Title"]]}
+    (is (not-empty (->> {:toc [{:path "path" :title "Title"}]}
                         (sut/md->page [:h1 "page with toc"])
                         (hf/hiccup-find [:#toc]))))))
 

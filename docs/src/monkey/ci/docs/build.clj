@@ -50,11 +50,11 @@
   "Generates table of contents according to the given file list"
   [files]
   (->> files
-       (map (fn [{:keys [file md]}]
+       (map (fn [{:keys [md]}]
               ;; Use location
               (let [loc (-> md :location last)]
-                {:title (:label loc)
-                 :path (:path loc)})))))
+                {:title (m/short-title md)
+                 :path (or (:path loc) "/")})))))
 
 (defn- build-dir
   "Traverses the given directory tree and recursively generates pages from 

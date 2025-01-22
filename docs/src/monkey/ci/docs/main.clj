@@ -148,7 +148,7 @@
   (map (fn [{:keys [path] :as entry}]
          (cond-> entry
            true (dissoc :active?)
-           (= path (-> md :location last :path)) (assoc :active? true)))
+           (= path (-> md :location last (get :path "/"))) (assoc :active? true)))
        toc))
 
 (defn md->page

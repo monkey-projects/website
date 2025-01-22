@@ -6,6 +6,7 @@
 
 (defn head [config]
   (-> (tc/head (assoc config :title "MonkeyCI: Documentation Center"))
+      ;; Syntax highlighting lib
       ;; See https://github.com/highlightjs/highlight.js/tree/main/src/styles for more styles
       (conj (tc/stylesheet "/css/github-dark.min.css"))
       (conj (tc/script "/js/highlight.min.js"))
@@ -39,22 +40,25 @@
        [:li.nav-item
         (tc/sign-up-btn config)]]]]]])
 
+(defn- search-form []
+  [:form
+   [:div.input-card
+    [:div.input-card-form
+     [:label.form-label.visually-hidden {:for :answers-form}
+      "Search for answers"]
+     [:input.form-control {:type :text
+                           :id :answers-form
+                           :placeholder "Search for answers"
+                           :aria-label "Search for answers"}]]
+    [:button.btn.btn-primary.btn-icon {:type :button}
+     [:i.bi-search]]]])
+
 (defn search-bar []
   [:div.bg-primary-dark.overflow-hidden
    [:div.container.position-relative.content-space-1
     ;; Search form, does nothing for now, so it's disabled
     #_[:div.w-lg-75.mx-lg-auto
-     [:form
-      [:div.input-card
-       [:div.input-card-form
-        [:label.form-label.visually-hidden {:for :answers-form}
-         "Search for answers"]
-        [:input.form-control {:type :text
-                              :id :answers-form
-                              :placeholder "Search for answers"
-                              :aria-label "Search for answers"}]]
-       [:button.btn.btn-primary.btn-icon {:type :button}
-        [:i.bi-search]]]]]
+       (search-form)]
     [:div.position-absolute
      {:style {:top "-6rem"
               :left "-6rem"}}
@@ -85,6 +89,8 @@
           (map bc-item)
           (into [:ol.breadcrumb.mb-0]))]))
 
+(def short-title (some-fn :short :title))
+
 (defn- related-articles [related conf]
   (let [rows (partition-all 2 related)]
     (letfn [(render-col [items]
@@ -99,29 +105,57 @@
                 (i/icon :file-earmark)]
                [:div.flex-grow-1.ms-2
                 [:a.text-body {:href (apply-prefix path conf)} lbl]]])]
-      [:div.container.content-space-t-1.mb-7
-       [:div.w-lg-75.mx-lg-auto
-        [:div.text-center.mb-7
-         [:h4 "Related articles"]]
-        [:div.row
-         (render-col (map first rows))
-         (render-col (map second rows))]]])))
+      [:div.mt-7
+       [:div.text-center.mb-7
+        [:h4 "Related articles"]]
+       [:div.row
+        (render-col (map first rows))
+        (render-col (map second rows))]])))
 
 (defn- render-md
-  "Renders markdown to be included in a html page"
+  "Renders markdown so it can be included in a html page"
   [{:keys [title contents related]} config]
   [:div
-   [:div.container.content-space-1
-    [:div.w-lg-75.mx-lg-auto
-     (when title
-       [:h2.h3 title])
-     contents]]
+   (when title
+     [:h2.h3 title])
+   contents
    (when (not-empty related)
      (related-articles related config))])
 
+(defn- render-toc [toc conf]
+  (->> toc
+       (map (fn [{:keys [path title active?]}]
+              [:li.nav-item
+               [:a.nav-link
+                (cond-> {:href (apply-prefix path conf)}
+                  active? (assoc :class "active"))
+                title]]))
+       (into 
+        [:ul#toc.nav.nav-link-gray.nav-tabs.nav-vertical])))
+
+(defn- add-toc
+  "Add table of contents to the given page"
+  [page toc conf]
+  [:div.row
+   [:div.col-md-3
+    (render-toc toc conf)]
+   [:div.col-md-9
+    page]])
+
+(defn mark-active
+  "Marks the page with same path as the given page as active."
+  [toc md]
+  (map (fn [{:keys [path] :as entry}]
+         (cond-> entry
+           true (dissoc :active?)
+           (= path (-> md :location last :path)) (assoc :active? true)))
+       toc))
+
 (defn md->page
-  "Given a parsed markdown structure, renders it into the resulting hiccup structure"
-  [md config]
+  "Given a parsed markdown structure, renders it into the resulting hiccup structure as a 
+   full html page.  If the config contains a table of contents (`toc`), it will also be
+   added."
+  [md {:keys [toc] :as config}]
   [:html
    (head config)
    [:body
@@ -134,7 +168,10 @@
         (breadcrumb (:location md) config)]]]
      [:div.overflow-hidden
       [:div.d-flex.flex-column.min-vh-100
-       (render-md md config)       
+       [:div.container.content-space-1
+        [:div.w-lg-75.mx-lg-auto
+         (cond-> (render-md md config)
+           toc (add-toc (mark-active toc md) config))]]
        [:div.mt-auto
         (tc/footer config)]]]]
     (tc/script (tc/script-url config "vendor.min.js"))

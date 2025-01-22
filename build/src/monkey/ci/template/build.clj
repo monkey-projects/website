@@ -8,7 +8,7 @@
   [in p]
   (fs/create-dirs (fs/parent p))
   (->> in
-       (h/html)
+       (h/html (h/raw "<!DOCTYPE html>"))
        (str)
        (spit (fs/file p))))
 

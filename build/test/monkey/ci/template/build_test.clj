@@ -15,6 +15,12 @@
     (testing "generates index file"
       (is (fs/exists? (fs/path dest "index.html"))))
 
+    (testing "adds doctype declaration"
+      (is (-> (fs/path dest "index.html")
+              (fs/file)
+              (slurp)
+              (cs/starts-with? "<!DOCTYPE html>"))))
+
     (testing "passes config to site fn"
       (is (some? (sut/build {:output dest
                              :site-fn (fn [conf]

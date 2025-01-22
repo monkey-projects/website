@@ -30,39 +30,59 @@
 (defn location
   "Calculates location vector for breadcrumb"
   [md p conf]
-  ;; TODO Allow for multiple levels
+  ;; TODO Allow for multiple levels using category
   (when-not (:home? md)
     [{:path (-> (fs/relativize (get-input conf) p)
                 (fs/strip-ext)
                 (str "/"))
-      :label (:title md)}]))
+      :label (m/short-title md)}]))
+
+(defn- list-tree
+  "Walks the file tree, returns a list of all markdown file paths"
+  [dir]
+  (let [{files false subdirs true} (->> (fs/list-dir dir)
+                                        (group-by fs/directory?))]
+    (->> files
+         (filter markdown-file?)
+         (concat (mapcat list-tree subdirs)))))
+
+(defn- build-toc
+  "Generates table of contents according to the given file list"
+  [files]
+  (->> files
+       (map (fn [{:keys [file md]}]
+              ;; Use location
+              (let [loc (-> md :location last)]
+                {:title (:label loc)
+                 :path (:path loc)})))))
 
 (defn- build-dir
   "Traverses the given directory tree and recursively generates pages from 
    each encountered markdown file."
   [config dir]
-  (let [{files false subdirs true} (->> (fs/list-dir dir)
-                                        (group-by fs/directory?))]
-    (letfn [(add-location [md f]
-              (assoc md :location (location md f config)))
-            (gen-file [f]
-              (log/debug "Generating output for" f)
+  (let [add-location (fn [md f]
+                       (assoc md :location (location md f config)))
+        files (->> (list-tree dir)
+                   (map (fn [f]
+                          (-> {:file f
+                               :md (-> (md/parse f (:config config)))}
+                              (update :md add-location f)))))
+        toc (build-toc files)]
+    (letfn [(gen-file [{:keys [file md]}]
+              (log/debug "Generating output for" file)
               (try
-                (let [md (-> (md/parse f (:config config))
-                             (add-location f))
-                      html (m/md->page md (:config config))
-                      out (output-path md f config)]
+                (let [md (add-location md file)
+                      html (m/md->page md (-> config
+                                              :config
+                                              (assoc :toc toc)))
+                      out (output-path md file config)]
                   (tb/write-html html out)
                   out)
                 (catch Exception ex
-                  (log/warn "Failed to process file" f ":" (ex-message ex)))))
-            (gen-subs []
-              (mapcat (partial build-dir config) subdirs))]
-      (concat (->> files
-                   (filter markdown-file?)
-                   (map gen-file)
-                   (doall))
-              (gen-subs)))))
+                  (log/warn "Failed to process file" file ":" (ex-message ex)))))]
+      (->> files
+           (map gen-file)
+           (doall)))))
 
 (defn build-all [config]
   (let [src (get-input config)

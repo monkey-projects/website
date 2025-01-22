@@ -4,7 +4,7 @@
  :related [["intro/basic-example" "Basic example"]
            ["intro/useful-example" "A more useful example"]
 	   ["registration" "How to register as a new user"]
-	   ["under-the-hood" "How MonkeyCI works under the hood"]
+	   ["under-the-hood" "Under the hood"]
 	   ["sustainability" "Our sustainability goals"]
 	   ["security" "Security"]]}
 

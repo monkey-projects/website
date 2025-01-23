@@ -1,4 +1,5 @@
 {:title "Artifacts"
+ :category :builds
  :related [["caching" "Caching"]
            ["intro/basic-example" "Basic example"]
            ["intro/useful-example" "A more useful example"]]}

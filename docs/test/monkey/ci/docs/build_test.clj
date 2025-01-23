@@ -60,7 +60,7 @@
 (deftest configure-categories
   (let [cats {:test-category {:label "test category"}}]
     (testing "adds files to categories"
-      (let [test-file {:category :test-category}]
+      (let [test-file {:md {:category :test-category}}]
         (is (= [test-file] (-> {:files [test-file]
                                 :categories cats}
                                (sut/configure-categories)
@@ -76,7 +76,7 @@
 
     (testing "adds location"
       (is (= {:path "/categories/test-category"
-              :label "Test category"}
+              :label "test category"}
              (-> {:categories cats}
                  (sut/configure-categories)
                  :test-category

@@ -75,20 +75,21 @@
             (assoc md :location (location md f config)))]
     (->> (list-tree (dc/get-input config))
          (map (fn [f]
-                (-> {:file f
-                     :md (-> (md/parse f (:config config)))}
-                    (update :md add-location f))))
+                (try
+                  (-> {:file f
+                       :md (-> (md/parse f (:config config)))}
+                      (update :md add-location f))
+                  (catch Exception ex
+                    (log/warn "Failed to process file" f ":" (ex-message ex))))))
+         (remove nil?)
          (assoc config :files))))
 
 (defn- gen-file [config {:keys [file md]}]
   (log/debug "Generating output for" file)
-  (try
-    (let [html (m/md->page md (:config config))
-          out (md-output-path md file config)]
-      (tb/write-html html out)
-      out)
-    (catch Exception ex
-      (log/warn "Failed to process file" file ":" (ex-message ex)))))
+  (let [html (m/md->page md (:config config))
+        out (md-output-path md file config)]
+    (tb/write-html html out)
+    out))
 
 (defn- build-dir
   "Traverses the given directory tree and recursively generates pages from 
@@ -124,9 +125,10 @@
        (assoc config :articles)))
 
 (defn configure-categories [{:keys [files categories] :as config}]
-  (->> (reduce (fn [res {c :category :as f}]
-                 (cond-> res
-                   c (update-in [c :files] (fnil conj []) f)))
+  (->> (reduce (fn [res f]
+                 (let [c (get-in f [:md :category])]
+                   (cond-> res
+                     c (update-in [c :files] (fnil conj []) f))))
                categories
                files)
        (mc/map-kv-vals
@@ -139,7 +141,7 @@
    the articles is added here.  They are sorted according to the `cat-idx` property.
    The category page itself is composed of the summaries of each article document,
    or failing that, the first paragraph."
-  [{:keys [files] :as config}]
+  [config]
   (let [categories (configure-categories config)
         config (assoc config :categories categories)]
     (log/debugf "Generating %d category pages" (count categories))
@@ -147,7 +149,9 @@
          (map (fn [[id cat]]
                 (let [p (fs/path (:output config) "categories" (name id) idx-file)]
                   (tb/write-html (m/category-page id config) p)
-                  (assoc cat :file p))))
+                  (-> cat
+                      (assoc :file p)
+                      (update :files count)))))
          (doall)
          (assoc config :categories))))
 

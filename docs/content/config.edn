@@ -1,3 +1,6 @@
 {:categories
  {:getting-started
-  {:label "Getting Started"}}}
+  {:label "Getting Started"}
+
+  :builds
+  {:label "Builds"}}}

@@ -123,7 +123,7 @@
                [:a.nav-link
                 (cond-> {:href (-> c :location last :path)}
                   active? (assoc :class "active"))
-                label]]))
+                (format "%s (%d)" label (count (:files c)))]]))
        (into 
         [:ul#categories.nav.nav-link-gray.nav-tabs.nav-vertical])))
 
@@ -131,19 +131,10 @@
   "Add categories to the given page"
   [page cats]
   [:div.row
-   [:div.col-md-3
+   [:div.col-md-4
     (render-categories cats)]
-   [:div.col-md-9
+   [:div.col-md-8
     page]])
-
-#_(defn mark-active
-  "Marks the page with same path as the given page as active."
-  [toc md]
-  (map (fn [{:keys [path] :as entry}]
-         (cond-> entry
-           true (dissoc :active?)
-           (= path (-> md :location last (get :path "/"))) (assoc :active? true)))
-       toc))
 
 (defn- ->page [content bc config]
   [:html
@@ -175,16 +166,38 @@
    (breadcrumb (:location md) config)
    config))
 
+(defn- category-article [c art]
+  [:li
+   [:div.d-sm-flex
+    [:div.flex-shrink-0.mb-3.mb-sm-0
+     (i/icon :question-circle-fill)]
+    [:div.flex-grow-1.ms-sm-3
+     [:div.mb-5
+      ;; Category label
+      [:span.text-cap (:label c)]
+      [:h5 (:title art)]
+      [:p (or (:summary art)
+              ;; If no summary specified, pick the first paragraph
+              (-> art
+                  :contents
+                  second))]]
+     (let [loc (-> art :location last)]
+       [:a {:href (:path loc)} [:span.me-1 "Read more"] (i/icon :chevron-right)])]]])
+
 (defn category-page
   "Generates a category page hiccup structure for the given category.  The config should
    contain all categories, and the articles within."
   [category config]
   (let [cat-conf (get-in config [:categories category])]
-    (-> [:h1 "todo"]
+    (-> (->> cat-conf
+             :files
+             (map (comp (partial category-article cat-conf) :md))
+             (interpose [:li.border-top.my-5])
+             (into [:ul.list-unstyled.list-py-2]))
         (add-categories (-> (:categories config)
                             ;; Mark current category as active
                             (assoc-in [category :active?] true)
                             vals))
         (->page
          (breadcrumb (:location cat-conf) config)
-         config))))
+         (:config config)))))

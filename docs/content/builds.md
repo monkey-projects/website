@@ -1,4 +1,5 @@
 {:title "Builds"
+ :category :builds
  :related [["repos" "Repositories"]
            ["jobs" "Jobs"]
 	   ["artifacts" "Artifacts"]

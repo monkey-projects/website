@@ -1,6 +1,6 @@
 {:title "Basic Example"
  :tags ["examples"]
- :category "Getting Started"
+ :category :getting-started
  :summary "A basic example to show you how MonkeyCI build scripts work."
  :related [["intro/useful-example" "A more useful example"]
            ["registration" "How to register as a new user"]

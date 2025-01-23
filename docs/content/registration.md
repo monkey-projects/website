@@ -1,5 +1,5 @@
 {:title "User Registration"
- :category "Getting Started"
+ :category :getting-started
  :summary "Registering a new user is easy!  All you need is an account on one of the supported platforms."
  :related [["customer-new" "Create a new customer"]
            ["pricing" "Pricing"]

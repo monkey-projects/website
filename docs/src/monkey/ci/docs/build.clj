@@ -1,44 +1,59 @@
 (ns monkey.ci.docs.build
   "Functions for building the site output files"
-  (:require [babashka.fs :as fs]
+  (:require [aero.core :as ac]
+            [babashka.fs :as fs]
             [clojure.tools.logging :as log]
+            [medley.core :as mc]
             [monkey.ci.docs
              [config :as dc]
              [main :as m]
              [md :as md]]
             [monkey.ci.template.build :as tb]))
 
-(def default-content-dir "content")
 (def idx-file "index.html")
-
-(defn- get-input [config]
-  (get config :input default-content-dir))
 
 (defn- markdown-file? [x]
   (and (not (fs/directory? x))
        (= "md" (fs/extension x))))
 
-(defn output-path
+(defn- output-path [in {:keys [output] :as conf}]
+  (-> (fs/strip-ext in)
+      (as-> p (fs/relativize (dc/get-input conf) p))
+      (fs/path idx-file)
+      (as-> p (fs/path output p))))
+
+(defn md-output-path
   "Calculates output path using the parsed markdown and input path"
   [md in {:keys [output] :as conf}]
   (if (:home? md)
     (fs/path output idx-file)
-    (-> (fs/strip-ext in)
-        (as-> p (fs/relativize (get-input conf) p))
-        (fs/path idx-file)
-        (as-> p (fs/path output p)))))
+    (output-path in conf)))
 
 (def home-location
   {:path "/"
    :label "Home"})
 
+(defn- category-location [id category conf]
+  (when category
+    {:path (-> id
+               name
+               (dc/apply-prefix (dc/categories-prefix conf)))
+     :label (:label category)}))
+
 (defn location
   "Calculates location vector for breadcrumb"
-  [md p conf]
-  ;; TODO Allow for multiple levels using category
+  [{:keys [category] :as md} p conf]
   (cond-> [home-location]
+    category
+    (conj (or (category-location category
+                                 (get-in conf [:categories category])
+                                 conf)
+              (throw (ex-info "Category not found" {:category category
+                                                    :file p
+                                                    :config conf}))))
+    
     (not (:home? md))
-    (conj {:path (-> (fs/relativize (get-input conf) p)
+    (conj {:path (-> (fs/relativize (dc/get-input conf) p)
                      (fs/strip-ext)
                      (str "/")
                      (dc/apply-prefix (dc/articles-prefix conf)))
@@ -58,28 +73,18 @@
   [config]
   (letfn [(add-location [md f]
             (assoc md :location (location md f config)))]
-    (->> (list-tree (get-input config))
+    (->> (list-tree (dc/get-input config))
          (map (fn [f]
                 (-> {:file f
                      :md (-> (md/parse f (:config config)))}
-                    (update :md add-location f)))))))
-
-(defn- build-toc
-  "Generates table of contents according to the given file list"
-  [files]
-  ;; TODO Add ordering and grouping according to categories
-  (->> files
-       (map (fn [{:keys [md]}]
-              ;; Use location
-              (let [loc (-> md :location last)]
-                {:title (m/short-title md)
-                 :path (or (:path loc) "/")})))))
+                    (update :md add-location f))))
+         (assoc config :files))))
 
 (defn- gen-file [config {:keys [file md]}]
   (log/debug "Generating output for" file)
   (try
     (let [html (m/md->page md (:config config))
-          out (output-path md file config)]
+          out (md-output-path md file config)]
       (tb/write-html html out)
       out)
     (catch Exception ex
@@ -107,6 +112,9 @@
 (defn- for-articles [config]
   (set-dir config "articles/"))
 
+(defn- for-categories [config]
+  (set-dir config "categories/"))
+
 (defn- gen-articles
   "Generates all article files.  Each of the files in the content directory are
    rendered as an article, mirroring the directory structure.  Only the file marked
@@ -115,23 +123,49 @@
   (->> (build-dir (for-articles config))
        (assoc config :articles)))
 
+(defn configure-categories [{:keys [files categories] :as config}]
+  (->> (reduce (fn [res {c :category :as f}]
+                 (cond-> res
+                   c (update-in [c :files] (fnil conj []) f)))
+               categories
+               files)
+       (mc/map-kv-vals
+        (fn [id c]
+          (assoc c :location [home-location
+                              (category-location id c config)])))))
+
 (defn- gen-categories
   "Generates categories files.  Each of the categories encountered when processing
    the articles is added here.  They are sorted according to the `cat-idx` property.
    The category page itself is composed of the summaries of each article document,
    or failing that, the first paragraph."
   [{:keys [files] :as config}]
-  ;; TODO
-  config)
+  (let [categories (configure-categories config)
+        config (assoc config :categories categories)]
+    (log/debugf "Generating %d category pages" (count categories))
+    (->> categories
+         (map (fn [[id cat]]
+                (let [p (fs/path (:output config) "categories" (name id) idx-file)]
+                  (tb/write-html (m/category-page id config) p)
+                  (assoc cat :file p))))
+         (doall)
+         (assoc config :categories))))
 
 (defn- copy-assets [config]
   ;; Only copy local assets, the others are pulled from the assets server
   (tb/copy-tree "assets" (:output config))
   config)
 
+(defn- load-config [config]
+  (let [p (fs/path (dc/get-input config) "config.edn")]
+    (when (fs/exists? p)
+      (ac/read-config (fs/file p)))))
+
 (defn build-all [config]
-  (-> (assoc config :files (parse-files (for-articles config)))
-      (gen-index)
-      (gen-categories)
-      (gen-articles)
-      (copy-assets)))
+  (->> config
+       (merge (load-config config))
+       (parse-files)
+       (gen-index)
+       (gen-categories)
+       (gen-articles)
+       (copy-assets)))

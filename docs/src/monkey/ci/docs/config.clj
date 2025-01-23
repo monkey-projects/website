@@ -1,5 +1,10 @@
 (ns monkey.ci.docs.config)
 
+(def default-content-dir "content")
+
+(defn get-input [config]
+  (get config :input default-content-dir))
+
 (defn path-prefix [config]
   (get config :path-prefix "/"))
 

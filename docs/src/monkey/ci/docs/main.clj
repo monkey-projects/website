@@ -116,27 +116,27 @@
    (when (not-empty related)
      (related-articles related config))])
 
-(defn- render-toc [toc conf]
-  (->> toc
-       (map (fn [{:keys [path title active?]}]
+(defn- render-categories [cats]
+  (->> cats
+       (map (fn [{:keys [label active?] :as c}]
               [:li.nav-item
                [:a.nav-link
-                (cond-> {:href (dc/apply-prefix path conf)}
+                (cond-> {:href (-> c :location last :path)}
                   active? (assoc :class "active"))
-                title]]))
+                label]]))
        (into 
-        [:ul#toc.nav.nav-link-gray.nav-tabs.nav-vertical])))
+        [:ul#categories.nav.nav-link-gray.nav-tabs.nav-vertical])))
 
-(defn- add-toc
-  "Add table of contents to the given page"
-  [page toc conf]
+(defn- add-categories
+  "Add categories to the given page"
+  [page cats]
   [:div.row
    [:div.col-md-3
-    (render-toc toc conf)]
+    (render-categories cats)]
    [:div.col-md-9
     page]])
 
-(defn mark-active
+#_(defn mark-active
   "Marks the page with same path as the given page as active."
   [toc md]
   (map (fn [{:keys [path] :as entry}]
@@ -145,11 +145,7 @@
            (= path (-> md :location last (get :path "/"))) (assoc :active? true)))
        toc))
 
-(defn md->page
-  "Given a parsed markdown structure, renders it into the resulting hiccup structure as a 
-   full html page.  If the config contains a table of contents (`toc`), it will also be
-   added."
-  [md {:keys [toc] :as config}]
+(defn- ->page [content bc config]
   [:html
    (head config)
    [:body
@@ -159,15 +155,36 @@
      [:div.border-bottom
       [:div.container.py-4
        [:div.w-lg-75.mx-lg-auto
-        (breadcrumb (:location md) config)]]]
+        bc]]]
      [:div.overflow-hidden
       [:div.d-flex.flex-column.min-vh-100
        [:div.container.content-space-1
         [:div.w-lg-75.mx-lg-auto
-         (cond-> (render-md md config)
-           toc (add-toc (mark-active toc md) config))]]
+         content]]
        [:div.mt-auto
         (tc/footer config)]]]]
     (tc/script (tc/script-url config "vendor.min.js"))
     (tc/script (tc/script-url config "theme.min.js"))]])
 
+(defn md->page
+  "Given a parsed markdown structure, renders it into the resulting hiccup structure as a 
+   full html page."
+  [md config]
+  (->page
+   (render-md md config)
+   (breadcrumb (:location md) config)
+   config))
+
+(defn category-page
+  "Generates a category page hiccup structure for the given category.  The config should
+   contain all categories, and the articles within."
+  [category config]
+  (let [cat-conf (get-in config [:categories category])]
+    (-> [:h1 "todo"]
+        (add-categories (-> (:categories config)
+                            ;; Mark current category as active
+                            (assoc-in [category :active?] true)
+                            vals))
+        (->page
+         (breadcrumb (:location cat-conf) config)
+         config))))

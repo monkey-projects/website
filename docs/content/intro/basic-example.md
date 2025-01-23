@@ -1,12 +1,14 @@
 {:title "Basic Example"
  :tags ["examples"]
+ :category "Getting Started"
+ :summary "A basic example to show you how MonkeyCI build scripts work."
  :related [["intro/useful-example" "A more useful example"]
            ["registration" "How to register as a new user"]
 	   ["under-the-hood" "How MonkeyCI works under the hood"]
 	   ["sustainability" "Our sustainability goals"]
 	   ["security" "Security"]]}
 
-Let's show an example of how a *MonkeyCI* build script could look like:
+Let's show an example of how a simple *MonkeyCI* build script could look like:
 
 ```clojure
 (ns build

@@ -11,10 +11,12 @@
 (defn build-docs
   "Builds the docs to target directory"
   []
-  (db/build-all {:output doc-root
-                 :config {:base-url "staging.monkeyci.com"
-                          :api-url "http://localhost:3000"
-                          :path-prefix "/"}}))
+  (-> {:output doc-root
+       :config {:base-url "staging.monkeyci.com"
+                :api-url "http://localhost:3000"
+                :path-prefix "/"}}
+      (db/build-all)
+      (dissoc :files)))
 
 (defn handler [req]
   (log/info "Handling:" (:uri req))

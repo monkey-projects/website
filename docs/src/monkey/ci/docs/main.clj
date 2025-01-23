@@ -1,5 +1,6 @@
 (ns monkey.ci.docs.main
   (:require [babashka.fs :as fs]
+            [monkey.ci.docs.config :as dc]
             [monkey.ci.template
              [components :as tc]
              [icons :as i]]))
@@ -73,19 +74,12 @@
             :alt "SVG"
             :width 250}]]]])
 
-(defn- apply-prefix [path {:keys [path-prefix]}]
-  (-> (cond->> path
-        path-prefix (str path-prefix))
-      (.replaceAll "//" "/")))
-
 (defn breadcrumb [path conf]
   (letfn [(bc-item [{:keys [path label]}]
             [:li.breadcrumb-item
-             [:a {:href (apply-prefix path conf)} label]])]
+             [:a {:href path} label]])]
     [:nav
      (->> path
-          (concat [{:path "/"
-                    :label "Home"}])
           (map bc-item)
           (into [:ol.breadcrumb.mb-0]))]))
 
@@ -104,7 +98,7 @@
                [:div.flex-shrink-0
                 (i/icon :file-earmark)]
                [:div.flex-grow-1.ms-2
-                [:a.text-body {:href (apply-prefix path conf)} lbl]]])]
+                [:a.text-body {:href (dc/apply-prefix path (dc/articles-prefix conf))} lbl]]])]
       [:div.mt-7
        [:div.text-center.mb-7
         [:h4 "Related articles"]]
@@ -127,7 +121,7 @@
        (map (fn [{:keys [path title active?]}]
               [:li.nav-item
                [:a.nav-link
-                (cond-> {:href (apply-prefix path conf)}
+                (cond-> {:href (dc/apply-prefix path conf)}
                   active? (assoc :class "active"))
                 title]]))
        (into 

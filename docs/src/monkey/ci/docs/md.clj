@@ -4,8 +4,10 @@
             [clojure.edn :as edn]
             [clojure.java.io :as io]
             [clojure.tools.logging :as log]
+            [monkey.ci.docs.config :as dc]
             [nextjournal.markdown :as md]
-            [nextjournal.markdown.transform :as mdt]))
+            [nextjournal.markdown.transform :as mdt])
+  (:import [java.io BufferedReader PushbackReader Reader]))
 
 (defprotocol InputSource
   (->reader [x]))
@@ -43,38 +45,49 @@
 
 (defn- transform-link
   "Prepends any configured path prefix to relative paths"
-  [{:keys [path-prefix]} ctx {:keys [attrs] :as node}]
+  [conf ctx {:keys [attrs] :as node}]
   (letfn [(convert-path [p]
             (cond->> p
-              (relative? p) (str path-prefix)))]
+              (relative? p) (str (dc/articles-prefix conf))))]
     (mdt/into-markup [:a {:href (convert-path (:href attrs))}] ctx node)))
 
 (def transform-quote (partial mdt/into-markup [:blockquote.blockquote.blockquote-sm.mb-2]))
+
+(defn read-meta
+  "Given a reader, tries to read the leading metadata edn structure.  Input should be 
+   a `java.io.BufferedReader`"
+  [^BufferedReader b]
+  (let [r (PushbackReader. b)]
+    (try
+      (.mark b 1000) ; Support up to 1k buffer for invalid edn
+      (edn/read r)
+      (catch Exception ex
+        (if (.startsWith (ex-message ex) "No dispatch macro")
+          (.reset b)        ; No edn at start, so ignore it
+          (throw ex))))))
+
+(defn- hiccup-renderers [opts]
+  (assoc mdt/default-hiccup-renderers
+         :heading transform-heading
+         :plain (partial mdt/into-markup [:span])
+         :code transform-code
+         :link (partial transform-link opts)
+         :blockquote transform-quote
+         :table (partial mdt/into-markup [:table.table])))
+
+(defn ^BufferedReader buffered [^Reader r]
+  (BufferedReader. r))
 
 (defn parse
   "Parses the given markdown content and returns it as a hiccup style structure.
    Any leading edn structure is added to the metadata.  Extra options can be
    specified for transformations."
   [content & [opts]]
-  (with-open [b (java.io.BufferedReader. (->reader content))
-              r (java.io.PushbackReader. b)]
-    (let [meta (try
-                 (.mark b 1000) ; Support up to 1k buffer for invalid edn
-                 (edn/read r)
-                 (catch Exception ex
-                   (if (.startsWith (ex-message ex) "No dispatch macro")
-                     (.reset b)        ; No edn at start, so ignore it
-                     (throw ex))))
+  (with-open [b (buffered (->reader content))]
+    (let [meta (read-meta b)
           s (slurp b)]
       (assoc meta
              :contents
              (->> s
                   (md/parse)
-                  (mdt/->hiccup
-                   (assoc mdt/default-hiccup-renderers
-                          :heading transform-heading
-                          :plain (partial mdt/into-markup [:span])
-                          :code transform-code
-                          :link (partial transform-link opts)
-                          :blockquote transform-quote
-                          :table (partial mdt/into-markup [:table.table]))))))))
+                  (mdt/->hiccup (hiccup-renderers opts)))))))

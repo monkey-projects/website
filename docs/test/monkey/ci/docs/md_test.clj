@@ -38,9 +38,18 @@
                (sut/parse)
                :title))))
 
-  (testing "rewrites relative links to include configured prefix"
-    (is (= "/test-prefix/a/b/c"
+  (testing "rewrites relative links to include configured path prefix"
+    (is (= "/test-prefix/articles/a/b/c"
            (->> (sut/parse "{}\n[test link](a/b/c)" {:path-prefix "/test-prefix/"})
+                :contents
+                ;; Look up the href for the first :a tag
+                (hf/hiccup-find [:a])
+                (s/select [(s/nthpath 0 1) :href])
+                first))))
+
+  (testing "rewrites relative links to include configured articles prefix"
+    (is (= "/test-prefix/a/b/c"
+           (->> (sut/parse "{}\n[test link](a/b/c)" {:articles-prefix "/test-prefix/"})
                 :contents
                 ;; Look up the href for the first :a tag
                 (hf/hiccup-find [:a])

@@ -1,11 +1,12 @@
 {:title "Pricing"
+ :category :customers
  :related [["sustainability" "Our sustainability goals"]
            ["caching" "Build caches"]]}
 
 [MonkeyCI](https://monkeyci.com) is free to use up to a certain level.  We strive
 to allow our users to be able to use it for non-commercial projects.  Every user
 can [create one customer](customer-new) for free.  And each customer receives
-**5.000 credits per month** to spend on their builds.
+**1.000 credits per month** to spend on their builds.
 
 ## Credits
 

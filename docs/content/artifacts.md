@@ -1,5 +1,6 @@
 {:title "Artifacts"
  :category :builds
+ :summary "Learn how to use artifacts in order to share information between jobs, and make them available for download."
  :related [["caching" "Caching"]
            ["intro/basic-example" "Basic example"]
            ["intro/useful-example" "A more useful example"]]}

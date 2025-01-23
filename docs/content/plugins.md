@@ -1,4 +1,5 @@
 {:title "Plugins"
+ :category :extending
  :tags ["libraries"]}
 
 Plugins are a way to extend *MonkeyCI*'s functionality.  Basically, they are

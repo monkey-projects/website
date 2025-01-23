@@ -1,4 +1,5 @@
 {:title "Labels"
+ :category :builds
  :related [["params" "Build parameters"]
            ["customer" "Customers"]
 	   ["ssh-keys" "SSH keys"]]}

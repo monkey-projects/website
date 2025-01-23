@@ -1,4 +1,5 @@
 {:title "API reference"
+ :category :builds
  :related [["intro/basic-example" "Basic example"]
            ["intro/useful-example" "A more useful example"]]}
 

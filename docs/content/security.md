@@ -1,4 +1,5 @@
 {:title "Security"
+ :category :builds
  :related [["params" "Build parameters"]
            ["ssh-keys" "SSH keys"]]}
 

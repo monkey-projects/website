@@ -3,4 +3,10 @@
   {:label "Getting Started"}
 
   :builds
-  {:label "Builds"}}}
+  {:label "Builds"}
+
+  :customers
+  {:label "Customers"}
+
+  :extending
+  {:label "Extending"}}}

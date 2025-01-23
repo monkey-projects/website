@@ -1,4 +1,5 @@
 {:title "Why Clojure?"
+ :category :getting-started
  :related [["intro/basic-example" "Basic example"]
            ["intro/useful-example" "A more advanced example"]]}
 

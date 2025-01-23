@@ -1,3 +1,4 @@
-{:title "Create a New Customer"}
+{:title "Create a New Customer"
+ :category :customers}
 
 ### TODO

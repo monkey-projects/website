@@ -1,4 +1,5 @@
-{:title "Repositories"}
+{:title "Repositories"
+ :category :customers}
 
 Repositories are the central organization entity of *MonkeyCI*.  Repositories
 (or *repos* in short) are linked to a [customer](customers), but also to

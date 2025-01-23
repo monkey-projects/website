@@ -1,3 +1,4 @@
-{:title "Join an Existing Customer"}
+{:title "Join an Existing Customer"
+ :category :customers}
 
 ### TODO

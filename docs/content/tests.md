@@ -1,4 +1,5 @@
 {:title "Build Script Tests"
+ :category :builds
  :related [["cli" "The command-line interface"]]}
 
 As with all coding, or actually, with *everything*, you want to test things

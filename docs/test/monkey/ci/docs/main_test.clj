@@ -42,3 +42,7 @@
     (is (= "short title" (sut/short-title {:short "short title"
                                            :title "long title"})))
     (is (= "long title" (sut/short-title {:title "long title"})))))
+
+(deftest index-page
+  (testing "renders html page"
+    (is (= :html (first (sut/index-page {} {}))))))

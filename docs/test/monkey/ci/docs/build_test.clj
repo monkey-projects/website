@@ -4,19 +4,12 @@
             [monkey.ci.docs.build :as sut]
             [monkey.ci.template.utils :refer [with-tmp-dir]]))
 
-(deftest md-output-path
+(deftest output-path
   (testing "calcules directory relative to output according to input"
     (is (= "test-output/a/b/index.html"
-           (str (sut/md-output-path {}
-                                    (fs/path "test-input/a/b.md")
-                                    {:output "test-output"
-                                     :input "test-input"})))))
-
-  (testing "puts home file in root"
-    (is (= "test-output/index.html"
-           (str (sut/md-output-path {:home? true}
-                                    (fs/path "test-input/home.md")
-                                    {:output "test-output"}))))))
+           (str (sut/output-path (fs/path "test-input/a/b.md")
+                                 {:output "test-output"
+                                  :input "test-input"}))))))
 
 (deftest location
   (testing "root for home doc"

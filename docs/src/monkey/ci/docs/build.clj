@@ -16,18 +16,11 @@
   (and (not (fs/directory? x))
        (= "md" (fs/extension x))))
 
-(defn- output-path [in {:keys [output] :as conf}]
+(defn output-path [in {:keys [output] :as conf}]
   (-> (fs/strip-ext in)
       (as-> p (fs/relativize (dc/get-input conf) p))
       (fs/path idx-file)
       (as-> p (fs/path output p))))
-
-(defn md-output-path
-  "Calculates output path using the parsed markdown and input path"
-  [md in {:keys [output] :as conf}]
-  (if (:home? md)
-    (fs/path output idx-file)
-    (output-path in conf)))
 
 (def home-location
   {:path "/"
@@ -84,31 +77,28 @@
          (remove nil?)
          (assoc config :files))))
 
-(defn- gen-file [config {:keys [file md]}]
+(defn- gen-file [html out]
+  (tb/write-html html out)
+  out)
+
+(defn- article-file [config {:keys [file md]}]
   (log/debug "Generating output for" file)
   (let [html (m/md->page md (:config config))
-        out (md-output-path md file config)]
-    (tb/write-html html out)
-    out))
-
-(defn- build-dir
-  "Traverses the given directory tree and recursively generates pages from 
-   each encountered markdown file."
-  [{:keys [files] :as config}]
-  (->> files
-       (map (partial gen-file config))
-       (doall)))
+        out (output-path file config)]
+    (gen-file html out)))
 
 (defn- set-dir [config dir]
   (update config :output fs/path dir))
 
 (defn- gen-index
   "Generates index file, by finding the input file marked with `home?`"
-  [{:keys [files] :as config}]
+  [{:keys [files output] :as config}]
   (let [idx (->> files
                  (filter (comp :home? :md))
-                 (first))]
-    (assoc config :index (gen-file config idx))))
+                 (first)
+                 :md)]
+    (assoc config :index (gen-file (m/index-page idx config)
+                                   (fs/path output idx-file)))))
 
 (defn- for-articles [config]
   (set-dir config "articles/"))
@@ -120,11 +110,16 @@
   "Generates all article files.  Each of the files in the content directory are
    rendered as an article, mirroring the directory structure.  Only the file marked
    as `home?` is skipped, since it's used to build the base index page."
-  [config]
-  (->> (build-dir (for-articles config))
+  [{:keys [files] :as config}]
+  (->> files
+       (map (partial article-file (for-articles config)))
+       (doall)
        (assoc config :articles)))
 
-(defn configure-categories [{:keys [files categories] :as config}]
+(defn configure-categories
+  "Uses the information extracted from parsed markdown files, combined with configuration
+   to build a categories map."
+  [{:keys [files categories] :as config}]
   (->> (reduce (fn [res f]
                  (let [c (get-in f [:md :category])]
                    (cond-> res
@@ -136,14 +131,16 @@
           (assoc c :location [home-location
                               (category-location id c config)])))))
 
+(defn- add-categories [config]
+  (assoc config :categories (configure-categories config)))
+
 (defn- gen-categories
   "Generates categories files.  Each of the categories encountered when processing
    the articles is added here.  They are sorted according to the `cat-idx` property.
    The category page itself is composed of the summaries of each article document,
    or failing that, the first paragraph."
   [config]
-  (let [categories (configure-categories config)
-        config (assoc config :categories categories)]
+  (let [categories (:categories config)]
     (log/debugf "Generating %d category pages" (count categories))
     (->> categories
          (map (fn [[id cat]]
@@ -169,6 +166,7 @@
   (->> config
        (merge (load-config config))
        (parse-files)
+       (add-categories)
        (gen-index)
        (gen-categories)
        (gen-articles)

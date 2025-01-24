@@ -170,7 +170,7 @@
   [:li
    [:div.d-sm-flex
     [:div.flex-shrink-0.mb-3.mb-sm-0
-     (i/icon :question-circle-fill)]
+     [:div.text-primary.h5 (i/icon :question-circle-fill)]]
     [:div.flex-grow-1.ms-sm-3
      [:div.mb-5
       ;; Category label
@@ -201,3 +201,15 @@
         (->page
          (breadcrumb (:location cat-conf) config)
          (:config config)))))
+
+(defn index-page
+  "Generates an index page using the given markdown.  This is a combination of a category page
+   and an article page."
+  [md config]
+  (-> (render-md md (:config config))
+      (add-categories (-> (:categories config)
+                          ;; No active category for index page
+                          vals))
+      (->page
+       (breadcrumb (:location md) config)
+       (:config config))))

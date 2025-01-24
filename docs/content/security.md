@@ -11,7 +11,7 @@ it's often unavoidable to put credentials or ssh keys in build parameters.  *Mon
 that this information is only visible to the appropriate users.  To this end, the [build
 parameter values](params) and [ssh keys](ssh-keys) are **encrypted at rest**.  This means they
 are stored in an encrypted manner in the database.  It's only when [editing them](params/) or when
-using them in a build that the become decrypted.
+using them in a build that they are decrypted.
 
 The encryption key is safely stored in a vault with strict access restrictions.  In addition,
 each customer receives a unique **initialization vector**, which is used to ensure that

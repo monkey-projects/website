@@ -1,5 +1,7 @@
 {:title "A more useful example"
  :tags ["examples"]
+ :category :getting-started
+ :summary "A more extended example of a build script that can be used in a real-life situation."
  :related [["basic-example" "Basic example"]
            ["plugins" "Plugins"]
 	   ["tests" "Unit tests"]

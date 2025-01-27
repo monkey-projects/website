@@ -10,6 +10,10 @@ to high-level functions**.  It is advised to use the high-level functions in `mo
 unless you want to do something very specific, in which case you may also find useful
 functions in `monkey.ci.build.core` or any other adjoining namespace.
 
+See also the [cljdoc page](https://cljdoc.org/d/com.monkeyci/app/CURRENT/api/monkey.ci.build.v2)
+for the auto-generated documentation with links to the source code.  It's **always up-to-date**
+with the latest version.
+
 ## action-job
 
 Creates a new action job.

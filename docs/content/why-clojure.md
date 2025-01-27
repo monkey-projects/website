@@ -56,7 +56,9 @@ uses round brackets, with some other type of brackets as needed.  For example:
 ```
 
 But the purpose of this documentation is not to teach you Clojure.  There are [much
-better resources for that](https://clojure.org/guides/learn).
+better resources for that](https://clojure.org/guides/learn).  Also check out the
+excellent community-maintained [Clojure Guides](https://clojure-doc.org) and
+[Clojure Docs](https://clojuredocs.org).
 
 ## Easy To Use As Script
 

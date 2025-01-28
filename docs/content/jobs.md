@@ -37,7 +37,7 @@ failure, the job should return the `failure` value from the build api.
   (m/action-job
     "my-action"
     (fn [ctx]
-      (printn "This job is executed with this context:" ctx))))
+      (println "This job is executed with this context:" ctx))))
 
 ;; This job will fail
 (def failing-job
@@ -52,7 +52,7 @@ A message is not required on an error result, but it is more user-friendly.
 
 ## Container Jobs
 
-Container jobs are executed in their own container (as the name suggests).  You
+As the name suggests, container jobs are executed in their own container.  You
 need to indicate which image will be used for the job, and one or more script
 lines.  For example:
 
@@ -120,3 +120,15 @@ The value passed to `env` is a regular key-value map, where the key is the name
 of each environment variable.
 
 Environment variables an also be constructed from the [build parameters](params).
+
+## Startup Times
+
+Since action jobs are run inside the build script environment, and container jobs
+require starting a new container, action jobs have **very low latency** compared
+to container jobs.  The downside of action jobs is then that you cannot choose
+which tools are available, and they may "contaminate" each other, when multiple
+action jobs are run that have some kind of persistent impact.
+
+Starting a container job may incur a latency of up to a minute.  This is however
+**not charged** towards your credit consumption.  Only the seconds that the container
+script is actually running is taken into account.

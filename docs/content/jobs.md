@@ -19,8 +19,8 @@ will still be executed, but the build itself will be marked as **failed**.
 
 ## Action Jobs
 
-Action jobs are in essense Clojure functions that are called inside the build script.
-They are passed the build context, which can be used to fetch [build parameters](params),
+Action jobs are in essence **Clojure functions** that are called inside the build script.
+They receive build context as an argument, which can be used to fetch [build parameters](params),
 or get more information about the build trigger, such as the current branch or tag, or
 modified files.
 
@@ -52,7 +52,7 @@ A message is not required on an error result, but it is more user-friendly.
 
 ## Container Jobs
 
-As the name suggests, container jobs are executed in their own container.  You
+As the name suggests, container jobs are **executed in their own container**.  You
 need to indicate which image will be used for the job, and one or more script
 lines.  For example:
 
@@ -121,6 +121,41 @@ of each environment variable.
 
 Environment variables an also be constructed from the [build parameters](params).
 
+### Resources
+
+By default container jobs use **1 CPU and 2 GB of memory**, but you can override
+this by specifying the `:cpus` and `:memory` options when creating the job, or you
+can use the `cpus` and `memory` functions:
+
+```clojure
+(def heavy-job
+  (-> (container-job "heavy-lifting" {:cpus 2 :memory 16})
+      (image "...")
+      ;; other properties here
+      )
+
+(def another-heavy-job
+  (-> (container-job "more-heavy-lifting")
+      (image "...")
+      (cpus 2)
+      (memory 16)))
+```
+This will create a container job that uses 2 cpu cores and 16GB of memory.  This will
+of course count towards the [consumed credits](pricing).  They also have maximum
+values, as shown in this table:
+
+|Resource|Default|Minimum|Maximum|
+|---|---|---|---|
+|CPU|1|1|16|
+|Memory|2 GB|1 GB|64 GB|
+
+Note that configuring cpu's or memory **on an action job does not have any effect**.
+Also, setting the required memory for a job too low may result in job failure due to
+*out-of-memory*.
+
+The **available disk space** for a job, and also for the build script itself, is **50GB
+per job**.  This is currently not configurable.
+
 ## Startup Times
 
 Since action jobs are run inside the build script environment, and container jobs
@@ -132,3 +167,7 @@ action jobs are run that have some kind of persistent impact.
 Starting a container job may incur a latency of up to a minute.  This is however
 **not charged** towards your credit consumption.  Only the seconds that the container
 script is actually running is taken into account.
+
+The time a container job spends in the pending queue can also increase if there is **heavy
+load** and resources are unavailable.  We try to keep this to a minimum, but be aware
+that it may happen.

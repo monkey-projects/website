@@ -1,4 +1,5 @@
 {:title "Build parameters"
+ :category :builds
  :related [["labels" "Labels"]
            ["securit" "Security"]]}
 

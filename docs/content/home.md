@@ -13,10 +13,11 @@ Welcome to the [MonkeyCI](https://monkeyci.com) documentation center!
 ## What is MonkeyCI?
 
 *MonkeyCI* is a [CI/CD](https://en.wikipedia.org/wiki/CI/CD) pipeline runner that allows
-you to use code instead of `yaml` for configuration.
+you to use code in addition to `yaml` or [edn](https://github.com/edn-format/edn) for
+configuration.
 
 Suppose you're working on your newest project.  Of course, at some point you will want
-to automatically build it, maybe also deploy it somewhere.  And run your unit tests.
+to **automatically build it**, maybe also deploy it somewhere.  And run your unit tests.
 All automated!  *MonkeyCI* allows you to do all those things, and more!
 
 ## Why?
@@ -28,6 +29,14 @@ need conditions, maybe even loops.  After a while, your nice yaml script starts 
 look more and more like a coding experiment gone wrong.  Our philosophy is: **for
 coding, use a programming language**!  And our language of choice is [Clojure](https://clojure.org).
 Why Clojure?  Well, you can read [all about that here](why-clojure/).
+
+This opens up a lot of possibilities.  For example, you can write [unit tests](tests)
+to verify your build script or create [custom conditions](conditions) to support your
+complex workflows.
+
+*MonkeyCI* also allows you to [run your builds locally](local-builds), for those one-off
+scenario's that you don't want to use build credits for, or to do some local fine-tuning
+that unit tests cannot capture.
 
 ## Getting Started
 

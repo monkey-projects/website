@@ -167,22 +167,22 @@
    config))
 
 (defn- category-article [c art]
-  [:li
-   [:div.d-sm-flex
-    [:div.flex-shrink-0.mb-3.mb-sm-0
-     [:div.text-primary.h5 (i/icon :question-circle-fill)]]
-    [:div.flex-grow-1.ms-sm-3
-     [:div.mb-5
-      ;; Category label
-      [:span.text-cap (:label c)]
-      [:h5 (:title art)]
-      [:p (or (:summary art)
-              ;; If no summary specified, pick the first paragraph
-              (-> art
-                  :contents
-                  second))]]
-     (let [loc (-> art :location last)]
-       [:a {:href (:path loc)} [:span.me-1 "Read more"] (i/icon :chevron-right)])]]])
+  (let [loc (-> art :location last)]
+    [:li
+     [:div.d-sm-flex
+      [:div.flex-shrink-0.mb-3.mb-sm-0
+       [:div.text-primary.h5 (i/icon :question-circle-fill)]]
+      [:div.flex-grow-1.ms-sm-3
+       [:div.mb-5
+        ;; Category label
+        [:span.text-cap (:label c)]
+        [:a.link-dark {:href (:path loc)} [:h5 (:title art)]]
+        [:p (or (:summary art)
+                ;; If no summary specified, pick the first paragraph
+                (-> art
+                    :contents
+                    second))]]
+       [:a {:href (:path loc)} [:span.me-1 "Read more"] (i/icon :chevron-right)]]]]))
 
 (defn category-page
   "Generates a category page hiccup structure for the given category.  The config should

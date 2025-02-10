@@ -2,6 +2,8 @@
  :category :getting-started
  :related [["intro/basic-example" "Basic example"]
            ["intro/useful-example" "A more useful example"]
+           ["intro/yaml-example" "Yaml example"]
+           ["intro/json-example" "Json example"]
 	   ["jobs" "Jobs"]]}
 
 [EDN](https://github.com/edn-format/edn) is to Clojure what `JSON` is to JavaScript.
@@ -43,16 +45,16 @@ in a vector:
 ```
 
 Again, this is an `edn` structure that contains only a single expression, but this
-expression in turn contains two job definitions.  A `test` and a `publish` job,
-and `publish` [depends on](jobs) `test`, so it will only be exected once the tests
-have run succesfully.
+expression in turn contains **two job definitions**.  A `test` and a `publish` job,
+and `publish` [depends on](jobs) `test`, so it will only be executed once the tests
+have run successfully.
 
 ## Going Further
 
 The above examples are more or less what you would also write in any other `CI/CD`
-tools, but in `edn` instead of `yaml`.  Note that *MonkeyCI* also supports `yaml`,
-see [this example](intro/yaml-example), but it amounts to the same.  It contains a
-lot of repetition and you really need to know the correct names of all the map keys.
-It's also not possible to configure [conditional execution](conditions).  *MonkeyCI*
-can help you with this in another way.  See [an example using code](intro/basic-example)
-for this.
+tool, but in `edn` instead of `yaml`.  Note that *MonkeyCI* also supports `yaml`,
+see [this example](intro/yaml-example) and [json](intro/json-example), but it amounts
+to the same.  It contains **a lot of repetition** and you need to know the correct names
+of all the map keys, which can make it difficult to use.  It's also not possible to
+configure [conditional execution](conditions).  *MonkeyCI* can help you with this
+in another way.  See [an example using code](intro/basic-example) for this.

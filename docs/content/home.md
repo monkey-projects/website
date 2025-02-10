@@ -3,6 +3,9 @@
  :home? true
  :related [["intro/basic-example" "Basic example"]
            ["intro/useful-example" "A more useful example"]
+           ["intro/edn-example" "Edn example"]
+           ["intro/json-example" "Json example"]
+           ["intro/yaml-example" "Yaml example"]
 	   ["registration" "How to register as a new user"]
 	   ["under-the-hood" "Under the hood"]
 	   ["sustainability" "Our sustainability goals"]
@@ -64,8 +67,9 @@ From then on it's totally up to you: what [jobs](jobs/) are in the build, what
 ### Your First Build Script
 
 Now it's time to write your first build script!  The best way to learn how to do that is
-by looking at some examples.
+by looking at **some examples**.
 
 First take a look at the [basic example](intro/basic-example/).  After that, you can
-move on to a [more advanced example](intro/useful-example/).  We also have a [cookbook](cookbook/)
-for common scenarios.
+move on to a [more advanced example](intro/useful-example/).  *MonkeyCI* also supports
+[edn](intro/edn-example), [json](intro/json-example) and [yaml](intro/yaml-example).
+We also have a [cookbook](cookbook/) for common scenarios.

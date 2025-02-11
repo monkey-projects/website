@@ -143,7 +143,7 @@
 (defn notify [ctx]
   (when (release? ctx)
     (p/pushover-msg {:msg (str "Website version " (bc/tag ctx) " has been published.")
-                     :dependencies ["image"]})))
+                     :dependencies ["push-manifest"]})))
 
 [test-common
  deploy-common

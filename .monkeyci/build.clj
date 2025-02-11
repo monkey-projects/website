@@ -116,10 +116,14 @@
   "Generates the container image"
   [ctx]
   (when (build-image? ctx)
-    (-> (kaniko/image {:target-img (str img-base ":" (img-version ctx))} ctx)
-        (m/depends-on ["build-site" "build-docs"])
-        (m/restore-artifacts [(m/artifact "site" "site/target")
-                              (m/artifact "docs" "docs/target/site")]))))
+    (kaniko/multi-platform-image-jobs
+     {:target-img (str img-base ":" (img-version ctx))
+      :archs [:arm :amd]
+      :image {:container-opts
+              {:dependencies ["build-site" "build-docs"]
+               :restore-artifacts
+               [(m/artifact "site" "site/target")
+                (m/artifact "docs" "docs/target/site")]}}})))
 
 (defn deploy [ctx]
   (when (and (build-image? ctx) (not (release? ctx)))

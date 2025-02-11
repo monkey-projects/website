@@ -22,8 +22,8 @@ Let's take a look at a simple declarative example, stored as `.monkeyci/build.ed
 ```
 
 This is the **simplest possible configuration** of a [container job](jobs).  It will
-start a container containing `maven` and run `mvn verify` in the build checkout
-directory.
+start a container containing [Apache Maven](https://maven.apache.org/) and run `mvn
+verify` in the build checkout directory.
 
 Now, we previously stated that the last expression should be the job, and that's
 exactly what this script does: it **declares a single job**, which is also the
@@ -48,6 +48,26 @@ Again, this is an `edn` structure that contains only a single expression, but th
 expression in turn contains **two job definitions**.  A `test` and a `publish` job,
 and `publish` [depends on](jobs) `test`, so it will only be executed once the tests
 have run successfully.
+
+## Why Use Edn?
+
+Why should you use `edn` instead of, say, `yaml`?  It's completely up to you, but `edn`
+is a bit more powerful than `yaml`.  It has a notion of [keywords](https://clojure.org/reference/reader#_literals),
+which are heavily used by the *MonkeyCI* for job configuration and allow for namespaces,
+which are used by [extensions](extensions).
+Also, it may be better suited to do some **whitespace escaping**, which may be difficult
+in `yaml`.  Furthermore, `edn` supports [reader tags](https://github.com/edn-format/edn#tagged-elements),
+which are used to extend the language in order to process more complex information.
+Currently, *MonkeyCI* is not using this in build scripts, but we may do so in the
+future.
+
+It's also a small **step up to full Clojure** code, which you will need when you want
+to do more complex flows and [conditions](conditions) in your build scripts.  Should
+the need arise, you can simply rename your `build.edn` to `build.clj` and go from
+there.  With `yaml` you would have to rewrite some of your datastructures in this case.
+
+But note that *MonkeyCI* supports a mixture of **all of the above**.  So you can also write
+part of your script in `yaml`, another part in `edn` and still other parts in Clojure!
 
 ## Going Further
 

@@ -22,10 +22,10 @@
                :lib com.monkeyci/site-template
                :scm {:url "https://github.com/monkey-projects/website"}
                :pom-data
-               [:licenses
-                [:license
-                 [:name "GPL v3"]
-                 [:url "https://www.gnu.org/licenses/gpl-3.0.en.html#license-text"]]]}}
+               [[:licenses
+                 [:license
+                  [:name "GPL v3"]
+                  [:url "https://www.gnu.org/licenses/gpl-3.0.en.html#license-text"]]]]}}
 
   :install
   {:exec-fn monkey.build/jar+install}

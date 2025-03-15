@@ -44,14 +44,12 @@ namespace.  As an example, suppose you have defined a parameter set with a key c
 ```clojure
 ;; Example build script that illustrates how to use build parameters
 (ns build
-  (:require [monkey.ci.build
-             [api :as api]
-	     [core :as c]]))
+  (:require [monkey.ci.build.v2 :as m]))
 
-(c/action-job
+(m/action-job
   "use-params"
   (fn [ctx]
-    (let [params (api/build-params ctx)]
+    (let [params (m/build-params ctx)]
       (println "The secret password is:" (get params "PASSWORD")))))
 ```
 

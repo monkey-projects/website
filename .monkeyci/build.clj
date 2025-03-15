@@ -138,7 +138,7 @@
            bc/success
            (assoc bc/failure :message "Unable to patch version in infra repo"))
          (assoc bc/failure :message "No github token provided")))
-     {:dependencies ["image"]})))
+     {:dependencies ["push-manifest"]})))
 
 (defn notify [ctx]
   (when (release? ctx)

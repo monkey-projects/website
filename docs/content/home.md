@@ -72,4 +72,4 @@ by looking at **some examples**.
 First take a look at the [basic example](intro/basic-example/).  After that, you can
 move on to a [more advanced example](intro/useful-example/).  *MonkeyCI* also supports
 [edn](intro/edn-example), [json](intro/json-example) and [yaml](intro/yaml-example).
-We also have a [cookbook](cookbook/) for common scenarios.
+We also have a [cookbook](/categories/cookbook/) for common scenarios.

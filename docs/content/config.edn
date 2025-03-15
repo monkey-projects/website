@@ -9,4 +9,7 @@
   {:label "Customers"}
 
   :extending
-  {:label "Extending"}}}
+  {:label "Extending"}
+
+  :cookbook
+  {:label "Cookbook"}}}

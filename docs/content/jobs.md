@@ -33,7 +33,7 @@ failure, the job should return the `failure` value from the build api.
   (:require [monkey.ci.build.v2 :as m]))
 
 ;; This job will return `nil`, which means it succeeds
-(def my-action
+(def success-job
   (m/action-job
     "my-action"
     (fn [ctx]
@@ -46,6 +46,10 @@ failure, the job should return the `failure` value from the build api.
     (fn [ctx]
       (-> m/failure
           (m/with-message "The job has failed because I wanted it to")))))
+
+;; As usual, return all jobs in a list
+[success-job
+ failing-job]
 ```
 
 A message is not required on an error result, but it is more user-friendly.
@@ -57,8 +61,8 @@ need to indicate which image will be used for the job, and one or more script
 lines.  For example:
 
 ```clojure
-(def some-container-job
-  (-> (m/container-job "example-job")
+(def list-files-job
+  (-> (m/container-job "list-files")
       (m/image "docker.io/debian:latest")
       (m/script ["ls -l"])))
 ```

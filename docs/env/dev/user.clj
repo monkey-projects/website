@@ -28,7 +28,7 @@
 (defn serve
   "Starts a local http server that hosts the documentation site"
   [& [opts]]
-  (http/start-server handler (merge {:port 8080} opts)))
+  (http/start-server handler (merge {:port 8090} opts)))
 
 (defonce server (atom nil))
 

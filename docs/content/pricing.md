@@ -56,7 +56,6 @@ This makes your builds cheaper and they also consume [less energy](sustainabilit
 
 ## Commercial Use
 
-*MonkeyCI* is only **free for non-commercial use**.  Should you want to use it for
-commercial purposes (e.g. to build non-free software), you are kindly asked to
-switch to a paying plan.  You will **still receive the free 5.000 credits** per month,
-and you receive an **additional 2.000 credits per paying user**.
+*MonkeyCI* is only **free for non-commercial use**.  Although we are **planning to add
+a commercial offering** in the near future, we are postponing this until we have worked
+out most of the kinks, since this is a very young product.

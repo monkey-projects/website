@@ -160,6 +160,22 @@ Also, setting the required memory for a job too low may result in job failure du
 The **available disk space** for a job, and also for the build script itself, is **50GB
 per job**.  This is currently not configurable.
 
+### CPU Architectures
+
+Currently, *MonkeyCI* offers two possible architectures to run your containers on: `ARM`
+and `AMD`.  This does depend on the availability with our cloud partner, but normally
+you can choose which one you want.  By default, this is `AMD`, which is also the most
+widely used architecture, but you could switch to `ARM` by specifying the `:arch` property
+in your job:
+
+```clojure
+(-> (container-job "arm-job" {:arch :arm})
+    (image "docker.io/alpine:latest")
+    (script ["echo \"I'm running on ARM!\""]))
+```
+
+This could be useful to build container images for multiple platforms, for example.
+
 ## Startup Times
 
 Since action jobs are run inside the build script environment, and container jobs

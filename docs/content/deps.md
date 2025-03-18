@@ -15,7 +15,7 @@ to declare dependencies, like so:
 ```clojure
 ;; Example deps.edn file
 ;; Add the maven plugin library
-{:deps {com.monkeyci/plugin-mvn {:mvn/version "1.0.0"}}}
+{:deps {com.monkeyci/plugin-mvn {:mvn/version "0.1.0"}}}
 ```
 
 The file format is [EDN](https://github.com/edn-format/edn), short for *extenisble

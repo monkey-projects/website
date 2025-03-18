@@ -3,6 +3,7 @@
  :category :getting-started
  :summary "A more extended example of a build script that can be used in a real-life situation."
  :related [["basic-example" "Basic example"]
+           ["yaml-example" "Yaml example"]
            ["plugins" "Plugins"]
 	   ["tests" "Unit tests"]
 	   ["artifacts" "Artifacts"]]}
@@ -160,15 +161,15 @@ for all their projects.  *MonkeyCI* offers a solution for this in the form of
 [plugins](plugins/)!  With these you can create a **reusable library** that
 provides commonly used functionality that can be [included](deps/) by other
 developers in their projects.  And since it uses the same infrastructure as any other
-Java library, you can use any existing tools that help with that.  Assuming such a
-plugin already exists (which we're working on), the above 30-line script can become
-*a lot* shorter, like this:
+Java library, you can use any existing tools that help with that.  We have already
+provided a [plugin for Maven](https://github.com/monkey-projects/plugin-mvn.git), and
+if you use it, the above 30-line script can become *a lot* shorter, like this:
 
 ```clojure
 (ns build
-  (:use [monkey.ci.plugin.mvn]))
+  (:require [monkey.ci.plugin.mvn :as mvn]))
 
-(mvn-lib)
+(mvn/lib)
 ```
 
 That's it!  Really?  Well, it takes a little bit more than that, because in order to

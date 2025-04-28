@@ -1,11 +1,12 @@
-{:deps {hiccup/hiccup {:mvn/version "2.0.0-RC5"}}
+{:deps {hiccup/hiccup {:mvn/version "2.0.0-RC5"}
+        org.clj-commons/hickory {:mvn/version "0.7.7"}}
  :paths ["src"]
 
  :aliases
  {:test
   {:extra-deps {com.monkeyprojects/build {:mvn/version "0.3.1"}
                 ch.qos.logback/logback-classic {:mvn/version "1.5.18"}}
-   :extra-paths ["test"]
+   :extra-paths ["test" "dev-resources"]
    :exec-fn monkey.test/all}
 
   :junit

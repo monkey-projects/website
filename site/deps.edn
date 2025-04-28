@@ -1,30 +1,24 @@
-{:deps {com.monkeyci/site-template {:mvn/version "0.2.2"}}
+{:deps {com.monkeyci/site-template {:mvn/version "0.2.2"}
+        com.monkeyci/template-build {:local/root "../build"}}
  :paths ["src"]
 
  :aliases
  {:dev
   {:extra-paths ["env/dev" "test"]
-   :override-deps {com.monkeyci/site-template {:local/root "../common"}}
-   :extra-deps {com.monkeyci/template-build {:local/root "../build"}}}
+   :override-deps {com.monkeyci/site-template {:local/root "../common"}}}
 
   :build
-  {:extra-deps {com.monkeyci/template-build {:local/root "../build"}}
-   :exec-fn monkey.ci.template.build/site
-   :exec-args {:output "target"
-               :site-fn monkey.ci.site.main/main}}
-
-  :page/not-found
-  ;; Generates the error-404 page
-  {:extra-deps {com.monkeyci/template-build {:local/root "../build"}}
-   :exec-fn monkey.ci.template.build/page
-   :exec-args {:output "target/error-404.html"
-               :site-fn monkey.ci.template.components/not-found-page}}
+  ;; clj -X:build
+  {:exec-fn monkey.ci.site.core/build
+   :exec-args {:output "target"}}
 
   :test
-  {:extra-deps {com.monkeyprojects/build {:mvn/version "0.2.0"}
-                ch.qos.logback/logback-classic {:mvn/version "1.5.16"}}
+  ;; clj -X:test
+  {:extra-deps {com.monkeyprojects/build {:mvn/version "0.3.1"}
+                ch.qos.logback/logback-classic {:mvn/version "1.5.18"}}
    :extra-paths ["test"]
    :exec-fn monkey.test/all}
   
   :junit
+  ;; clj -X:test:junit
   {:exec-fn monkey.test/junit}}}

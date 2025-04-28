@@ -54,7 +54,7 @@
       (is (bc/container-job? job)))
     
     (testing "renders site and 404 page"
-      (is (= 2 (-> job
+      (is (= 1 (-> job
                    (m/script)
                    (count)))))))
 

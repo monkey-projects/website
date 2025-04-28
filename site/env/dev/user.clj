@@ -1,10 +1,13 @@
 (ns user
-  (:require [monkey.ci.template.build :as tb]))
+  (:require [monkey.ci.template.build :as tb]
+            [monkey.ci.site.main :as sm]
+            [monkey.ci.template.components :as tc]))
 
 (defn build-site
-  "Builds the docs to target directory"
+  "Builds the site to target directory"
   []
-  (tb/build {:output "target"
-             :site-fn 'monkey.ci.site.main/main
-             :config {:base-url "staging.monkeyci.com"
-                      :api-url "http://localhost:3000"}}))
+  (tb/site {:output "target"
+            :pages {"index" sm/main
+                    "error-404" tc/not-found-page}
+            :config {:base-url "staging.monkeyci.com"
+                     :api-url "http://localhost:3000"}}))

@@ -98,7 +98,7 @@
                       (common-published? ctx) (conj "deploy-common")))
       (m/work-dir id)))
 
-(def build-site (partial build "site" [:build :page/not-found] "target"))
+(def build-site (partial build "site" [:build] "target"))
 (def build-docs (partial build "docs" [:build] "target/site"))
 
 (def img-base "fra.ocir.io/frjdhmocn5qi/website")

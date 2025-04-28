@@ -61,10 +61,22 @@
     (generate output #(f (load-config config)))
     (throw (ex-info "Could not resolve site fn" {:site-fn site-fn}))))
 
+(defn pages
+  "Generates multiple pages according to config"
+  [{:keys [pages output] :as opts}]
+  (->> pages
+       (map (fn [[p f]]
+              (page (assoc opts
+                           :site-fn f
+                           :output (fs/path output (str p ".html"))))))
+       (doall)))
+
 (defn site
   "Builds the entire site by generating html and copying assets."
   [{:keys [output] :as opts}]
   (copy-assets output)
-  (page opts))
+  (cond
+    (:site-fn opts) (page opts)
+    (:pages opts) (pages opts)
+    :else (throw (ex-info "Requires either :pages or :site-fn"))))
 
-(def build site)

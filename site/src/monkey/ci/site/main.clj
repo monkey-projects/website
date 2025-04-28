@@ -8,7 +8,7 @@
         ;; Used in scripts
         [:script (h/raw (format "var apiUrl='%s';" (cc/api-url config)))]))
 
-(def header cc/header)
+(def header cc/header-dark)
 
 (def input-card
   [:div.text-center.mx-auto.mb-7
@@ -240,13 +240,18 @@
    features-expanded
    call-to-action])
 
+(defn footer [config]
+  [(cc/footer config)
+   (cc/script (cc/script-url config "vendor.min.js"))
+   (cc/script (cc/script-url config "theme.min.js"))
+   (cc/script "./js/site.js")])
+
 (defn main [config]
   [:html
    (head config)
-   [:body
-    (header config)
-    (content config)
-    (cc/footer config)
-    (cc/script (cc/script-url config "vendor.min.js"))
-    (cc/script (cc/script-url config "theme.min.js"))
-    (cc/script "./js/site.js")]])
+   (vec
+    (concat
+     [:body
+      (header config)
+      (content config)]
+     (footer config)))])

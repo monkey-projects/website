@@ -4,4 +4,4 @@
 
 (deftest about
   (testing "creates html page"
-    (is (= :html (first (sut/about {}))))))
+    (is (= :html (first (sut/about {:svg-path "dev-resources/svg"}))))))

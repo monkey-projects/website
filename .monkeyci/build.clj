@@ -19,10 +19,12 @@
 (def config-by-env
   {:prod
    {:base-url "monkeyci.com"
-    :path-prefix "/"}
+    :path-prefix "/"
+    :svg-path "dev-resources/svg"}
    :staging
    {:base-url "staging.monkeyci.com"
-    :path-prefix "/"}})
+    :path-prefix "/"
+    :svg-path "dev-resources/svg"}})
 
 (defn touched? [re]
   (fn [ctx]

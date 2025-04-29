@@ -14,7 +14,7 @@
 (defn get-env
   "Determines deployment environment from the build info"
   [ctx]
-  (if (bc/tag ctx) :prod :staging))
+  (if (m/tag ctx) :prod :staging))
 
 (def config-by-env
   {:prod
@@ -26,7 +26,7 @@
 
 (defn touched? [re]
   (fn [ctx]
-    (bc/touched? ctx re)))
+    (m/touched? ctx re)))
 
 ;; TODO Also test/deploy common if it's a release
 
@@ -35,7 +35,7 @@
   (touched? #"^common/.*"))
 
 (def common-published?
-  (every-pred common-changed? bc/main-branch?))
+  (every-pred common-changed? m/main-branch?))
 
 (defn- clj-cmds
   "Runs one or more clojure commands"
@@ -103,13 +103,13 @@
 
 (def img-base "fra.ocir.io/frjdhmocn5qi/website")
 
-(def release? (comp some? bc/tag))
-(def build-image? (some-fn bc/main-branch? bc/tag))
+(def release? (comp some? m/tag))
+(def build-image? (some-fn m/main-branch? m/tag))
 
 (defn img-version
   "Determines the image version to use in the tag"
   [ctx]
-  (or (some->> (bc/tag ctx) (str "release-"))
+  (or (some->> (m/tag ctx) (str "release-"))
       (get-in ctx [:build :build-id])))
 
 (defn image
@@ -142,7 +142,7 @@
 
 (defn notify [ctx]
   (when (release? ctx)
-    (p/pushover-msg {:msg (str "Website version " (bc/tag ctx) " has been published.")
+    (p/pushover-msg {:msg (str "Website version " (m/tag ctx) " has been published.")
                      :dependencies ["push-manifest"]})))
 
 [test-common

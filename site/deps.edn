@@ -10,7 +10,8 @@
   :build
   ;; clj -X:build
   {:exec-fn monkey.ci.site.core/build
-   :exec-args {:output "target"}}
+   :exec-args {:output "target"
+               :config {:svg-path "dev-resources/svg"}}}
 
   :test
   ;; clj -X:test

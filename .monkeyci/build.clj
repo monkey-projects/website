@@ -120,7 +120,7 @@
   (when (build-image? ctx)
     (kaniko/multi-platform-image-jobs
      {:target-img (str img-base ":" (img-version ctx))
-      :archs [#_:arm :amd]
+      :archs [:arm :amd]
       :image {:container-opts
               {:dependencies ["build-site" "build-docs"]
                :restore-artifacts

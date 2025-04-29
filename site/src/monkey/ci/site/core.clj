@@ -8,7 +8,7 @@
 
 (def site-pages
   {"index" m/main
-   "about" a/about
+   "about/index" a/about
    "error-404" tc/not-found-page})
 
 (defn build [opts]

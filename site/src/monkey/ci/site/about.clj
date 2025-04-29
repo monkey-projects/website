@@ -19,7 +19,7 @@
    {:style {:top "-6rem"
             :left "-6rem"}}
    [:img
-    {:src (tc/assets-url conf "svg/components/shape-1.svg")
+    {:src (tc/assets-url conf "/svg/shape-1.svg")
      :width 500
      :style {:width "12rem"}}]])
 
@@ -28,7 +28,7 @@
    {:style {:bottom "-6rem"
             :right "-7rem"}}
    [:img
-    {:src (tc/assets-url "svg/components/shape-7.svg")
+    {:src (tc/assets-url "/svg/shape-7.svg")
      :width 150}]])
 
 (defn description [conf]
@@ -60,7 +60,7 @@
         (entry "teh/teh002"
                "Workable Work"
                [:p
-                "Happy people that feel respected will love doing what they do, and they will do it better. "
+                "Happy people who feel respected will love doing what they do, and they will do it better. "
                 "That's why we try to make everybody feel as good as possible around the workplace.  We "
                 "respect work-life balance.  After all, the economy should serve mankind, not the other "
                 "way around."])

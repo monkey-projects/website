@@ -28,7 +28,7 @@
    {:style {:bottom "-6rem"
             :right "-7rem"}}
    [:img
-    {:src (tc/assets-url "/svg/shape-7.svg")
+    {:src (tc/assets-url conf "/svg/shape-7.svg")
      :width 150}]])
 
 (defn description [conf]

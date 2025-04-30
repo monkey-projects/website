@@ -244,7 +244,7 @@
   [(cc/footer config)
    (cc/script (cc/script-url config "vendor.min.js"))
    (cc/script (cc/script-url config "theme.min.js"))
-   (cc/script "./js/site.js")])
+   (cc/script (cc/site-url config "/js/site.js"))])
 
 (defn main [config]
   [:html

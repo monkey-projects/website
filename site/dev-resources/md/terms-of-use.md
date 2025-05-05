@@ -4,7 +4,7 @@
 
 Welcome to **MonkeyCI**, a web application operated by **Monkey Projects BV** ("we", "us", or "our"). These Terms of Use ("Terms") govern your access to and use of MonkeyCI, including any associated features, content, and services (collectively, the "Service").
 
-By creating an account or using MonkeyCI in any way, you agree to be bound by these Terms and our [Privacy Policy](privacy-policy.md).
+By creating an account or using MonkeyCI in any way, you agree to be bound by these Terms and our [Privacy Policy](/privacy-policy).
 
 ---
 

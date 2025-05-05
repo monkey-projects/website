@@ -1,8 +1,8 @@
 {:title "Repositories"
- :category :customers}
+ :category :orgs}
 
 Repositories are the central organization entity of *MonkeyCI*.  Repositories
-(or *repos* in short) are linked to a [customer](customers), but also to
+(or *repos* in short) are linked to a [organization](orgs), but also to
 some **external Git repository**.  This repository could be hosted anywhere, but
 it will most likely be one of the supported platforms ([Github](https://github.com),
 [BitBucket](https://bitbucket.org)).

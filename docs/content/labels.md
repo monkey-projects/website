@@ -1,7 +1,7 @@
 {:title "Labels"
  :category :builds
  :related [["params" "Build parameters"]
-           ["customer" "Customers"]
+           ["orgs" "Organizations"]
 	   ["ssh-keys" "SSH keys"]]}
 
 Labels are used extensively throughout *MonkeyCI* to group several kinds of objects
@@ -13,7 +13,7 @@ for various purposes.  The main applications for labels are:
 
 ## Group Repositories
 
-Over time, the number of repositories that a customer has can become very large.
+Over time, the number of repositories that a organization has can become very large.
 In order to allow for users to be able to have an overview over these repositories,
 the user interface allows to group them according to their assigned labels.  The
 *group by* dropdown in the repositories overview screen will display any of the
@@ -40,7 +40,7 @@ declare your labels accordingly to avoid such collisions.
 
 Sometimes a repository is private, and it can only be checked out **if a matching SSH key
 is provided**.  In order to be able to build from these repositories, *MonkeyCI* allows you
-to configure [SSH keys](ssh-keys) on the customer level.  Builds for repositories with
+to configure [SSH keys](ssh-keys) on the organization level.  Builds for repositories with
 the **matching labels**, similar to build parameters as described above, are assigned those
 keys when checking out the code.
 

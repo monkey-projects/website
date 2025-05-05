@@ -14,8 +14,8 @@ are stored in an encrypted manner in the database.  It's only when [editing them
 using them in a build that they are decrypted.
 
 The encryption key is safely stored in a vault with strict access restrictions.  In addition,
-each customer receives a unique **initialization vector**, which is used to ensure that
-encrypted values are also unique and that other customer's users are not able to figure
+each organization receives a unique **initialization vector**, which is used to ensure that
+encrypted values are also unique and that other organization's users are not able to figure
 out your sensitive information.  This initialization vector (and of course the encryption
 keys) never leave the backend.  They are not transmitted to clients or other parties in
 any way.

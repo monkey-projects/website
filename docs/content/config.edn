@@ -5,8 +5,8 @@
   :builds
   {:label "Builds"}
 
-  :customers
-  {:label "Customers"}
+  :orgs
+  {:label "Organizations"}
 
   :extending
   {:label "Extending"}

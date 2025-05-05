@@ -26,7 +26,7 @@ be executed by *MonkeyCI* if you put it in your repository at `/.monkeyci/build.
 Commit the file to your repository, push it to [Github](https://github.com) or
 [Bitbucket](https://bitbucket.org) and log in at [MonkeyCI](https://app.monkeyci.com).
 If it's your first time, a new user will automatically be created and you can also
-create a [new customer](customer-new/), or [join an existing one](customer-join/).
+create a [new organization](org-new/), or [join an existing one](org-join/).
 Go ahead, it's [free](pricing/)!
 
 So, let's analyze the above file line by line.

@@ -36,13 +36,13 @@ VERSION:
 COMMANDS:
    run                  Runs build locally
    verify               Verifies local build script
-   list                 Lists builds for customer or repo
-   watch                Logs build events for customer or repo
+   list                 Lists builds for organization or repo
+   watch                Logs build events for organization or repo
    test                 Runs build script unit tests
 
 GLOBAL OPTIONS:
    -s, --server S       Server URL
-   -c, --customer-id S  Customer id
+   -o, --org-id S       Organization id
    -r, --repo-id S      Repository id
    -?, --help
 ```

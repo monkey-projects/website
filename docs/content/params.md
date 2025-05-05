@@ -9,8 +9,8 @@ information** like credentials or signing keys.
 
 ## Configuring
 
-Build parameters are linked to a [customer](customer/).  In order to edit
-these parameters, go to the customer screen, and click the "Parameters" button.
+Build parameters are linked to an [organization](orgs/).  In order to edit
+these parameters, go to the org screen, and click the "Parameters" button.
 There you will see an overview of your already configured parameters.  Build
 parameters are **grouped in sets**, and each set can contain **multiple parameter
 keys and values**.  A set can also have [labels](labels/), which are used
@@ -18,7 +18,7 @@ to determine which [repository](repos/) builds have access to which parameters.
 Repositories that have **the same values** for each of the labels defined in
 the parameter set, will gain access to that set at build time.
 
-If **no labels** are defined on a parameter set, **all builds** for this customer
+If **no labels** are defined on a parameter set, **all builds** for this org
 will have access to that set.
 
 Although it is possible to define the same parameter key multiple times in one

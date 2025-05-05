@@ -79,4 +79,3 @@
     (:site-fn opts) (page opts)
     (:pages opts) (pages opts)
     :else (throw (ex-info "Requires either :pages or :site-fn"))))
-

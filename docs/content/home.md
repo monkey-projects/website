@@ -16,17 +16,8 @@ Welcome to the [MonkeyCI](https://monkeyci.com) documentation center!
 ## What is MonkeyCI?
 
 *MonkeyCI* is a [CI/CD](https://en.wikipedia.org/wiki/CI/CD) pipeline runner that allows
-you to use code in addition to `yaml` or [edn](https://github.com/edn-format/edn) for
-configuration.
-
-Suppose you're working on your newest project.  Of course, at some point you will want
-to **automatically build it**, maybe also deploy it somewhere.  And run your unit tests.
-All automated!  *MonkeyCI* allows you to do all those things, and more!
-
-## Why?
-
-What makes *MonkeyCI* different from other similar tools?  We allow you **to use code**
-to define your build pipelines.  Most other tools only allow `yaml`.  We also support
+you to use code in addition to `yaml`, `json` or [edn](https://github.com/edn-format/edn) for
+configuration.  Most other tools only allow `yaml`.  We also support
 this, but only for the basic configurations.  For more complex situations, you will
 need conditions, maybe even loops.  After a while, your nice yaml script starts to
 look more and more like a coding experiment gone wrong.  Our philosophy is: **for
@@ -40,6 +31,12 @@ complex workflows.
 *MonkeyCI* also allows you to [run your builds locally](local-builds), for those one-off
 scenario's that you don't want to use build credits for, or to do some local fine-tuning
 that unit tests cannot capture.
+
+## Is MonkeyCI For You?
+
+For any coding project that has more than the most basic build flow, *MonkeyCI* is surely
+something you may consider using.  If you also require the **ability to test and extend**
+your build scripts, then *MonkeyCI* is most definitely worth a try.
 
 ## Getting Started
 

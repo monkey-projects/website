@@ -13,6 +13,7 @@ RUN cd /tmp/bootstrap* \
 
 # Main website
 ADD site/target/ /var/www/html/site
+RUN ln -s /var/www/html/site /var/www/html/www
 # Docs site
 ADD docs/target/site/ /var/www/html/docs
 # Monkey projects static site

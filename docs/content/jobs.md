@@ -54,6 +54,34 @@ failure, the job should return the `failure` value from the build api.
 
 A message is not required on an error result, but it is more user-friendly.
 
+### Working Directory
+
+Each job has a working directory, which by default is the build checkout directory.
+This is the location where the repository is checked out.  File-related functions
+usually need this location to do their work.  But be careful, **the working directory
+is not always the current directory!**  So you can't just start creating or
+modifying files using relative file paths assuming you will be in the right
+directory.  To ensure you always use the correct paths, use the `in-work` function
+provided by the api.  This creates an absolute path from any path relative to the
+current job working directory.
+
+```clojure
+(def file-creating-job
+  (-> (m/action-job "create-file"
+        (fn [ctx]
+	  ;; This won't necessarily write the file in the right location
+	  (spit "test.txt" "This will probably not work")
+	  ;; This will work because it uses an absolute path
+	  (spit (m/in-work ctx "test.txt") "This will most certainly work")))
+      (m/work-dir "subdir")))
+```
+
+In the above example, the first `spit` will write information to a file called `test.txt`,
+but this may be in another location, most likely the `.monkeyci` directory of your build,
+which is probably not what you want.  The second `spit` uses the `in-work` function,
+which will correctly calculate the absolute path to use for the job, given the
+build checkout directory and the "subdir" subdirectory the job runs in.
+
 ## Container Jobs
 
 As the name suggests, container jobs are **executed in their own container**.  You

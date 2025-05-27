@@ -12,9 +12,13 @@
     suffix (str suffix)
     path (str path)))
 
+(defn assets-url [{:keys [assets-format] :as conf} path]
+  (if assets-format
+    (format assets-format path)
+    (make-url {:prefix "assets"} conf path)))
+
 (def site-url (partial make-url {:prefix "www"}))
 (def app-url (partial make-url {:prefix "app"}))
-(def assets-url (partial make-url {:prefix "assets"}))
 (def docs-url (partial make-url {:prefix "docs"}))
 (def api-url (some-fn :api-url (partial make-url {:prefix "api" :suffix "/v1"})))
 

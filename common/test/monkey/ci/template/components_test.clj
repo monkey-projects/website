@@ -32,6 +32,18 @@
            (sut/site-url test-config
                          "/test/path")))))
 
+(deftest assets-url
+  (testing "generates assets url"
+    (is (= "https://assets.test.monkeyci.com/test-asset.png"
+           (sut/assets-url test-config
+                           "/test-asset.png"))))
+
+  (testing "uses `assets-format` if specified"
+    (is (= "http://other.monkeyci.com/test-asset.png"
+           (sut/assets-url (assoc test-config
+                                  :assets-format "http://other.monkeyci.com%s")
+                           "/test-asset.png")))))
+
 (deftest script-url
   (testing "build assets js url"
     (is (= "https://assets.test.monkeyci.com/js/test-script.js"

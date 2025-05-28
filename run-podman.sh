@@ -6,4 +6,5 @@ podman run -it \
        -v $PWD/nginx.conf:/etc/nginx/nginx.conf \
        -v $PWD/docs/target/site:/var/www/html/docs \
        -v $PWD/site/target:/var/www/html/site \
+       -v $PWD/assets:/var/www/html/assets \
        docker.io/nginx:latest

@@ -38,10 +38,10 @@
            (sut/assets-url test-config
                            "/test-asset.png"))))
 
-  (testing "uses `assets-format` if specified"
+  (testing "uses `assets-url` if specified"
     (is (= "http://other.monkeyci.com/test-asset.png"
            (sut/assets-url (assoc test-config
-                                  :assets-format "http://other.monkeyci.com%s")
+                                  :assets-url "http://other.monkeyci.com")
                            "/test-asset.png")))))
 
 (deftest script-url

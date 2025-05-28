@@ -2,7 +2,7 @@ FROM docker.io/alpine:latest AS base
 
 # Common assets site
 ADD assets/ /var/www/html/assets
-# Download bootstrap icons, and exctract some files from it
+# Download bootstrap icons, and extract some files from it
 RUN wget -O /tmp/bootstrap-icons.zip https://github.com/twbs/icons/releases/download/v1.11.3/bootstrap-icons-1.11.3.zip
 RUN cd /tmp\
     && unzip -q bootstrap-icons.zip\

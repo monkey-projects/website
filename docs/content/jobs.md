@@ -203,6 +203,21 @@ in your job:
 ```
 
 This could be useful to build container images for multiple platforms, for example.
+To determine at build time which architectures are available to your build script,
+you can retrieve that information from the job context, using the `archs` function.
+This may be useful if you want to build a multi-platform container image, for
+example.
+```clojure
+(defn image-job [ctx]
+  ;; Create a job for each available architecture
+  (map (fn [arch]
+         (-> (container-job (str "job-for-arch-" (name arch)) {:arch arch})
+ 	     (image "docker.io/alpine:latest")
+	     (script [(format "echo \"I'm running on %s!\"" (name arch))])))
+       (m/archs ctx)))
+```
+Assuming the available architectures are `:arm` and `:amd`, the above example
+creates two jobs, called `job-for-arch-arm` and `job-for-arch-amd`, respectively.
 
 ## Startup Times
 

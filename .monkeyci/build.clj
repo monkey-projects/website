@@ -103,7 +103,7 @@
 (def build-site (partial build "site" [:build] "target"))
 (def build-docs (partial build "docs" [:build] "target/site"))
 
-(def img-base "fra.ocir.io/frjdhmocn5qi/website")
+(def img-base "rg.fr-par.scw.cloud/monkeyci/website")
 
 (def release? (comp some? m/tag))
 (def build-image? (some-fn m/main-branch? m/tag))
@@ -133,12 +133,17 @@
      "deploy"
      (fn [ctx]
        (if-let [token (get (api/build-params ctx) "github-token")]
-         ;; Patch the kustomization file
-         (if (infra/patch+commit! (infra/make-client token)
-                                  (get-env ctx)
-                                  {"website" (img-version ctx)})
-           bc/success
-           (assoc bc/failure :message "Unable to patch version in infra repo"))
+         (try
+           ;; Patch the kustomization file
+           (if (infra/patch+commit! (infra/make-client token)
+                                    (get-env ctx)
+                                    {"website" (img-version ctx)})
+             bc/success
+             (assoc bc/failure :message "Unable to patch version in infra repo"))
+           (catch Exception ex
+             ;; Print response
+             (println "Github request failed:" (:response (ex-data ex)))
+             (bc/with-message bc/failure (ex-message ex))))
          (assoc bc/failure :message "No github token provided")))
      {:dependencies ["push-manifest"]})))
 

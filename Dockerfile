@@ -1,4 +1,4 @@
-FROM docker.io/alpine:latest AS base
+FROM --platform=$TARGETPLATFORM docker.io/alpine:latest AS base
 
 # Common assets site
 ADD assets/ /var/www/html/assets
@@ -21,7 +21,7 @@ ADD monkey-projects/assets/ /var/www/html/monkey-projects
 # Error pages
 ADD site/target/error-404.html /var/www/html/
 
-FROM docker.io/nginx:1.27
+FROM --platform=$TARGETPLATFORM docker.io/nginx:1.27
 
 EXPOSE 8080
 EXPOSE 18080

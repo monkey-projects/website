@@ -5,10 +5,14 @@ to have *negative impact* in the future.  We will do this by re-investing part
 of the profits to improve our environment and to further reduce CO2 emissions.
 
 To achieve this, we only work with infrastructure providers that work on **100%
-renewable energy**.  Currently, we are using Oracle Cloud, and only those
-datacenters that fully operate on renewable energy.  For more details, see
-[their data sheet](https://www.oracle.com/a/ocom/docs/corporate/citizenship/clean-cloud-oci.pdf).
-This means that at the moment of writing, we only use European datacenters.
+renewable energy**.  Currently, we are using [Scaleway](https://scaleway.com),
+a 100% European cloud provider that has datacenters that fully operate on
+renewable energy and also attempts to reduce footprint, e.g. regarding water
+consumption.  For more details, see
+[the details on their website](https://www.scaleway.com/en/environmental-leadership/).
+We may use services provided by other suppliers, but in any case we aim for
+zero impact.  This means that at the moment of writing, we only use European
+datacenters.
 
 As cloud provides invest more in "green" datacenters, we will also have more
 choices of cloud providers, or more continents to run on.  This way, we will

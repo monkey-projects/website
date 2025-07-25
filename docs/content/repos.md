@@ -4,7 +4,7 @@
 Repositories are the central organization entity of *MonkeyCI*.  Repositories
 (or *repos* in short) are linked to a [organization](orgs), but also to
 some **external Git repository**.  This repository could be hosted anywhere, but
-it will most likely be one of the supported platforms ([Github](https://github.com),
+it will most likely be one of the [supported platforms](platforms) ([Github](https://github.com),
 [BitBucket](https://bitbucket.org)).
 
 Repositories also can have [labels](labels) attached to them.  These

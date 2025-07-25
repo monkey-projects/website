@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Run the nginx in a podman container
-podman run -it \
+podman run -t \
        -p 8083:8080 \
        -p 8084:8081 \
        -v $PWD/nginx.conf:/etc/nginx/nginx.conf \

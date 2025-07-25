@@ -38,11 +38,11 @@ webhooks.
 
 [Codeberg](https://codeberg.org) is a free Europe-based Git server, ideally suited for
 open source projects.  In order to use it from *MonkeyCI*, you can add your [repositories](repos)
-manually.  You will need to create [webhooks](webhooks) manually for now.  We're planning
+manually.  You will need to create [webhooks](triggers) manually for now.  We're planning
 on adding an automatic integration for that in the future!  When you add a webhook, just
 use the **forgejo** style.  This is compatible with Github, which is already supported
 by *MonkeyCI*.  Have it point to the url as returned when you create the webhook and
-make sure to specify the correct secret.  From then on your build will be triggered
+make sure to specify the correct secret.  From then on your build will be [triggered](triggers)
 **whenever you push to your Codeberg repository**.
 
 ## Other Platforms

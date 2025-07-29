@@ -1,4 +1,4 @@
-{:deps {com.monkeyci/site-template {:mvn/version "0.2.3-SNAPSHOT"}
+{:deps {com.monkeyci/site-template {:mvn/version "0.2.3"}
         com.monkeyci/template-build {:local/root "../build"}
         io.github.nextjournal/markdown {:mvn/version "0.6.157"}}
  :paths ["src"]

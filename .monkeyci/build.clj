@@ -160,5 +160,5 @@
  build-site
  build-docs
  image
- deploy
+ #_deploy
  notify]

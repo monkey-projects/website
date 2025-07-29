@@ -4,6 +4,7 @@
             [clojure.edn :as edn]
             [clojure.java.io :as io]
             [clojure.tools.logging :as log]
+            [hiccup2.core :as hiccup]
             [monkey.ci.docs.config :as dc]
             [nextjournal.markdown :as md]
             [nextjournal.markdown.transform :as mdt])
@@ -53,17 +54,22 @@
 
 (def transform-quote (partial mdt/into-markup [:blockquote.blockquote.blockquote-sm.mb-2]))
 
+(defn- transform-img [ctx node]
+  (let [orig (:image mdt/default-hiccup-renderers)]
+    (->> (orig ctx node)
+         (vector :div.shadow.text-center))))
+
 (defn read-meta
   "Given a reader, tries to read the leading metadata edn structure.  Input should be 
    a `java.io.BufferedReader`"
   [^BufferedReader b]
   (let [r (PushbackReader. b)]
     (try
-      (.mark b 1000) ; Support up to 1k buffer for invalid edn
+      (.mark b 1000)         ; Support up to 1k buffer for invalid edn
       (edn/read r)
       (catch Exception ex
         (if (.startsWith (ex-message ex) "No dispatch macro")
-          (.reset b)        ; No edn at start, so ignore it
+          (.reset b)                   ; No edn at start, so ignore it
           (throw ex))))))
 
 (defn- hiccup-renderers [opts]
@@ -73,7 +79,8 @@
          :code transform-code
          :link (partial transform-link opts)
          :blockquote transform-quote
-         :table (partial mdt/into-markup [:table.table])))
+         :table (partial mdt/into-markup [:table.table])
+         :image transform-img))
 
 (defn ^BufferedReader buffered [^Reader r]
   (BufferedReader. r))

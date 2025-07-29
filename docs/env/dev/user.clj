@@ -18,6 +18,9 @@
       (db/build-all)
       (dissoc :files)))
 
+(defn copy-images []
+  (fs/copy-tree "assets/img" "target/site/img"))
+
 (defn handler [req]
   (log/info "Handling:" (:uri req))
   (if (= :get (:request-method req))
@@ -46,6 +49,7 @@
 (defonce watcher (atom nil))
 
 (defn- watch-handler [ctx {:keys [file]}]
+  ;; Skip backup files
   (when-not (re-matches #"^[\.#].*$" (fs/file-name file))
     (log/debug "File change:" file)
     (build-docs))

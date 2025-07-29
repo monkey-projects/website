@@ -135,6 +135,7 @@
        (if-let [token (get (api/build-params ctx) "github-token")]
          (try
            ;; Patch the kustomization file
+           ;; TODO Patch scw-images version instead
            (if (infra/patch+commit! (infra/make-client token)
                                     (get-env ctx)
                                     {"website" (img-version ctx)})

@@ -37,14 +37,14 @@ to avoid exposing sensitive information to any unwanted builds.
 ## Using
 
 In order to use parameters in your build, you need to explicitly request them when
-needed.  You do this by invoking the `build-params` function in the `monkey.ci.build.api`
+needed.  You do this by invoking the `build-params` function in the `monkey.ci.api`
 namespace.  As an example, suppose you have defined a parameter set with a key called
 `PASSWORD`.  You can access it in a job like this:
 
 ```clojure
 ;; Example build script that illustrates how to use build parameters
 (ns build
-  (:require [monkey.ci.build.v2 :as m]))
+  (:require [monkey.ci.api :as m]))
 
 (m/action-job
   "use-params"

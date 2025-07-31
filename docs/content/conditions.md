@@ -33,7 +33,7 @@ for example the git `ref` that was pushed to.
 
 ```clojure
 (ns build
-  (:require [monkey.ci.build.v2 :as m]))
+  (:require [monkey.ci.api :as m]))
 
 (def unit-tests
   "Runs the unit tests"
@@ -79,7 +79,7 @@ So the above example may be reworked to look like this:
 
 ```clojure
 (ns build
-  (:require [monkey.ci.build.v2 :as m]))
+  (:require [monkey.ci.api :as m]))
 
 (def unit-tests
   "Runs the unit tests"
@@ -115,7 +115,7 @@ opposed to not having a job in the build at all.
 
 ```clojure
 (ns build
-  (:require [monkey.ci.build.v2 :as m]))
+  (:require [monkey.ci.api :as m]))
 
 (def optional-job
   (m/action-job "optional-job"
@@ -141,7 +141,7 @@ as follows:
 
 ```clojure
 (ns build
-  (:require [monkey.ci.build.v2 :as m]))
+  (:require [monkey.ci.api :as m]))
 
 (defn changed?
   "True if any file under `src/` has been touched"

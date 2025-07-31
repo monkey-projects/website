@@ -23,7 +23,7 @@ For example:
 (ns build-test
   (:require [clojure.test :refer :all]
             [build :as sut]
-	    [monkey.ci.build.v2 :as m]
+	    [monkey.ci.api :as m]
 	    [monkey.ci.test :as mt]))
 
 (deftest build-job

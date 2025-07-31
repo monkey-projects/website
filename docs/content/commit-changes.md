@@ -35,7 +35,7 @@ a list of file paths.
 
 ```clojure
 (ns build
-  (:require [monkey.ci.build.v2 :as m]))
+  (:require [monkey.ci.api :as m]))
 
 (def changes-job
   (m/action-job "file-changes"
@@ -77,7 +77,7 @@ For example:
 
 ```clojure
 (ns build
-  (:require [monkey.ci.build.v2 :as m]))
+  (:require [monkey.ci.api :as m]))
 
 (defn src-changed?
   "Checks if any files in the src directory have changed"
@@ -104,7 +104,7 @@ file checks.  For example, you could use this to check the file contents:
 
 ```clojure
 (ns build
-  (:require [monkey.ci.build.v2 :as m]
+  (:require [monkey.ci.api :as m]
             [clojure.string :as cs]))
 
 (defn phrase-check [f]

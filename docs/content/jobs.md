@@ -30,7 +30,7 @@ failure, the job should return the `failure` value from the build api.
 
 ```clojure
 (ns build
-  (:require [monkey.ci.build.v2 :as m]))
+  (:require [monkey.ci.api :as m]))
 
 ;; This job will return `nil`, which means it succeeds
 (def success-job

@@ -5,12 +5,12 @@
 
 This is a listing of the available functions when writing [build scripts](builds).
 Since *MonkeyCI* is open source, you can also [check out the code](https://github.com/monkey-projects/monkeyci)
-and see for yourself.  The API code is located in the [monkey.ci.build.*](https://github.com/monkey-projects/monkeyci/tree/main/app/src/monkey/ci/build) namespaces.  They cover a range **from low-level
-to high-level functions**.  It is advised to use the high-level functions in `monkey.ci.build.v2`,
+and see for yourself.  The API code is located in the [monkey.ci.api](https://github.com/monkey-projects/monkeyci/tree/main/app/src/monkey/ci/api.clj) namespace.  They cover a range **from low-level
+to high-level functions**.  It is advised to use the high-level functions in `monkey.ci.api`,
 unless you want to do something very specific, in which case you may also find useful
 functions in `monkey.ci.build.core` or any other adjoining namespace.
 
-See also the [cljdoc page](https://cljdoc.org/d/com.monkeyci/app/CURRENT/api/monkey.ci.build.v2)
+See also the [cljdoc page](https://cljdoc.org/d/com.monkeyci/app/CURRENT/api/monkey.ci.api)
 for the auto-generated documentation with links to the source code.  It's **always up-to-date**
 with the latest version.
 

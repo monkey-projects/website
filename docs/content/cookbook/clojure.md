@@ -53,7 +53,7 @@ Only one job is created, called `lein-test`.
 
 ```clojure
 (ns build
-  (:require [monkey.ci.build.v2 :as m]
+  (:require [monkey.ci.api :as m]
             [monkey.ci.plugin.clj :as clj]))
 
 ;; This will execute 'lein test'
@@ -69,7 +69,7 @@ Only one job is created, called `deps-test`.
 
 ```clojure
 (ns build
-  (:require [monkey.ci.build.v2 :as m]
+  (:require [monkey.ci.api :as m]
             [monkey.ci.plugin.clj :as clj]))
 
 ;; This will execute 'clojure -X:test' in 'subdir'
@@ -96,7 +96,7 @@ which is dependent on `other-job`.
 
 ```clojure
 (ns build
-  (:require [monkey.ci.build.v2 :as m]
+  (:require [monkey.ci.api :as m]
             [monkey.ci.plugin.clj :as clj]))
 
 ;; This will execute 'clojure -M:custom' in a container with default opts

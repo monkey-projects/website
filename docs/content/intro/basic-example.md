@@ -12,7 +12,7 @@ Let's show an example of how a simple *MonkeyCI* build script could look like:
 
 ```clojure
 (ns build
-  (:use [monkey.ci.build.v2]))
+  (:use [monkey.ci.api]))
 
 (action-job
  "test-job"
@@ -32,11 +32,11 @@ Go ahead, it's [free](pricing/)!
 So, let's analyze the above file line by line.
 ```clojure
 (ns build
-  (:use [monkey.ci.build.v2]))
+  (:use [monkey.ci.api]))
 ```
-This is the **namespace declaration** and tells the script processor to include the `v2`
-namespace for *MonkeyCI* builds.  This is currently the most recent version of the
-build API and  is something you will most likely do in every build script.  It contains
+This is the **namespace declaration** and tells the script processor to include the `api`
+namespace for *MonkeyCI* builds.  This namespace contains the build API functions
+and is something you will most likely do in every build script.  It contains
 the most basic functionality for setting up a build script in *MonkeyCI*.  There are [other
 ways](https://clojuredocs.org/clojure_core/clojure.core/require) to include a namespace,
 but `use` is the simplest one.  It makes all functions in the target namespace invokable

@@ -21,7 +21,7 @@ check out the code from Git, and then run the configured commands.  Like this:
 
 ```clojure
 (ns build
-  (:use [monkey.ci.build.v2]))
+  (:use [monkey.ci.api]))
 
 (-> (container-job "mvn-verify")
     (image "docker.io/maven:latest")
@@ -92,7 +92,7 @@ and at the end of the build script, we refer to them.  The full script then look
 
 ```clojure
 (ns build
-  (:use [monkey.ci.build.v2]))
+  (:use [monkey.ci.api]))
 
 (def verify
   (-> (container-job "mvn-verify")
@@ -124,7 +124,7 @@ jobs call that function with some parameters:
 
 ```clojure
 (ns build
-  (:use [monkey.ci.build.v2]))
+  (:use [monkey.ci.api]))
 
 (defn mvn-job [id cmd]
   (-> (container-job id)

@@ -37,7 +37,7 @@ Create an action job that executes an arbitrary Clojure function:
 
 ```clojure
 (ns build
-  (:require [monkey.ci.build.v2 :as m]))
+  (:require [monkey.ci.api :as m]))
 
 (m/action-job "generic-fn"
   (fn [_]
@@ -51,7 +51,7 @@ A job that succeeds when a build parameter is present, and fails when it's not f
 
 ```clojure
 (ns build
-  (:require [monkey.ci.build.v2 :as m]))
+  (:require [monkey.ci.api :as m]))
 
 (m/action-job "check-fn"
   (fn [ctx]
@@ -69,7 +69,7 @@ is triggered on the `main` branch:
 
 ```clojure
 (ns build
-  (:require [monkey.ci.build.v2 :as m]))
+  (:require [monkey.ci.api :as m]))
 
 (defn main-job [ctx]
   (when (= "main" (m/branch ctx))

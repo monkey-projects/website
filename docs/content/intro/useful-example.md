@@ -2,8 +2,8 @@
  :tags ["examples"]
  :category :getting-started
  :summary "A more extended example of a build script that can be used in a real-life situation."
- :related [["basic-example" "Basic example"]
-           ["yaml-example" "Yaml example"]
+ :related [["intro/basic-example" "Basic example"]
+           ["intro/yaml-example" "Yaml example"]
            ["plugins" "Plugins"]
 	   ["tests" "Unit tests"]
 	   ["artifacts" "Artifacts"]]}

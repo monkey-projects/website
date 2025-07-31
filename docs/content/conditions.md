@@ -2,13 +2,14 @@
  :category :builds
  :related [["jobs" "Jobs"]
            ["builds" "Builds"]
-	   ["plugins" "Plugins"]]}
+	   ["plugins" "Plugins"]
+	   ["commit-changes" "Changed files"]]}
 
 In many situations your builds will differ depending on the situation.  For example,
 you'll only want to deploy building a release, or when building from the `main`
-branch.  And your deployment strategies may differ depending on the environment
-where you'll be deploying (`staging` vs. `production`).  For this, you'll need
-conditions.
+branch, or when files in a specific directory have been touched.  And your deployment
+strategies may differ depending on the environment where you'll be deploying (`staging`
+vs. `production`).  For this, you'll need **conditions**.
 
 ## Types of Conditions
 

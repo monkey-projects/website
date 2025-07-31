@@ -32,7 +32,11 @@ to start watching [Bitbucket repos](repos) and *MonkeyCI* will **automatically m
 webhooks for you**.
 
 On each push to a registered repository, Bitbucket will notify *MonkeyCI* using these
-webhooks.
+webhooks.  Note that Bitbucket does not send changed file information along in the
+webhook call, so *MonkeyCI* is currently not able to determine that information, but
+we're working on that!  This means that the various [changeset tests](commit-changes),
+like `added?`, `removed?`, `modified?` and `touched?` will **always return false**
+for Bitbucket builds, until we resolve this.
 
 ## Codeberg
 

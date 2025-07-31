@@ -1,5 +1,6 @@
 {:title "Command-line Interface"
- :related [["tests" "Unit tests"]]}
+ :related [["tests" "Unit tests"]
+           ["builds" "Builds"]]}
 
 Next to a graphical user interface, *MonkeyCI* also provides a command-line
 interface (or **CLI**).  The CLI can be used to trigger builds, run them locally,
@@ -7,11 +8,10 @@ verify build scripts or run unit tests.
 
 ## Installation
 
-In order to install the CLI, you will first need to install `Java`.  Then
-run this script:
+In order to install the CLI, you will first need to [install Java](https://www.oracle.com/javadownload).  You'll need **Java 21 or later** for the CLI to work correctly.  Then run this script:
 
-```bash
-$ TODO
+```shell
+$ TODO Still working on this...
 ```
 
 It will download the *MonkeyCI* `jar` file, put it in a local directory and
@@ -21,7 +21,7 @@ create a binary that allows you to invoke it.
 
 Running the CLI is done by invoking the `monkeyci` command:
 
-```bash
+```shell
 $ monkeyci build --help
 
 NAME:
@@ -31,7 +31,7 @@ USAGE:
   build [global-options] command [command options] [arguments...]
 
 VERSION:
- 0.12.0
+ 0.19.3
 
 COMMANDS:
    run                  Runs build locally
@@ -57,7 +57,7 @@ to the configuration.  For container jobs, [podman](https://podman.io) is used. 
 that local builds do not count towards your credit consumption, and it will also not
 register on the main application.  Artifacts and caches are not downloaded or published.
 
-This can be useful to run a one-of, or try something out.  For actual testing it's better
+This can be useful to run a one-of, or to try something out.  For actual testing it's better
 to write [unit tests](tests).
 
 ### verify

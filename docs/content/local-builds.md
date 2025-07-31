@@ -2,7 +2,8 @@
  :category :builds
  :related [["builds" "Builds"]
            ["jobs" "Jobs"]
-	   ["cli" "Command-line interface"]]}
+	   ["cli" "Command-line interface"]
+	   ["tests" "Build script tests"]]}
 
 Sometimes you just need to run something **on your local machine**.  This is of course
 not advised for production purposes, but every once in a while, it can be useful
@@ -14,14 +15,14 @@ First of all, you need to install the [command-line interface](cli).  After that
 up a command shell and go to your repository directory (the one where `.monkeyci/` is
 located).  Then invoke the `build` command:
 
-```bash
+```shell
 $ monkeyci build
 ```
 
 There are of course **many parameters** you can customize.  But more on that later!  You can
 start by asking for help:
 
-```bash
+```shell
 $ monkeyci build --help
 ```
 

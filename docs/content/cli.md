@@ -11,11 +11,13 @@ verify build scripts or run unit tests.
 In order to install the CLI, you will first need to [install Java](https://www.oracle.com/javadownload).  You'll need **Java 21 or later** for the CLI to work correctly.  Then run this script:
 
 ```shell
-$ TODO Still working on this...
+$ wget https://monkeyci-artifacts.s3.fr-par.scw.cloud/install-cli.sh -O - | bash
 ```
 
 It will download the *MonkeyCI* `jar` file, put it in a local directory and
-create a binary that allows you to invoke it.
+create a binary that allows you to invoke it.  The binary is installed in `$HOME/bin`,
+which usually is in your `PATH`.  If it doesn't work, check if the bin dir has been
+added to your path.
 
 ## Invocation
 
@@ -31,19 +33,14 @@ USAGE:
   build [global-options] command [command options] [arguments...]
 
 VERSION:
- 0.19.3
+ 0.19.4
 
 COMMANDS:
    run                  Runs build locally
    verify               Verifies local build script
-   list                 Lists builds for organization or repo
-   watch                Logs build events for organization or repo
    test                 Runs build script unit tests
 
 GLOBAL OPTIONS:
-   -s, --server S       Server URL
-   -o, --org-id S       Organization id
-   -r, --repo-id S      Repository id
    -?, --help
 ```
 

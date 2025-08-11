@@ -9,3 +9,8 @@
 (deftest md-resource
   (testing "parses resource file into hiccup"
     (is (vector? (sut/md-resource "md/terms-of-use.md")))))
+
+(deftest strip-<>
+  (testing "removes :<> from content"
+    (is (= [:li "content"]
+           (sut/strip-<> [:li [:<> "content"]])))))

@@ -52,7 +52,8 @@ the `build` command will be discussed here.
 Runs a build locally.  It will load the build script, and execute any jobs according
 to the configuration.  For container jobs, [podman](https://podman.io) is used.  Note
 that local builds do not count towards your credit consumption, and it will also not
-register on the main application.  Artifacts and caches are not downloaded or published.
+register on the main application.  **Artifacts and caches are not downloaded or
+published**.
 
 This can be useful to run a one-of, or to try something out.  For actual testing it's better
 to write [unit tests](tests).

@@ -110,7 +110,8 @@
       "We use" [:a.mx-1 {:href "https://clojure.org"} "Clojure"]
       "to enable you to generate build scripts super-fast."
       [:br]
-      "Check out our" [:a.mx-1 {:href "./docs"} "docs"] "to see how we're approaching this."]]
+      "Check out our" [:a.mx-1 {:href (cc/docs-url config)} "docs"]
+      "for example code and more details on how we do this."]]
     [:div.d-grid.d-sm-flex.justify-content-sm-center.gap-3.mb-7
      [:a.btn.btn-primary {:href (cc/docs-url config) :target :_blank} "Explore our Documentation"]]]])
 

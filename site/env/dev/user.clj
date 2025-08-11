@@ -19,5 +19,6 @@
             :pages sc/site-pages
             :config (merge
                      {:base-url "staging.monkeyci.com"
+                      :assets-url "http://localhost:8083/assets"
                       :api-url "http://localhost:3000"}
                      (load-config))}))

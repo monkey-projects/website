@@ -243,7 +243,7 @@
 
 (defn footer [config]
   [(cc/footer config)
-   (cc/script (cc/script-url config "vendor.min.js"))
+   (cc/script (cc/script-url config "bootstrap.min.js"))
    (cc/script (cc/script-url config "theme.min.js"))
    (cc/script (cc/site-url config "/js/site.js"))])
 

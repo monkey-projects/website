@@ -150,7 +150,8 @@
        [:span.h5.text-light "MonkeyCI"]]]
      (footer-col "Resources"
                  [["Blog" "https://www.monkey-projects.be/blog/"]
-                  ["Documentation" (docs-url config)]])
+                  ["Documentation" (docs-url config)]
+                  ["Issues" "https://github.com/monkey-projects/monkeyci/issues"]])
      (footer-col "Company"
                  [["About us" (site-url config "/about")]
                   ["Contact" (site-url config "/contact")]])

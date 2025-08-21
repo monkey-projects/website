@@ -29,12 +29,12 @@
     r))
 
 (defn- transform-heading [ctx {:keys [attrs] :as node}]
-  (-> node
-      ;; Transform all h1 headers into h4
-      (update :heading-level + 3)
-      (mdt/heading-markup)
-      (conj attrs)
-      (mdt/into-markup ctx node)))
+  (letfn [(heading-markup [{l :heading-level}] [(keyword (str "h" (or l 1))) attrs])]
+    (-> node
+        ;; Transform all h1 headers into h4
+        (update :heading-level + 3)
+        (heading-markup)
+        (mdt/into-markup ctx node))))
 
 (defn- transform-code [ctx {:keys [info] :as node}]
   [:pre {:class (cond-> "viewer-code not-prose mb-2"

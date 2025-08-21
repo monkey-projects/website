@@ -1,19 +1,19 @@
-{:deps {org.clojure/clojure {:mvn/version "1.12.0"}
+{:deps {org.clojure/clojure {:mvn/version "1.12.1"}
         aero/aero {:mvn/version "1.1.6"}
         org.clojure/tools.logging {:mvn/version "1.3.0"}
         com.monkeyci/site-template {:mvn/version "0.2.3"}
         com.monkeyci/template-build {:local/root "../build"}
-        io.github.nextjournal/markdown {:mvn/version "0.6.157"}
+        io.github.nextjournal/markdown {:mvn/version "0.7.189"}
         medley/medley {:mvn/version "1.4.0"}}
  
  :aliases
  {:dev
   {:extra-paths ["env/dev"]
-   :extra-deps {aleph/aleph {:mvn/version "0.8.2"}
-                ch.qos.logback/logback-classic {:mvn/version "1.5.16"}
+   :extra-deps {aleph/aleph {:mvn/version "0.9.0"}
+                ch.qos.logback/logback-classic {:mvn/version "1.5.18"}
                 hawk/hawk {:mvn/version "0.2.11"}
                 org.clojure/tools.namespace {:mvn/version "1.5.0"}
-                ring/ring {:mvn/version "1.13.0"}}
+                ring/ring {:mvn/version "1.14.2"}}
    :override-deps {com.monkeyci/site-template {:local/root "../common"}}}
 
   :build
@@ -22,7 +22,7 @@
                :config {:path-prefix "/"}}}
 
   :test
-  {:extra-deps {com.monkeyprojects/build {:mvn/version "0.2.0"}
+  {:extra-deps {com.monkeyprojects/build {:mvn/version "0.3.1"}
                 com.rpl/specter {:mvn/version "1.1.4"}
                 hiccup-find/hiccup-find {:mvn/version "2022.10.03"}}
    :extra-paths ["test"]

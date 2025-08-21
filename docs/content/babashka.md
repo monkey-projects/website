@@ -1,4 +1,7 @@
-{:title "Babashka"}
+{:title "Babashka"
+ :category :builds
+ :related [["jobs" "Jobs"]
+           ["builds" "Builds"]]}
 
 Some of you may be wondering if there is some overlap with [Babashka](https://babashka.org),
 the excellent Clojure implementation for your shell.  *MonkeyCI* is in no way intended to

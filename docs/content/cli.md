@@ -139,3 +139,47 @@ It will either print out a success message, or list any errors and warnings it e
 
 Runs any unit tests that you may have configured on your build script.  See [unit
 tests](tests/) for more details.
+
+## Configuration
+
+Not everything is configurable via command line arguments.  Some more uncommon
+settings can be set via the configuration files.  These are [EDN](https://github.com/edn-format/edn)
+files that are read at application startup.  There is a global file located
+at `/etc/monkeyci/config.edn` and a user-specific file in `$HOME/.config/monkeyci/config.edn`.
+In addition, you can pass extra configuration files using the `-c` command line
+argument:
+
+```shell
+monkeyci -c /path/to/config.edn build run
+```
+
+You can specify multiple configuration files this way.
+
+The files are read in this order:
+
+  1. First the global file
+  2. Then the user-specific file
+  3. Then the files from the command line, in order.
+
+This means that the global file has the lowest priority, settings can be
+overridden in the user file or those on the command line.
+
+### Configuration File Structure
+
+The configuration file is hierarchical, so it's a tree of maps, where
+settings are grouped according to module.
+
+**Podman Settings**
+
+Podman is used to run local container.  Its settings reside in the `:podman`
+key.  These are the possible parameters:
+
+|Parameter|Meaning|Default|
+|---|---|---|
+|`:podman-cmd`|The path to the podman executable|`/usr/bin/podman`|
+
+For example:
+```clojure
+{:podman
+ {:podman-cmd "/usr/local/bin/podman"}}
+```

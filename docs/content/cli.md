@@ -34,7 +34,7 @@ USAGE:
   build [global-options] command [command options] [arguments...]
 
 VERSION:
- 0.19.7.1
+ 0.19.10
 
 COMMANDS:
    run                  Runs build locally
@@ -120,6 +120,17 @@ A `json` parameters file could look like this:
 
 These parameters are then passed to your build script, where they can be retrieved
 using the [build-params](https://cljdoc.org/d/com.monkeyci/app/0.19.7.1/api/monkey.ci.api#build-params) api function.
+
+```clojure
+(ns build
+  (:require [monkey.ci.api :as m]))
+
+(m/action-job
+ "show-param"
+ (fn [ctx]
+   ;; Will print the username value to the job output
+   (println "The username is:" (get (m/build-params ctx) "username"))))
+```
 
 ### Verifying Build Scripts
 

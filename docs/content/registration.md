@@ -1,5 +1,6 @@
 {:title "User Registration"
  :category :getting-started
+ :index 140
  :summary "Registering a new user is easy!  All you need is an account on one of the supported platforms."
  :related [["org-new" "Create a new organization"]
            ["pricing" "Pricing"]

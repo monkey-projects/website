@@ -1,5 +1,6 @@
 {:title "Supported Platforms"
  :category :getting-started
+ :index 120
  :related [["builds" "Builds"]
            ["repos" "Repositories"]]}
 

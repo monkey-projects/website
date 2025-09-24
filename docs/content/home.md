@@ -35,8 +35,8 @@ that unit tests cannot capture.
 ## Is MonkeyCI For You?
 
 For any coding project that has more than the most basic build flow, *MonkeyCI* is surely
-something you may consider using.  If you also require the **ability to test and extend**
-your build scripts, then *MonkeyCI* is most definitely worth a try.
+something you may consider using.  If you also require the ability to [test](tests) and
+[extend](plugins) your build scripts, then *MonkeyCI* is **most definitely worth a try**.
 
 ## Getting Started
 

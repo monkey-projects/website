@@ -34,8 +34,22 @@
   (testing "adds categories"
     (is (not-empty (->> {:categories {:test-cat
                                       {:label "test category"}}}
-                        (sut/category-page [:h1 "page with categories"])
-                        (hf/hiccup-find [:#categories]))))))
+                        (sut/category-page :test-cat)
+                        (hf/hiccup-find [:#categories])))))
+
+  (testing "sorts pages by index"
+    (is (= ["First" "Second"]
+           (->> {:categories
+                 {:main
+                  {:label "Main category"
+                   :files
+                   [{:md {:title "Second"
+                          :index 1}}
+                    {:md {:title "First"
+                          :index 0}}]}}}
+                (sut/category-page :main)
+                (hf/hiccup-find [:.article-title])
+                (map second))))))
 
 (deftest short-title
   (testing "returns short before title"

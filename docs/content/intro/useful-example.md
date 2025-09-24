@@ -1,6 +1,7 @@
 {:title "A more useful example"
  :tags ["examples"]
  :category :getting-started
+ :index 20
  :summary "A more extended example of a build script that can be used in a real-life situation."
  :related [["intro/basic-example" "Basic example"]
            ["intro/yaml-example" "Yaml example"]

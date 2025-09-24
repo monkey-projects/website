@@ -1,5 +1,6 @@
 {:title "Command-line Interface"
  :category :getting-started
+ :index 130
  :related [["tests" "Unit tests"]
            ["builds" "Builds"]]}
 

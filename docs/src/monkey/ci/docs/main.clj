@@ -176,7 +176,7 @@
        [:div.mb-5
         ;; Category label
         [:span.text-cap (:label c)]
-        [:a.link-dark {:href (:path loc)} [:h5 (:title art)]]
+        [:a.link-dark {:href (:path loc)} [:h5.article-title (:title art)]]
         [:p (or (:summary art)
                 ;; If no summary specified, pick the first paragraph
                 (-> art
@@ -186,12 +186,15 @@
 
 (defn category-page
   "Generates a category page hiccup structure for the given category.  The config should
-   contain all categories, and the articles within."
+   contain all categories, and the articles within.  The articles in the category
+   are sorted by the `index` property."
   [category config]
   (let [cat-conf (get-in config [:categories category])]
     (-> (->> cat-conf
              :files
-             (map (comp (partial category-article cat-conf) :md))
+             (map :md)
+             (sort-by :index)
+             (map (partial category-article cat-conf))
              (interpose [:li.border-top.my-5])
              (into [:ul.list-unstyled.list-py-2]))
         (add-categories (-> (:categories config)

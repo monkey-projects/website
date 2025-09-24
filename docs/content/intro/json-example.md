@@ -1,5 +1,6 @@
 {:title "JSON example"
  :category :getting-started
+ :index 40
  :related [["intro/basic-example" "Basic example"]
            ["intro/useful-example" "A more useful example"]
            ["intro/edn-example" "Edn example"]

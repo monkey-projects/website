@@ -1,5 +1,6 @@
 {:title "YAML example"
  :category :getting-started
+ :index 30
  :related [["intro/basic-example" "Basic example"]
            ["intro/useful-example" "A more useful example"]
            ["intro/edn-example" "Edn example"]

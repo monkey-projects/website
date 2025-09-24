@@ -1,5 +1,6 @@
 {:title "EDN example"
  :category :getting-started
+ :index 50
  :related [["intro/basic-example" "Basic example"]
            ["intro/useful-example" "A more useful example"]
            ["intro/yaml-example" "Yaml example"]

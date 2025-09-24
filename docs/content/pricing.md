@@ -1,5 +1,6 @@
 {:title "Pricing"
  :category :orgs
+ :index 30
  :related [["sustainability" "Our sustainability goals"]
            ["caching" "Build caches"]]}
 

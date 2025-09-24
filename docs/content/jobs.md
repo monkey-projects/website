@@ -1,5 +1,6 @@
 {:title "Build jobs"
  :category :builds
+ :index 30
  :related [["builds" "Builds"]
            ["artifacts" "Artifacts"]
 	   ["caching" "Caching"]]}

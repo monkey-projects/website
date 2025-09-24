@@ -1,5 +1,6 @@
 {:title "SSH keys"
  :category :builds
+ :index 130
  :related [["params" "Parameters"]
            ["security" "Security"]
 	   ["labels" "Labels"]]}

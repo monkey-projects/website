@@ -1,5 +1,6 @@
 {:title "Local Builds"
  :category :builds
+ :index 20
  :related [["builds" "Builds"]
            ["jobs" "Jobs"]
 	   ["cli" "Command-line interface"]

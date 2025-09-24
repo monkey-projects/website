@@ -1,5 +1,6 @@
 {:title "Repositories"
- :category :orgs}
+ :category :orgs
+ :index 40}
 
 Repositories are the central organization entity of *MonkeyCI*.  Repositories
 (or *repos* in short) are linked to a [organization](orgs), but also to

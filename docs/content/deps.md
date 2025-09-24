@@ -1,5 +1,6 @@
 {:title "Using 3rd Party Libraries"
  :category :extending
+ :index 20
  :tags ["libraries"]
  :related [["plugins" "Plugins"]
            ["notifications" "Notifications"]]}

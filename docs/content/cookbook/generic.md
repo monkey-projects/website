@@ -1,5 +1,6 @@
 {:title "Generic Recipes"
  :category :cookbook
+ :index 10
  :related [["intro/basic-example" "Basic Example"]
            ["intro/useful-example" "A more Useful Example"]]}
 

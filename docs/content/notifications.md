@@ -1,5 +1,6 @@
 {:title "Notifications"
  :category :extending
+ :index 30
  :related [["plugins" "Plugins"]
            ["deps" "3rd party libraries"]]}
 

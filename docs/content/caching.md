@@ -1,5 +1,6 @@
 {:title "Caching"
  :category :builds
+ :index 70
  :related [["artifacts" "Artifacts"]
            ["intro/useful-example" "A more useful example"]]}
 

@@ -1,5 +1,6 @@
 {:title "Join an Existing Organization"
  :category :orgs
+ :index 20
  :related [["home" "Home Screen"]
            ["org-new" "Create a New Organization"]
 	   ["pricing" "Pricing"]]}

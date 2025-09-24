@@ -1,5 +1,6 @@
 {:title "Build triggers"
- :category :builds}
+ :category :builds
+ :index 40}
 
 In order for a [build](builds) to run, it must first be **triggered**.  *MonkeyCI* has
 several ways to do this:

@@ -1,5 +1,6 @@
 {:title "Labels"
  :category :builds
+ :index 120
  :related [["params" "Build parameters"]
            ["orgs" "Organizations"]
 	   ["ssh-keys" "SSH keys"]]}

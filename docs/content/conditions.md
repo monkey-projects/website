@@ -1,5 +1,6 @@
 {:title "Conditional Jobs"
  :category :builds
+ :index 90
  :related [["jobs" "Jobs"]
            ["builds" "Builds"]
 	   ["plugins" "Plugins"]

@@ -1,5 +1,6 @@
 {:title "Clojure Cookbook"
  :category :cookbook
+ :index 20
  :related [["intro/basic-example" "Basic Example"]
            ["intro/useful-example" "A More Useful Example"]]}
 

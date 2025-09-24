@@ -1,5 +1,6 @@
 {:title "Changed Commit Files"
  :category :builds
+ :index 110
  :related [["conditions" "Conditions"]
  	   ["builds" "Builds"]
 	   ["jobs" "Jobs"]]}

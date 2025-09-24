@@ -1,5 +1,6 @@
 {:title "Create a New Organization"
  :category :orgs
+ :index 10
  :related [["org-join" "Join an Existing Organization"]
            ["params" "Build Parameters"]
 	   ["ssh-keys" "SSH keys"]

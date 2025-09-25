@@ -181,6 +181,29 @@ overridden in the user file or those on the command line.
 The configuration file is hierarchical, so it's a tree of maps, where
 settings are grouped according to module.
 
+**Account Settings**
+
+The account information is used to access the *MonkeyCI* REST API when
+[running builds locally](local-builds).  It resides under the `:account` key.
+
+|Parameter|Meaning|Default|
+|---|---|---|
+|`:org-id`|Id of the organization||
+|`:repo-id`|Id of the [repository](repos)||
+|`:url`|URL of the MonkeyCI API|`https://api.monkeyci.com/v1`|
+|`:token`|[API key](api-keys) to access the API||
+
+Example:
+```clojure
+{:account
+ {:org-id "monkey-projects"
+  :token "my-very-secret-token"}}
+```
+
+Note that since the token is stored in plain text, we advise to either specify it on
+the command line, specify it as an environment variable (`MONKEYCI_KEY`), or
+ensure the configuration file can only be read by you.
+
 **Podman Settings**
 
 Podman is used to run local container.  Its settings reside in the `:podman`

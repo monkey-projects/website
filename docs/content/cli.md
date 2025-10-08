@@ -91,6 +91,12 @@ build directory from a git repository, by passing in the `--git-url`.  If you wa
 use a private repository, make sure your SSH-keys are configure correctly (in the `~/.ssh`
 directory).
 
+If you have an `xterm`-compatible terminal (like most are), you will also get a nice
+layout:
+![cli-build-run](/img/monkeyci-cli-1.png "screenshot")
+
+This gives you an overview of your build.
+
 #### Parameters
 
 By default, when running a local build, no parameters will be passed.  In the future,

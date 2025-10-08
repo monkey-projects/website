@@ -5,7 +5,7 @@
  :aliases
  {:test
   {:extra-deps {com.monkeyprojects/build {:mvn/version "0.3.1"}
-                ch.qos.logback/logback-classic {:mvn/version "1.5.18"}}
+                ch.qos.logback/logback-classic {:mvn/version "1.5.19"}}
    :extra-paths ["test" "dev-resources"]
    :exec-fn monkey.test/all}
 
@@ -19,7 +19,7 @@
   {:extra-deps {com.monkeyprojects/build {:mvn/version "0.3.1"}}
    :exec-fn monkey.build/jar
    :exec-args {:jar "target/site-template.jar"
-               :version [[:env "LIB_VERSION"] "0.2.4"]
+               :version [[:env "LIB_VERSION"] "0.2.5-SNAPSHOT"]
                :lib com.monkeyci/site-template
                :scm {:url "https://github.com/monkey-projects/website"}
                :pom-data

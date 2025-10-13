@@ -392,3 +392,71 @@ bottom, the new webhook will be activated.
 
 From now on, every time you push a change to the Codeberg repository, it will
 notify *MonkeyCI* through the webhook, which in turn will start a new build.
+
+## Using Plugins
+
+So far, you have written a build script that **runs the unit tests, builds
+a package jar and deploys that in a container image**.  Not bad!  This is
+however nothing new, other tools can do that too.  But one of the core features
+of *MonkeyCI* is that you can do all this in **a much more succinct way**.  This
+can be done by switching to [Clojure](https://clojure.org) as the scripting
+language (instead of, or in addition to `yaml`) and by applying [plugins](plugins)
+to increase reuse.
+
+Clojure is just a programming language, albeit one with a [tiny syntax](why-clojure).
+And plugins are libraries that hold reusable job definitions.  Anyone can build
+their own plugins and we have also [provided several of our
+own](https://github.com/orgs/monkey-projects/repositories?q=plugin-).
+
+Using several of these plugins, the above script can be rewritten as:
+
+```clojure
+(ns build
+  (:require [monkey.ci.api :as m]
+            [monkey.ci.plugin
+             [mvn :as mvn]
+	     [kaniko :as kaniko]]))
+
+;; Job definitions
+
+(def mvn-test
+  (mvn/mvn {:job-id "test"
+            :cmd "test"}))
+
+(def package-art (m/artifact "package-jar" "target/"))
+
+(def mvn-package
+  (-> (mvn/mvn {:job-id "package"
+                :cmd "package -Dmaven.test.skip"})
+      (m/depends-on "test")
+      (m/save-artifacts [package-art])))
+
+(def img
+  (kaniko/image-job
+   {:job-id "image"
+    :target-img "docker.io/monkeyci/tutorial:latest"
+    :arch :amd
+    :container-opts {:dependencies ["package"]
+                     :restore-artifacts [package-art]}}))
+
+;; List of jobs passed to MonkeyCI
+[mvn-test
+ mvn-package
+ img]
+```
+
+This looks a lot different compared to the original `yaml` script.  Note that we could
+also combine the two.  We could have left the `test` and `package` jobs in the `build.yaml`,
+and just redefined the `image` using the plugin.  But this example just **scratches the
+surface** of what is possible with the Clojure format.  We haven't even talked about
+[conditional jobs](conditions) or [script tests](tests)!  But this is beyond the scope
+of this tutorial, so we suggest you take a look at the dedicated documentation pages for
+more on those subjects.
+
+## Conclusion
+
+In this tutorial, you have learned how to set up **your first build script**, configured
+*MonkeyCI* to automatically **run it on each change**, use **dependencies and artifacts**,
+and we've also hinted at the **awesome power** that is available using the Clojure format.
+We hope this has been enlightening to you and that it puts you on track to take **full
+advantage** of the possibilities of *MonkeyCI*!

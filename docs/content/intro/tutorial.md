@@ -445,13 +445,20 @@ Using several of these plugins, the above script can be rewritten as:
  img]
 ```
 
+We'll also have to [declare our dependencies](deps) in a `deps.edn` file, to
+indicate the various plugins and their versions:
+```clojure
+{:deps {com.monkeyci/plugin-mvn {:mvn/version "0.1.0"}
+        com.monkeyci/plugin-kaniko {:mvn/version "0.2.1"}}}
+```
+
 This looks a lot different compared to the original `yaml` script.  Note that we could
-also combine the two.  We could have left the `test` and `package` jobs in the `build.yaml`,
-and just redefined the `image` using the plugin.  But this example just **scratches the
-surface** of what is possible with the Clojure format.  We haven't even talked about
-[conditional jobs](conditions) or [script tests](tests)!  But this is beyond the scope
-of this tutorial, so we suggest you take a look at the dedicated documentation pages for
-more on those subjects.
+also **combine it** with `yaml`.  We could have left the `test` and `package` jobs in
+the `build.yaml`, and just redefined the `image` using the plugin.  But this example
+just **scratches the surface** of what is possible with the Clojure format.  We haven't
+even talked about [conditional jobs](conditions) or [script tests](tests)!  But this is
+beyond the scope of this tutorial, so we suggest you take a look at the dedicated
+documentation pages for more on those subjects.
 
 ## Conclusion
 

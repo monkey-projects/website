@@ -427,7 +427,8 @@ Using several of these plugins, the above script can be rewritten as:
 
 (def mvn-package
   (-> (mvn/mvn {:job-id "package"
-                :cmd "package -Dmaven.test.skip"})
+                :goals ["package"]
+		:opts ["-Dmaven.test.skip"]})
       (m/depends-on "test")
       (m/save-artifacts [package-art])))
 

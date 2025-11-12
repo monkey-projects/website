@@ -151,14 +151,15 @@
      (footer-col "Resources"
                  [["Blog" "https://www.monkey-projects.be/blog/"]
                   ["Documentation" (docs-url config)]
-                  ["Issues" "https://github.com/monkey-projects/monkeyci/issues"]])
+                  ["Issues" "https://github.com/monkey-projects/monkeyci/issues"]
+                  ["Report an Issue" "https://github.com/monkey-projects/monkeyci/issues/new"]])
      (footer-col "Company"
                  [["About us" (site-url config "/about")]
                   ["Contact" (site-url config "/contact")]])
      (footer-col "Legal"
                  [["Terms of use" (site-url config "/terms-of-use")]
                   ["Privacy policy" (site-url config "/privacy-policy")]])
-     [:div.border-top.border-white-10]]
+     [:div.mt-2.border-top.border-white-10]]
     [:div.row.align-items-md-end.py-5
      [:div.col-md.mb-3.mb-md-0
       [:p.text-white.mb-0

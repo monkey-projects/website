@@ -1,6 +1,6 @@
-{:deps {com.monkeyci/site-template {:mvn/version "0.2.4-SNAPSHOT"}
+{:deps {com.monkeyci/site-template {:mvn/version "0.2.5-SNAPSHOT"}
         com.monkeyci/template-build {:local/root "../build"}
-        io.github.nextjournal/markdown {:mvn/version "0.6.157"}}
+        io.github.nextjournal/markdown {:mvn/version "0.7.196"}}
  :paths ["src"]
 
  :aliases
@@ -18,7 +18,7 @@
   :test
   ;; clj -X:test
   {:extra-deps {com.monkeyprojects/build {:mvn/version "0.3.1"}
-                ch.qos.logback/logback-classic {:mvn/version "1.5.18"}}
+                ch.qos.logback/logback-classic {:mvn/version "1.5.21"}}
    :extra-paths ["test" "dev-resources"]
    :exec-fn monkey.test/all}
   

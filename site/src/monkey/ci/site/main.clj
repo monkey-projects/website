@@ -67,11 +67,22 @@
    [:div.w-lg-65.text-center.mx-lg-auto
     [:div.mb-4
      [:h5 "Supports the Major Repository Providers and Platforms"]]
-    [:div.row
-     [:div.col.text-center.py-3
-      [:h4.text-primary [:i.bi.bi-github.me-1] "Github"]]
-     [:div.col.text-center.py-3
-      [:h4.text-primary "Bitbucket"]]]]])
+    [:div.row.py-3
+     [:div.col.text-center
+      [:h4.text-primary [:i.bi.bi-github.me-1]
+       [:a {:href "https://github.com"
+            :target :_blank}
+        "Github"]]]
+     [:div.col.text-center
+      [:h4.text-primary
+       [:a {:href "https://bitbucket.org"
+            :target :_blank}
+        "Bitbucket"]]]
+     [:div.col.text-center
+      [:h4.text-primary
+       [:a {:href "https://codeberg.org"
+            :target :_blank}
+        "Codeberg"]]]]]])
 
 (defn- feature [img title desc]
   [:div.col-md-6.mb-3.mb-md-7

@@ -7,7 +7,6 @@ function showElement(elName) {
 }
 
 function postRegistration(email) {
-    // TODO Get base url from config
     fetch(apiUrl + "/email-registration", {
 	method: 'post',
 	body: JSON.stringify({ email: email }),

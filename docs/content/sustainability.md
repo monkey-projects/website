@@ -5,11 +5,12 @@ to have *negative impact* in the future.  We will do this by re-investing part
 of the profits to improve our environment and to further reduce CO2 emissions.
 
 To achieve this, we only work with infrastructure providers that work on **100%
-renewable energy**.  Currently, we are using [Scaleway](https://scaleway.com),
-a 100% European cloud provider that has datacenters that fully operate on
-renewable energy and also attempts to reduce footprint, e.g. regarding water
-consumption.  For more details, see
-[the details on their website](https://www.scaleway.com/en/environmental-leadership/).
+renewable energy**.  Currently, we are using [Scaleway](https://scaleway.com)
+and [Hetzner](https://www.hetzner.com/), a 100% European cloud providers that
+have datacenters that fully operate on renewable energy and also attempt to
+reduce footprint, e.g. regarding water consumption.  For more details, see
+[the Scaleway](https://www.scaleway.com/en/environmental-leadership/)
+and [Hetzner](https://www.hetzner.com/unternehmen/nachhaltigkeit/) sustainability pages.
 We may use services provided by other suppliers, but in any case we aim for
 zero impact.  This means that at the moment of writing, we only use European
 datacenters.

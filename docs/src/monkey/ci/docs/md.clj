@@ -80,7 +80,9 @@
          :link (partial transform-link opts)
          :blockquote transform-quote
          :table (partial mdt/into-markup [:table.table])
-         :image transform-img))
+         :image transform-img
+         :html-inline (comp hiccup/raw md/node->text)
+         :html-block (comp hiccup/raw md/node->text)))
 
 (defn ^BufferedReader buffered [^Reader r]
   (BufferedReader. r))

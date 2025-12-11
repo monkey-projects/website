@@ -54,5 +54,5 @@ So for example, if you have a build that runs for 5 minutes using the default se
 *MonkeyCI* is only **free for non-commercial use**.  Although we are **planning to add
 a commercial offering** in the near future, we are postponing this until we have worked
 out most of the kinks, since this is a very young product.  If you do wish to use
-*MonkeyCI* in your company, please [send us an e-mail](mailto:sales@monkeyci.com) and
-we can work out a solution.
+*MonkeyCI* in your company, please <a href="mailto:sales@monkeyci.com">send us an e-mail</a>
+and we can work out a solution.

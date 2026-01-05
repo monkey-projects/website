@@ -35,7 +35,7 @@ USAGE:
   build [global-options] command [command options] [arguments...]
 
 VERSION:
- 0.19.10
+ 0.22.2
 
 COMMANDS:
    run                  Runs build locally
@@ -97,7 +97,7 @@ layout:
 
 This gives you an overview of your build.
 
-#### Parameters
+### Parameters
 
 By default, when running a local build, no parameters will be passed.  In the future,
 we will add the possibility to fetch [parameters](params) from the global API, but this

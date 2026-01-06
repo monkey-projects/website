@@ -32,6 +32,6 @@ to the infra repo on Github with the new version.
 
 ## License
 
-Copyright (c) 2024 by [Monkey Projects BV](https://www.monkey-projects.be).
+Copyright (c) 2024-2026 by [Monkey Projects BV](https://www.monkey-projects.be).
 
 [GPLv3 license](LICENSE)

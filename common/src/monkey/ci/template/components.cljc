@@ -128,7 +128,7 @@
             (ext? [url]
               (and url (cs/starts-with? url "http")))]
       [:div.col-sm.mb-7.mb-sm-0
-       [:span.text-cap.text-primary-light header]
+       [:span.text-cap.text-primary-light header-dark]
        (->> links
             (map footer-link)
             (into [:ul.list-unstyled.list-py-1.mb-0]))]))
@@ -163,7 +163,7 @@
     [:div.row.align-items-md-end.py-5
      [:div.col-md.mb-3.mb-md-0
       [:p.text-white.mb-0
-       copyright " 2025 " [:a.link-light {:href "https://www.monkey-projects.be"} "Monkey Projects"]]]
+       copyright " 2025-2026 " [:a.link-light {:href "https://www.monkey-projects.be"} "Monkey Projects"]]]
      [:div.col-md.d-md-flex.justify-content-md-end
       (when-let [v (:version config)]
         [:p.text-primary-light.mb-0.small.me-2.pt-2 "version " v])

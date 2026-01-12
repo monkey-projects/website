@@ -8,7 +8,9 @@
 to allow our users to be able to use it for non-commercial projects.  Every user
 can [create one organization](org-new) for free.  And each organization receives
 **1.000 credits per month** to spend on their builds.  This may be augmented by
-temporary promotions.
+temporary promotions.  These credits remain **valid for one year**, after which
+they will expire.  This to avoid an endless build-up of unused credits for inactive
+organizations.
 
 ## Credits
 
@@ -56,3 +58,5 @@ a commercial offering** in the near future, we are postponing this until we have
 out most of the kinks, since this is a very young product.  If you do wish to use
 *MonkeyCI* in your company, please <a href="mailto:sales@monkeyci.com">send us an e-mail</a>
 and we can work out a solution.
+
+Not that, unlike free credits, paid-for credits will never expire.

@@ -3,7 +3,9 @@
  :index 30
  :related [["builds" "Builds"]
            ["artifacts" "Artifacts"]
-	   ["caching" "Caching"]]}
+	   ["caching" "Caching"]
+	   ["conditions" "Conditional jobs"]
+	   ["blocking" "Blocked jobs"]]}
 
 A build script consists of one or more jobs.  There are two kinds of
 jobs: **action jobs** and **container jobs**.  A job can be **dependent** on other
@@ -192,9 +194,10 @@ per job**.  This is currently not configurable.
 ### CPU Architectures
 
 Currently, *MonkeyCI* offers two possible architectures to run your containers on: `ARM`
-and `AMD`.  This does depend on the availability with our cloud partner, but normally
-you can choose which one you want.  By default, this is `AMD`, which is also the most
-widely used architecture, but you could switch to `ARM` by specifying the `:arch` property
+and `AMD`.  This does depend on the availability with our cloud partner, and it may also
+happen that the architecture is emulated on another platform.  But normally you can
+choose which one you want.  By default, this is `AMD`, which is also the most widely
+used architecture, but you could switch to `ARM` by specifying the `:arch` property
 in your job:
 
 ```clojure

@@ -35,7 +35,7 @@ USAGE:
   build [global-options] command [command options] [arguments...]
 
 VERSION:
- 0.22.2
+ 0.23.0
 
 COMMANDS:
    run                  Runs build locally

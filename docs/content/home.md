@@ -11,7 +11,8 @@
 	   ["sustainability" "Our sustainability goals"]
 	   ["security" "Security"]]}
 
-Welcome to the [MonkeyCI](https://monkeyci.com) documentation center!
+Welcome to the [MonkeyCI](https://monkeyci.com) documentation center!  Here you will
+find everything you need to know about *MonkeyCI*.
 
 ## What is MonkeyCI?
 
@@ -28,7 +29,7 @@ This opens up a lot of possibilities.  For example, you can write [unit tests](t
 to verify your build script or create [custom conditions](conditions) to support your
 complex workflows.
 
-*MonkeyCI* also allows you to [run your builds locally](local-builds), for those one-off
+*MonkeyCI* also allows you to [run your builds locally](local-builds), for those one-of
 scenario's that you don't want to use build credits for, or to do some local fine-tuning
 that unit tests cannot capture.
 

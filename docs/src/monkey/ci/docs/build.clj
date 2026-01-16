@@ -11,10 +11,11 @@
             [monkey.ci.template.build :as tb]))
 
 (def idx-file "index.html")
+(def content-ext #{"md"})
 
-(defn- markdown-file? [x]
-  (and (not (fs/directory? x))
-       (= "md" (fs/extension x))))
+(def content-file?
+  "Checks if given file is accepted as content"
+  (comp some? content-ext fs/extension))
 
 (defn output-path [in {:keys [output] :as conf}]
   (-> (fs/strip-ext in)
@@ -58,20 +59,28 @@
   (let [{files false subdirs true} (->> (fs/list-dir dir)
                                         (group-by fs/directory?))]
     (->> files
-         (filter markdown-file?)
+         (filter content-file?)
          (concat (mapcat list-tree subdirs)))))
+
+(defn process-md [f config]
+  (-> {:file f
+       :md (md/parse f (:config config))}
+      (update :md (fn [md]
+                    (assoc md :location (location md f config))))))
+
+(def content-proc
+  {"md" process-md})
 
 (defn- parse-files
   "Recursively lists and parses all markdown files in given directory"
   [config]
-  (letfn [(add-location [md f]
-            (assoc md :location (location md f config)))]
+  (letfn [(process-content [f]
+            (when-let [p (get content-proc (fs/extension f))]
+              (p f config)))]
     (->> (list-tree (dc/get-input config))
          (map (fn [f]
                 (try
-                  (-> {:file f
-                       :md (-> (md/parse f (:config config)))}
-                      (update :md add-location f))
+                  (process-content f)
                   (catch Exception ex
                     (log/warn "Failed to process file" f ":" (ex-message ex))))))
          (remove nil?)

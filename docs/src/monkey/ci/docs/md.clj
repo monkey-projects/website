@@ -59,7 +59,7 @@
     (->> (orig ctx node)
          (vector :div.shadow.text-center))))
 
-(defn read-meta
+(defn read-header
   "Given a reader, tries to read the leading metadata edn structure.  Input should be 
    a `java.io.BufferedReader`"
   [^BufferedReader b]
@@ -87,16 +87,20 @@
 (defn ^BufferedReader buffered [^Reader r]
   (BufferedReader. r))
 
+(defn parse-raw
+  "Parses raw markdown, i.e. without header.  Returns a hiccup structure."
+  [s & [opts]]
+  (->> s
+       (md/parse)
+       (mdt/->hiccup (hiccup-renderers opts))))
+
 (defn parse
   "Parses the given markdown content and returns it as a hiccup style structure.
    Any leading edn structure is added to the metadata.  Extra options can be
    specified for transformations."
   [content & [opts]]
   (with-open [b (buffered (->reader content))]
-    (let [meta (read-meta b)
+    (let [meta (read-header b)
           s (slurp b)]
-      (assoc meta
-             :contents
-             (->> s
-                  (md/parse)
-                  (mdt/->hiccup (hiccup-renderers opts)))))))
+      (->> (parse-raw s opts)
+           (assoc meta :contents)))))

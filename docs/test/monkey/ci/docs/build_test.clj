@@ -50,6 +50,16 @@
                                  (fs/path "test-article.md")
                                  {}))))))
 
+(deftest process-md
+  (let [f (fs/path "content/home.md")
+        r (sut/process-md f {:config {}})]
+    (testing "parses markdown file"
+      (is (= f (:file r)))
+      (is (map? (:md r))))
+
+    (testing "has location"
+      (is (some? (get-in r [:md :location]))))))
+
 (deftest configure-categories
   (let [cats {:test-category {:label "test category"}}]
     (testing "adds files to categories"
@@ -95,4 +105,3 @@
 
       (testing "creates file for each markdown file in mirror directory structure"
         (is (fs/exists? (fs/path dir "articles/intro/basic-example/index.html")))))))
-

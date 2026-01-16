@@ -41,9 +41,9 @@ Or in `YAML`:
   blocked: true
 ```
 
-This will result in a job that become `blocked` as soon as it is eligible for execution (i.e.
+This will result in a job that becomes `blocked` as soon as it is eligible for execution (i.e.
 if all dependencies have successfully completed).  At this point, the script will block
-until either a user has allowed the job to continue, or an [API request](api) is received
+until either** a user has allowed the job to continue**, or an [API request](api) is received
 that unblocks the job.
 
 In the user interface, it will look like this:

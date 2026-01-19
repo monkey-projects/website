@@ -12,7 +12,25 @@
             [monkey.ci.template.build :as tb]))
 
 (def idx-file "index.html")
-(def content-ext #{"md"})
+
+(defn process-md [f config]
+  (let [md (md/parse f (:config config))]
+    (assoc md
+           :location (location md f config)
+           :file f
+           :format :md)))
+
+(defn process-edn [f config]
+  (-> (edn/parse f (:config config))
+      (update :contents (partial into [:div]))
+      (assoc :file f
+             :format :edn)))
+
+(def content-proc
+  {"md"  process-md
+   "edn" process-edn})
+
+(def content-ext (set (keys content-proc)))
 
 (def content-file?
   "Checks if given file is accepted as content"
@@ -62,22 +80,6 @@
     (->> files
          (filter content-file?)
          (concat (mapcat list-tree subdirs)))))
-
-(defn process-md [f config]
-  (let [md (md/parse f (:config config))]
-    (assoc md
-           :location (location md f config)
-           :file f
-           :format :md)))
-
-(defn process-edn [f config]
-  (-> (edn/parse f (:config config))
-      (update :contents (partial into [:div]))
-      (assoc :file f
-             :format :edn)))
-
-(def content-proc
-  {"md" process-md})
 
 (defn- parse-files
   "Recursively lists and parses all markdown files in given directory"

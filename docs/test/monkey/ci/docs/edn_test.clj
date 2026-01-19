@@ -22,4 +22,12 @@
                (-> (sut/parse p {})
                    :contents
                    second
+                   first)))))
+
+    (testing "generates components"
+      (let [p (fs/path tmp "md.edn")]
+        (is (nil? (spit (fs/file p) (pr-str {:contents [:alert/warn "test alert"]}))))
+        (is (= :div.alert.d-flex.gap-4
+               (-> (sut/parse p {})
+                   :contents
                    first)))))))

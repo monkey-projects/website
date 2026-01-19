@@ -7,18 +7,33 @@
              [md :as md]
              [input :as i]]))
 
-(defn- markdown? [x]
-  (and (vector? x)
-       (= :md (first x))))
+(defn- process-md [[_ c] conf]
+  (md/parse-raw c))
 
-(defn- process-md [c conf]
-  (w/postwalk (fn [x]
-                (if (markdown? x)
-                  (md/parse-raw (second x))
-                  x))
-              c))
+(defn- alert [type v _]
+  [:div.alert.d-flex.gap-4 {:class (str "alert-" (name type))}
+   [:i.bi.bi-exclamation-diamond.fs-1]
+   (into [:span] (rest v))])
+
+(def alert-warn (partial alert :warning))
+
+(def components
+  {:md process-md
+   :alert/warn alert-warn})
+
+(defn- component? [x]
+  (and (vector? x)
+       (contains? components (first x))))
+
+(defn- process-components [c opts]
+  (w/prewalk (fn [x]
+               (if (component? x)
+                 (let [h (get components (first x))]
+                   (h x opts))
+                 x))
+             c))
 
 (defn parse [content opts]
   (with-open [r (java.io.PushbackReader. (i/->reader content))]
     (-> (edn/read r)
-        (update :contents process-md opts))))
+        (update :contents process-components opts))))

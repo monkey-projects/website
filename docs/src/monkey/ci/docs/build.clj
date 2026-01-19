@@ -36,7 +36,7 @@
 
 (defn location
   "Calculates location vector for breadcrumb"
-  [{:keys [category] :as md} p conf]
+  [{:keys [category] :as c} p conf]
   (cond-> [home-location]
     category
     (conj (or (category-location category
@@ -46,12 +46,12 @@
                                                     :file p
                                                     :config conf}))))
     
-    (not (:home? md))
+    (not (:home? c))
     (conj {:path (-> (fs/relativize (dc/get-input conf) p)
                      (fs/strip-ext)
                      (str "/")
                      (dc/apply-prefix (dc/articles-prefix conf)))
-           :label (m/short-title md)})))
+           :label (m/short-title c)})))
 
 (defn- list-tree
   "Walks the file tree, returns a list of all markdown file paths"
@@ -63,10 +63,15 @@
          (concat (mapcat list-tree subdirs)))))
 
 (defn process-md [f config]
-  (-> {:file f
-       :md (md/parse f (:config config))}
-      (update :md (fn [md]
-                    (assoc md :location (location md f config))))))
+  (let [md (md/parse f (:config config))]
+    (assoc md
+           :location (location md f config)
+           :file f)))
+
+(defn process-edn [f config]
+  ;; TODO
+  {:file f
+   :contents []})
 
 (def content-proc
   {"md" process-md})
@@ -90,7 +95,7 @@
   (tb/write-html html out)
   out)
 
-(defn- article-file [config {:keys [file md]}]
+(defn- article-file [config {:keys [file] :as md}]
   (log/debug "Generating output for" file)
   (let [html (m/md->page md (:config config))
         out (output-path file config)]
@@ -103,9 +108,8 @@
   "Generates index file, by finding the input file marked with `home?`"
   [{:keys [files output] :as config}]
   (let [idx (->> files
-                 (filter (comp :home? :md))
-                 (first)
-                 :md)]
+                 (filter :home?)
+                 (first))]
     (assoc config :index (gen-file (m/index-page idx config)
                                    (fs/path output idx-file)))))
 
@@ -130,7 +134,7 @@
    to build a categories map."
   [{:keys [files categories] :as config}]
   (->> (reduce (fn [res f]
-                 (let [c (get-in f [:md :category])]
+                 (let [c (:category f)]
                    (cond-> res
                      c (update-in [c :files] (fnil conj []) f))))
                categories

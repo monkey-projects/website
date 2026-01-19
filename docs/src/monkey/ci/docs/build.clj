@@ -13,35 +13,6 @@
 
 (def idx-file "index.html")
 
-(defn process-md [f config]
-  (let [md (md/parse f (:config config))]
-    (assoc md
-           :location (location md f config)
-           :file f
-           :format :md)))
-
-(defn process-edn [f config]
-  (-> (edn/parse f (:config config))
-      (update :contents (partial into [:div]))
-      (assoc :file f
-             :format :edn)))
-
-(def content-proc
-  {"md"  process-md
-   "edn" process-edn})
-
-(def content-ext (set (keys content-proc)))
-
-(def content-file?
-  "Checks if given file is accepted as content"
-  (comp some? content-ext fs/extension))
-
-(defn output-path [in {:keys [output] :as conf}]
-  (-> (fs/strip-ext in)
-      (as-> p (fs/relativize (dc/get-input conf) p))
-      (fs/path idx-file)
-      (as-> p (fs/path output p))))
-
 (def home-location
   {:path "/"
    :label "Home"})
@@ -71,6 +42,35 @@
                      (str "/")
                      (dc/apply-prefix (dc/articles-prefix conf)))
            :label (m/short-title c)})))
+
+(defn process-md [f config]
+  (let [md (md/parse f (:config config))]
+    (assoc md
+           :location (location md f config)
+           :file f
+           :format :md)))
+
+(defn process-edn [f config]
+  (-> (edn/parse f (:config config))
+      (update :contents (partial into [:div]))
+      (assoc :file f
+             :format :edn)))
+
+(def content-proc
+  {"md"  process-md
+   "edn" process-edn})
+
+(def content-ext (set (keys content-proc)))
+
+(def content-file?
+  "Checks if given file is accepted as content"
+  (comp some? content-ext fs/extension))
+
+(defn output-path [in {:keys [output] :as conf}]
+  (-> (fs/strip-ext in)
+      (as-> p (fs/relativize (dc/get-input conf) p))
+      (fs/path idx-file)
+      (as-> p (fs/path output p))))
 
 (defn- list-tree
   "Walks the file tree, returns a list of all markdown file paths"

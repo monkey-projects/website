@@ -5,28 +5,12 @@
             [clojure.java.io :as io]
             [clojure.tools.logging :as log]
             [hiccup2.core :as hiccup]
-            [monkey.ci.docs.config :as dc]
+            [monkey.ci.docs
+             [config :as dc]
+             [input :as i]]
             [nextjournal.markdown :as md]
             [nextjournal.markdown.transform :as mdt])
   (:import [java.io BufferedReader PushbackReader Reader]))
-
-(defprotocol InputSource
-  (->reader [x]))
-
-(extend-type java.lang.String
-  InputSource
-  (->reader [s]
-    (java.io.StringReader. s)))
-
-(extend-type java.nio.file.Path
-  InputSource
-  (->reader [p]
-    (io/reader (fs/file p))))
-
-(extend-type java.io.Reader
-  InputSource
-  (->reader [r]
-    r))
 
 (defn- transform-heading [ctx {:keys [attrs] :as node}]
   (letfn [(heading-markup [{l :heading-level}] [(keyword (str "h" (or l 1))) attrs])]
@@ -59,7 +43,7 @@
     (->> (orig ctx node)
          (vector :div.shadow.text-center))))
 
-(defn read-meta
+(defn read-header
   "Given a reader, tries to read the leading metadata edn structure.  Input should be 
    a `java.io.BufferedReader`"
   [^BufferedReader b]
@@ -87,16 +71,20 @@
 (defn ^BufferedReader buffered [^Reader r]
   (BufferedReader. r))
 
+(defn parse-raw
+  "Parses raw markdown, i.e. without header.  Returns a hiccup structure."
+  [s & [opts]]
+  (->> s
+       (md/parse)
+       (mdt/->hiccup (hiccup-renderers opts))))
+
 (defn parse
   "Parses the given markdown content and returns it as a hiccup style structure.
    Any leading edn structure is added to the metadata.  Extra options can be
    specified for transformations."
   [content & [opts]]
-  (with-open [b (buffered (->reader content))]
-    (let [meta (read-meta b)
+  (with-open [b (buffered (i/->reader content))]
+    (let [meta (read-header b)
           s (slurp b)]
-      (assoc meta
-             :contents
-             (->> s
-                  (md/parse)
-                  (mdt/->hiccup (hiccup-renderers opts)))))))
+      (->> (parse-raw s opts)
+           (assoc meta :contents)))))

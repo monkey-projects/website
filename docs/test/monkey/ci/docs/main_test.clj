@@ -43,10 +43,10 @@
                  {:main
                   {:label "Main category"
                    :files
-                   [{:md {:title "Second"
-                          :index 1}}
-                    {:md {:title "First"
-                          :index 0}}]}}}
+                   [{:title "Second"
+                     :index 1}
+                    {:title "First"
+                     :index 0}]}}}
                 (sut/category-page :main)
                 (hf/hiccup-find [:.article-title])
                 (map second))))))

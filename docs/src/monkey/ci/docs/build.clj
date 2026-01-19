@@ -6,21 +6,12 @@
             [medley.core :as mc]
             [monkey.ci.docs
              [config :as dc]
+             [edn :as edn]
              [main :as m]
              [md :as md]]
             [monkey.ci.template.build :as tb]))
 
 (def idx-file "index.html")
-
-(defn- markdown-file? [x]
-  (and (not (fs/directory? x))
-       (= "md" (fs/extension x))))
-
-(defn output-path [in {:keys [output] :as conf}]
-  (-> (fs/strip-ext in)
-      (as-> p (fs/relativize (dc/get-input conf) p))
-      (fs/path idx-file)
-      (as-> p (fs/path output p))))
 
 (def home-location
   {:path "/"
@@ -35,7 +26,7 @@
 
 (defn location
   "Calculates location vector for breadcrumb"
-  [{:keys [category] :as md} p conf]
+  [{:keys [category] :as c} p conf]
   (cond-> [home-location]
     category
     (conj (or (category-location category
@@ -45,12 +36,41 @@
                                                     :file p
                                                     :config conf}))))
     
-    (not (:home? md))
+    (not (:home? c))
     (conj {:path (-> (fs/relativize (dc/get-input conf) p)
                      (fs/strip-ext)
                      (str "/")
                      (dc/apply-prefix (dc/articles-prefix conf)))
-           :label (m/short-title md)})))
+           :label (m/short-title c)})))
+
+(defn process-md [f config]
+  (let [md (md/parse f (:config config))]
+    (assoc md
+           :location (location md f config)
+           :file f
+           :format :md)))
+
+(defn process-edn [f config]
+  (-> (edn/parse f (:config config))
+      (update :contents (partial into [:div]))
+      (assoc :file f
+             :format :edn)))
+
+(def content-proc
+  {"md"  process-md
+   "edn" process-edn})
+
+(def content-ext (set (keys content-proc)))
+
+(def content-file?
+  "Checks if given file is accepted as content"
+  (comp some? content-ext fs/extension))
+
+(defn output-path [in {:keys [output] :as conf}]
+  (-> (fs/strip-ext in)
+      (as-> p (fs/relativize (dc/get-input conf) p))
+      (fs/path idx-file)
+      (as-> p (fs/path output p))))
 
 (defn- list-tree
   "Walks the file tree, returns a list of all markdown file paths"
@@ -58,20 +78,19 @@
   (let [{files false subdirs true} (->> (fs/list-dir dir)
                                         (group-by fs/directory?))]
     (->> files
-         (filter markdown-file?)
+         (filter content-file?)
          (concat (mapcat list-tree subdirs)))))
 
 (defn- parse-files
   "Recursively lists and parses all markdown files in given directory"
   [config]
-  (letfn [(add-location [md f]
-            (assoc md :location (location md f config)))]
+  (letfn [(process-content [f]
+            (when-let [p (get content-proc (fs/extension f))]
+              (p f config)))]
     (->> (list-tree (dc/get-input config))
          (map (fn [f]
                 (try
-                  (-> {:file f
-                       :md (-> (md/parse f (:config config)))}
-                      (update :md add-location f))
+                  (process-content f)
                   (catch Exception ex
                     (log/warn "Failed to process file" f ":" (ex-message ex))))))
          (remove nil?)
@@ -81,7 +100,7 @@
   (tb/write-html html out)
   out)
 
-(defn- article-file [config {:keys [file md]}]
+(defn- article-file [config {:keys [file] :as md}]
   (log/debug "Generating output for" file)
   (let [html (m/md->page md (:config config))
         out (output-path file config)]
@@ -94,9 +113,8 @@
   "Generates index file, by finding the input file marked with `home?`"
   [{:keys [files output] :as config}]
   (let [idx (->> files
-                 (filter (comp :home? :md))
-                 (first)
-                 :md)]
+                 (filter :home?)
+                 (first))]
     (assoc config :index (gen-file (m/index-page idx config)
                                    (fs/path output idx-file)))))
 
@@ -121,7 +139,7 @@
    to build a categories map."
   [{:keys [files categories] :as config}]
   (->> (reduce (fn [res f]
-                 (let [c (get-in f [:md :category])]
+                 (let [c (:category f)]
                    (cond-> res
                      c (update-in [c :files] (fnil conj []) f))))
                categories

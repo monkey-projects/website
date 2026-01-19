@@ -1,7 +1,9 @@
 (ns monkey.ci.docs.build-test
   (:require [clojure.test :refer [deftest testing is]]
             [babashka.fs :as fs]
-            [monkey.ci.docs.build :as sut]
+            [monkey.ci.docs
+             [build :as sut]
+             [test-helpers :as h]]
             [monkey.ci.template.utils :refer [with-tmp-dir]]))
 
 (deftest output-path
@@ -50,10 +52,34 @@
                                  (fs/path "test-article.md")
                                  {}))))))
 
+(deftest process-md
+  (let [f (fs/path "content/home.md")
+        r (sut/process-md f {:config {}})]
+    (testing "parses markdown file"
+      (is (= f (:file r)))
+      (is (vector? (:contents r)))
+      (is (= :md (:format r))))
+
+    (testing "has location"
+      (is (some? (:location r))))))
+
+(deftest process-edn
+  (h/with-tmp-dir tmp
+    (let [f (fs/path tmp "test-content.edn")
+          _ (spit (fs/file f)
+                  (pr-str {:title "test title"
+                           :contents ["This is test content"]}))
+          r (sut/process-edn f {})]
+      (testing "parses edn file"
+        (is (= f (:file r)))
+        (is (= :edn (:format r)))
+        (is (= [:div "This is test content"]
+               (:contents r)))))))
+
 (deftest configure-categories
   (let [cats {:test-category {:label "test category"}}]
     (testing "adds files to categories"
-      (let [test-file {:md {:category :test-category}}]
+      (let [test-file {:category :test-category}]
         (is (= [test-file] (-> {:files [test-file]
                                 :categories cats}
                                (sut/configure-categories)
@@ -95,4 +121,3 @@
 
       (testing "creates file for each markdown file in mirror directory structure"
         (is (fs/exists? (fs/path dir "articles/intro/basic-example/index.html")))))))
-

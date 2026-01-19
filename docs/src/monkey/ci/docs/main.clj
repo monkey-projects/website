@@ -192,7 +192,6 @@
   (let [cat-conf (get-in config [:categories category])]
     (-> (->> cat-conf
              :files
-             (map :md)
              (sort-by :index)
              (map (partial category-article cat-conf))
              (interpose [:li.border-top.my-5])

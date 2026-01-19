@@ -17,7 +17,7 @@ infrastructure changes (e.g. when using [Terraform](https://terraform.io)): you 
 to review what will happen before the changes are actually applied, lest you accidentally
 erase your production database!
 
-In *MonkeyCI* it's very easy to make a job blocking: just set the `blocking` property to
+In *MonkeyCI* it's very easy to make a job blocking: just set the `blocked` property to
 `true` for that particular job.  For example:
 
 ```clojure
@@ -31,7 +31,7 @@ In *MonkeyCI* it's very easy to make a job blocking: just set the `blocking` pro
     (m/blocked))
 ```
 
-Or in `YAML`:
+Or in `yaml`:
 ```yaml
 - id: terraform-apply
   type: container
@@ -43,8 +43,8 @@ Or in `YAML`:
 ```
 
 This will result in a job that becomes `blocked` as soon as it is eligible for execution (i.e.
-if all dependencies have successfully completed).  At this point, the script will block
-until either** a user has allowed the job to continue**, or an [API request](api) is received
+when all dependencies have successfully completed).  At this point, the script will block
+until either **a user has allowed the job to continue**, or an [API request](api) is received
 that unblocks the job.
 
 In the user interface, it will look like this:

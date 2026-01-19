@@ -6,6 +6,7 @@
             [medley.core :as mc]
             [monkey.ci.docs
              [config :as dc]
+             [edn :as edn]
              [main :as m]
              [md :as md]]
             [monkey.ci.template.build :as tb]))
@@ -66,12 +67,14 @@
   (let [md (md/parse f (:config config))]
     (assoc md
            :location (location md f config)
-           :file f)))
+           :file f
+           :format :md)))
 
 (defn process-edn [f config]
-  ;; TODO
-  {:file f
-   :contents []})
+  (-> (edn/parse f (:config config))
+      (update :contents (partial into [:div]))
+      (assoc :file f
+             :format :edn)))
 
 (def content-proc
   {"md" process-md})

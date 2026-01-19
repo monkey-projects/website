@@ -57,7 +57,8 @@
         r (sut/process-md f {:config {}})]
     (testing "parses markdown file"
       (is (= f (:file r)))
-      (is (vector? (:contents r))))
+      (is (vector? (:contents r)))
+      (is (= :md (:format r))))
 
     (testing "has location"
       (is (some? (:location r))))))
@@ -65,13 +66,15 @@
 (deftest process-edn
   (h/with-tmp-dir tmp
     (let [f (fs/path tmp "test-content.edn")
-          _ (spit (pr-str {:title "test title"
-                           :content ["This is test content"]})
-                  (fs/file f))
+          _ (spit (fs/file f)
+                  (pr-str {:title "test title"
+                           :contents ["This is test content"]}))
           r (sut/process-edn f {})]
       (testing "parses edn file"
         (is (= f (:file r)))
-        (is (vector? (:contents r)))))))
+        (is (= :edn (:format r)))
+        (is (= [:div "This is test content"]
+               (:contents r)))))))
 
 (deftest configure-categories
   (let [cats {:test-category {:label "test category"}}]

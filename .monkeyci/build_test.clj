@@ -1,10 +1,10 @@
 (ns build-test
   (:require [clojure.test :refer [deftest testing is]]
             [build :as sut]
-            [monkey.ci.test :as mt]
-            [monkey.ci.build
-             [core :as bc]
-             [v2 :as m]]))
+            [monkey.ci
+             [api :as m]
+             [test :as mt]]
+            [monkey.ci.build.core :as bc]))
 
 (deftest test-common
   (testing "`nil` if common is unchanged"
@@ -38,7 +38,12 @@
           (is (bc/container-job? (sut/deploy-common ctx))))
 
         (testing "depends on common test job"
-          (is (= ["test-common"] (:dependencies (sut/deploy-common ctx)))))))))
+          (is (= ["test-common"] (:dependencies (sut/deploy-common ctx)))))))
+
+    (testing "when triggered by tag"
+      (is (bc/container-job? (-> mt/test-ctx
+                                 (mt/with-git-ref "refs/tags/0.1.0")
+                                 (sut/deploy-common)))))))
 
 (deftest test-site
   (testing "creates container job"

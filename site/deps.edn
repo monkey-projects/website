@@ -1,12 +1,11 @@
-{:deps {com.monkeyci/site-template {:mvn/version "0.2.7"}
+{:deps {com.monkeyci/site-template {:local/root "../common"}
         com.monkeyci/template-build {:local/root "../build"}
         io.github.nextjournal/markdown {:mvn/version "0.7.196"}}
  :paths ["src"]
 
  :aliases
  {:dev
-  {:extra-paths ["env/dev" "test" "dev-resources"]
-   :override-deps {com.monkeyci/site-template {:local/root "../common"}}}
+  {:extra-paths ["env/dev" "test" "dev-resources"]}
 
   :build
   ;; clj -X:build

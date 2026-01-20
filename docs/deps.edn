@@ -1,7 +1,7 @@
 {:deps {org.clojure/clojure {:mvn/version "1.12.4"}
         aero/aero {:mvn/version "1.1.6"}
         org.clojure/tools.logging {:mvn/version "1.3.1"}
-        com.monkeyci/site-template {:mvn/version "0.2.7"}
+        com.monkeyci/site-template {:local/root "../common"}
         com.monkeyci/template-build {:local/root "../build"}
         io.github.nextjournal/markdown {:mvn/version "0.7.222"}
         medley/medley {:mvn/version "1.4.0"}}
@@ -13,8 +13,7 @@
                 ch.qos.logback/logback-classic {:mvn/version "1.5.24"}
                 hawk/hawk {:mvn/version "0.2.11"}
                 org.clojure/tools.namespace {:mvn/version "1.5.1"}
-                ring/ring {:mvn/version "1.15.3"}}
-   :override-deps {com.monkeyci/site-template {:local/root "../common"}}}
+                ring/ring {:mvn/version "1.15.3"}}}
 
   :build
   {:exec-fn monkey.ci.docs.build/build-all

@@ -27,16 +27,18 @@
   (fn [ctx]
     (m/touched? ctx re)))
 
-;; TODO Also test/deploy common if it's a release
-
 (def manual? (comp (partial = :api) m/source))
+(def release? (comp some? m/tag))
 
 (def common-changed?
   "True if any of the files in the `common/` dir have changed"
   (some-fn manual? (touched? #"^common/.*")))
 
-(def common-published?
-  (every-pred common-changed? m/main-branch?))
+(def publish-common?
+  (some-fn (every-pred common-changed? m/main-branch?)
+           release?))
+
+(def common-published? publish-common?)
 
 (defn- clj-cmds
   "Runs one or more clojure commands"
@@ -75,7 +77,7 @@
 (defn deploy-common [ctx]
   (let [conf {:publish-job-id "deploy-common"
               :test-job-id "test-common"}]
-    (when (common-changed? ctx)
+    (when (publish-common? ctx)
       (some-> ((clj/deps-publish conf) ctx)
               (assoc :work-dir "common")))))
 
@@ -83,8 +85,8 @@
   (when (common-published? ctx)
     ["deploy-common"]))
 
-(def test-site (run-tests "site" {:dependencies depends-on-common}))
-(def test-docs (run-tests "docs" {:dependencies depends-on-common}))
+(def test-site (run-tests "site"))
+(def test-docs (run-tests "docs"))
 
 (defn build
   "Builds static website files"

@@ -1,8 +1,5 @@
 (ns build
-  (:require [monkey.ci.build
-             [api :as api]
-             [core :as bc]
-             [v2 :as m]]
+  (:require [monkey.ci.api :as m]
             [monkey.ci.plugin
              [clj :as clj]
              [infra :as infra]
@@ -131,24 +128,25 @@
 
 (defn deploy [ctx]
   (when (and (build-image? ctx) (not (release? ctx)))
-    (bc/action-job
-     "deploy"
-     (fn [ctx]
-       (if-let [token (get (api/build-params ctx) "github-token")]
-         (try
-           ;; Patch the kustomization file
-           ;; TODO Patch scw-images version instead
-           (if (infra/patch+commit! (infra/make-client token)
-                                    (get-env ctx)
-                                    {"website" (img-version ctx)})
-             bc/success
-             (assoc bc/failure :message "Unable to patch version in infra repo"))
-           (catch Exception ex
-             ;; Print response
-             (println "Github request failed:" (:response (ex-data ex)))
-             (bc/with-message bc/failure (ex-message ex))))
-         (assoc bc/failure :message "No github token provided")))
-     {:dependencies ["push-manifest"]})))
+    (-> (m/action-job
+         "deploy"
+         (fn [ctx]
+           (if-let [token (get (m/build-params ctx) "github-token")]
+             (try
+               ;; Patch the kustomization file
+               ;; TODO Patch scw-images version instead
+               (if (infra/patch+commit! (infra/make-client token)
+                                        (get-env ctx)
+                                        {"website" (img-version ctx)})
+                 m/success
+                 (assoc m/failure :message "Unable to patch version in infra repo"))
+               (catch Exception ex
+                 ;; Print response
+                 (println "Github request failed:" (:response (ex-data ex)))
+                 (m/with-message m/failure (ex-message ex))))
+             (assoc m/failure :message "No github token provided"))))
+        (m/depends-on ["push-manifest"])
+        (m/blocked))))
 
 (defn notify [ctx]
   (when (release? ctx)
@@ -162,5 +160,5 @@
  build-site
  build-docs
  image
- #_deploy
+ deploy
  notify]

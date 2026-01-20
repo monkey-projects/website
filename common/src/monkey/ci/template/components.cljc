@@ -128,7 +128,7 @@
             (ext? [url]
               (and url (cs/starts-with? url "http")))]
       [:div.col-sm.mb-7.mb-sm-0
-       [:span.text-cap.text-primary-light header-dark]
+       [:span.text-cap.text-primary-light header]
        (->> links
             (map footer-link)
             (into [:ul.list-unstyled.list-py-1.mb-0]))]))

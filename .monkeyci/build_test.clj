@@ -17,7 +17,7 @@
       (is (bc/container-job? (sut/test-common ctx))))
 
     (testing "has `test-common` id"
-      (is (= "test-common" (bc/job-id (sut/test-common ctx)))))))
+      (is (= "test-common" (m/job-id (sut/test-common ctx)))))))
 
 (deftest deploy-common
   (mt/with-build-params {}
@@ -72,3 +72,27 @@
          (-> mt/test-ctx
              (mt/with-git-ref "refs/tags/0.1.0")
              (sut/notify))))))
+
+(deftest deploy
+  (testing "`nil` if not on main branch or tag"
+    (is (nil? (sut/deploy mt/test-ctx))))
+
+  (testing "when on main branch"
+    (let [ctx (-> mt/test-ctx
+                  (mt/with-git-ref "refs/heads/main"))
+          job (sut/deploy ctx)]
+      (testing "creates action job"
+        (is (bc/action-job? job)))
+
+      (testing "job is not blocked"
+        (is (not (m/blocked? job))))))
+
+  (testing "when on tag"
+    (let [ctx (-> mt/test-ctx
+                  (mt/with-git-ref "refs/tags/0.1.2"))
+          job (sut/deploy ctx)]
+      (testing "creates action job"
+        (is (bc/action-job? job)))
+
+      (testing "job is blocked"
+        (is (m/blocked? job))))))

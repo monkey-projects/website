@@ -128,27 +128,32 @@
                [(m/artifact "site" "site/target")
                 (m/artifact "docs" "docs/target/site")]}}})))
 
+(defn patch-infra
+  "Action that patches the infra repo with new version"
+  [ctx]
+  (if-let [token (get (m/build-params ctx) "github-token")]
+    (try
+      ;; Patch the kustomization file
+      ;; TODO Patch scw-images version instead
+      (if (infra/patch+commit! (infra/make-client token)
+                               (get-env ctx)
+                               {"website" (img-version ctx)})
+        m/success
+        (assoc m/failure :message "Unable to patch version in infra repo"))
+      (catch Exception ex
+        ;; Print response
+        (println "Github request failed:" (:response (ex-data ex)))
+        (m/with-message m/failure (ex-message ex))))
+    (assoc m/failure :message "No github token provided")))
+
 (defn deploy [ctx]
-  (when (and (build-image? ctx) (not (release? ctx)))
-    (-> (m/action-job
-         "deploy"
-         (fn [ctx]
-           (if-let [token (get (m/build-params ctx) "github-token")]
-             (try
-               ;; Patch the kustomization file
-               ;; TODO Patch scw-images version instead
-               (if (infra/patch+commit! (infra/make-client token)
-                                        (get-env ctx)
-                                        {"website" (img-version ctx)})
-                 m/success
-                 (assoc m/failure :message "Unable to patch version in infra repo"))
-               (catch Exception ex
-                 ;; Print response
-                 (println "Github request failed:" (:response (ex-data ex)))
-                 (m/with-message m/failure (ex-message ex))))
-             (assoc m/failure :message "No github token provided"))))
-        (m/depends-on ["push-manifest"])
-        (m/blocked))))
+  (when (build-image? ctx)
+    (cond-> (m/action-job
+             "deploy"
+             patch-infra)
+      true (m/depends-on ["push-manifest"])
+      ;; Do not auto-deploy releases
+      (release? ctx) (m/blocked))))
 
 (defn notify [ctx]
   (when (release? ctx)

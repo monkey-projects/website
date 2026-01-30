@@ -26,8 +26,8 @@
        :aria-label "MonkeyCI"}
       (tc/logo-black config)]
      [:div
-      [:h1.display-5 "MonkeyCI"]
-      [:p.lead "Documentation Center"]]
+      [:h1.display-5.text-primary-dark "MonkeyCI"]
+      [:p.lead.text-primary-dark "Documentation Center"]]
      [:div.navbar-absolute-top-scroller
       [:ul.navbar-nav
        [:li.nav-divider]
@@ -117,24 +117,34 @@
      (related-articles related config))])
 
 (defn- render-categories [cats]
-  (->> cats
-       (map (fn [{:keys [label active?] :as c}]
-              [:li.nav-item
-               [:a.nav-link
-                (cond-> {:href (-> c :location last :path)}
-                  active? (assoc :class "active"))
-                (format "%s (%d)" label (count (:files c)))]]))
-       (into 
-        [:ul#categories.nav.nav-link-gray.nav-tabs.nav-vertical])))
+  ;; Attempting to make the nav sticky, but needs more js
+  [:div.js-sticky-block
+   {:data-hs-sticky-block-options
+    "'{\"parentSelector\": \"#sticky-block-start\",
+     \"targetSelector\": \"#header\",
+     \"breakpoint\": \"md\",
+     \"startPoint\": \"#sticky-block-start\",
+     \"endPoint\": \"#sticky-block-end\",
+     \"stickyOffsetTop\": 20}'"}
+   (->> cats
+        (map (fn [{:keys [label active?] :as c}]
+               [:li.nav-item
+                [:a.nav-link
+                 (cond-> {:href (-> c :location last :path)}
+                   active? (assoc :class "active"))
+                 (format "%s (%d)" label (count (:files c)))]]))
+        (into 
+         [:ul#categories.nav.nav-link-gray.nav-tabs.nav-vertical]))])
 
 (defn- add-categories
   "Add categories to the given page"
   [page cats]
   [:div.row
-   [:div.col-md-4
+   [:div#sticky-block-start.col-md-4
     (render-categories cats)]
    [:div.col-md-8
-    page]])
+    page
+    [:div#sticky-block-end]]])
 
 (defn- ->page [content bc config]
   [:html

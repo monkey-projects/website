@@ -149,7 +149,8 @@
        [:img {:src (assets-url config "/img/monkeyci-white.png") :width "100px"}]
        [:span.h5.text-light "MonkeyCI"]]]
      (footer-col "Resources"
-                 [["Blog" "https://www.monkey-projects.be/blog/"]
+                 [["Pricing" (docs-url config "/articles/pricing/")]
+                  ["Blog" "https://www.monkey-projects.be/blog/"]
                   ["Documentation" (docs-url config)]
                   ["Issues" "https://github.com/monkey-projects/monkeyci/issues"]
                   ["Report an Issue" "https://github.com/monkey-projects/monkeyci/issues/new"]])

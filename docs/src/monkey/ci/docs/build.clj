@@ -32,9 +32,10 @@
     (conj (or (category-location category
                                  (get-in conf [:categories category])
                                  conf)
-              (throw (ex-info "Category not found" {:category category
-                                                    :file p
-                                                    :config conf}))))
+              (throw (ex-info (str "Category not found: " category)
+                              {:category category
+                               :file p
+                               :config conf}))))
     
     (not (:home? c))
     (conj {:path (-> (fs/relativize (dc/get-input conf) p)
@@ -51,10 +52,12 @@
            :format :md)))
 
 (defn process-edn [f config]
-  (-> (edn/parse f (:config config))
-      (update :contents (partial into [:div]))
-      (assoc :file f
-             :format :edn)))
+  (let [p (edn/parse f (:config config))]
+    (-> p
+        (update :contents (partial into [:div]))
+        (assoc :file f
+               :format :edn
+               :location (location p f config)))))
 
 (def content-proc
   {"md"  process-md

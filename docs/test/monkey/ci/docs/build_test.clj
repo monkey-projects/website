@@ -69,12 +69,16 @@
           _ (spit (fs/file f)
                   (pr-str {:title "test title"
                            :contents ["This is test content"]}))
-          r (sut/process-edn f {})]
+          r (sut/process-edn f {:config {}
+                                :input tmp})]
       (testing "parses edn file"
         (is (= f (:file r)))
         (is (= :edn (:format r)))
         (is (= [:div "This is test content"]
-               (:contents r)))))))
+               (:contents r))))
+
+      (testing "has location"
+        (is (some? (:location r)))))))
 
 (deftest configure-categories
   (let [cats {:test-category {:label "test category"}}]

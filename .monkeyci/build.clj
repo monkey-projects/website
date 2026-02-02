@@ -71,7 +71,7 @@
             (maybe-add-deps))))))
 
 (defn test-common [ctx]
-  (when (common-changed? ctx)
+  (when (or (common-changed? ctx) (release? ctx))
     ((run-tests "common") ctx)))
 
 (defn deploy-common [ctx]

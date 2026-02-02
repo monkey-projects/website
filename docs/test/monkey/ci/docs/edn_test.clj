@@ -13,7 +13,8 @@
                :contents [:div "test contents"]}]
         
         (is (nil? (spit (fs/file p) (pr-str c))))
-        (is (= c (sut/parse p {})))))
+        (is (= c (-> (sut/parse p {})
+                     (select-keys [:title :contents]))))))
 
     (testing "parses markdown parts"
       (let [p (fs/path tmp "md.edn")]
@@ -25,9 +26,24 @@
                    first)))))
 
     (testing "generates components"
-      (let [p (fs/path tmp "md.edn")]
+      (let [p (fs/path tmp "with-component.edn")]
         (is (nil? (spit (fs/file p) (pr-str {:contents [:alert/warn "test alert"]}))))
         (is (= :div.alert.d-flex.gap-4
                (-> (sut/parse p {})
                    :contents
-                   first)))))))
+                   first)))))
+
+    (testing "summary"
+      (testing "extracted from text"
+        (let [p (fs/path tmp "summary.edn")]
+          (is (nil? (spit (fs/file p) (pr-str {:contents "This is the intro\n\nThis is the rest"}))))
+          (is (= "This is the intro"
+                 (-> (sut/parse p {})
+                     :summary)))))
+
+      (testing "extracted from markdown"
+        (let [p (fs/path tmp "summary.edn")]
+          (is (nil? (spit (fs/file p) (pr-str {:contents [:md "This is the intro\n\nThis is the rest"]}))))
+          (is (= "This is the intro"
+                 (-> (sut/parse p {})
+                     :summary))))))))

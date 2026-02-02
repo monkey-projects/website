@@ -33,7 +33,21 @@
                  x))
              c))
 
+(defn- first-para [s]
+  (when s
+    (-> (.split s "\n")
+        (first))))
+
+(defn- unwrap-para [v]
+  (cond-> v
+    (vector? v) (->> (drop-while (some-fn keyword? map?)) first (unwrap-para))
+    true (first-para)))
+
+(defn- extract-summary [{:keys [contents] :as d}]
+  (assoc d :summary (some-> contents unwrap-para)))
+
 (defn parse [content opts]
   (with-open [r (java.io.PushbackReader. (i/->reader content))]
     (-> (edn/read r)
-        (update :contents process-components opts))))
+        (update :contents process-components opts)
+        (extract-summary))))

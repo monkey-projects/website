@@ -4,7 +4,7 @@
  :related [["jobs" "Jobs"]
            ["builds" "Builds"]
 	   ["conditions" "Conditional jobs"]]
- :summary "Blocking jobs are jobs that will only execute if an **additional unblock operation** (or
+ :summary "Blocking jobs are jobs that will only execute if an additional unblock operation (or
 \"approval\") has explicitly been given."
  :contents
  [[:md

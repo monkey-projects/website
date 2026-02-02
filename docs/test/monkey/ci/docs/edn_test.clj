@@ -35,15 +35,23 @@
 
     (testing "summary"
       (testing "extracted from text"
-        (let [p (fs/path tmp "summary.edn")]
+        (let [p (fs/path tmp "summary-1.edn")]
           (is (nil? (spit (fs/file p) (pr-str {:contents "This is the intro\n\nThis is the rest"}))))
           (is (= "This is the intro"
                  (-> (sut/parse p {})
                      :summary)))))
 
       (testing "extracted from markdown"
-        (let [p (fs/path tmp "summary.edn")]
+        (let [p (fs/path tmp "summary-2.edn")]
           (is (nil? (spit (fs/file p) (pr-str {:contents [:md "This is the intro\n\nThis is the rest"]}))))
           (is (= "This is the intro"
+                 (-> (sut/parse p {})
+                     :summary)))))
+
+      (testing "prioritizes existing summary"
+        (let [p (fs/path tmp "summary-3.edn")]
+          (is (nil? (spit (fs/file p) (pr-str {:contents [:md "This is the intro\n\nThis is the rest"]
+                                               :summary "this is the summary"}))))
+          (is (= "this is the summary"
                  (-> (sut/parse p {})
                      :summary))))))))

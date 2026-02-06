@@ -11,7 +11,7 @@ This page provides some examples for generic commands, either using [containers 
 Run some shell commands in a container, using the default shell (`/bin/sh`) and using `YAML`:
 
 ```yaml
-;; Saved in .monkeyci/build.yaml
+# Saved in .monkeyci/build.yaml
 id: bash-commands
 image: docker.io/debian:latest
 script:

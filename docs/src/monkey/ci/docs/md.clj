@@ -31,10 +31,12 @@
 (defn- transform-link
   "Prepends any configured path prefix to relative paths"
   [conf ctx {:keys [attrs] :as node}]
-  (letfn [(convert-path [p]
-            (cond->> p
-              (relative? p) (str (dc/articles-prefix conf))))]
-    (mdt/into-markup [:a {:href (convert-path (:href attrs))}] ctx node)))
+  (letfn [(convert-path [{:keys [href] :as a}]
+            (let [rel? (relative? href)]
+              (cond-> a
+                rel? (update :href (partial str (dc/articles-prefix conf)))
+                (not rel?) (assoc :target :_blank))))]
+    (mdt/into-markup [:a (convert-path attrs)] ctx node)))
 
 (def transform-quote (partial mdt/into-markup [:blockquote.blockquote.blockquote-sm.mb-2]))
 

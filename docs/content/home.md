@@ -41,10 +41,51 @@ something you may consider using.  If you also require the ability to [test](tes
 
 ## Getting Started
 
-In *MonkeyCI*, you can create [repositories](repos/), that refer to a
-[Git](https://en.wikipedia.org/wiki/Git) repository that resides on one of the [supported
-platforms](platforms/).  Whenever a build is [triggered](triggers/), it
-will be displayed on the repository page.
+The easiest way to get started is by **creating a simple build script in a new directory**
+on your local machine.  Then use the [CLI](cli) to build the script locally.
+
+```shell
+$ mkdir monkeyci-intro
+$ cd monkeyci-intro
+monkeyci-intro$ mkdir .monkeyci
+```
+
+The `.monkeyci/` directory is where *MonkeyCI* will look for your build script by default.
+
+### Your First Build Script
+
+Now it's time to write your first build script!  The best way to learn how to do that is
+by looking at some examples.  But it will look probably something like this:
+
+```clojure
+(ns build
+  (:require [monkey.ci.api :as m]))
+
+;; This build script only contains one job
+(m/action-job "my-first-job"
+  (fn [_]
+    (println "Hello, world!")))
+```
+Save the above in location `.monkeyci/build.clj`.  You can verify it works by running the
+following command:
+```shell
+monkeyci-intro$ monkeyci build run
+```
+
+It won't show much, but it's a start!  To get you further on your way, you can start by reading
+the following articles:
+
+ - First take a look at the [basic example](intro/basic-example/).
+ - After that, you can move on to a [more advanced example](intro/useful-example/).
+ - In addition, *MonkeyCI* supports [edn](intro/edn-example), [json](intro/json-example) and [yaml](intro/yaml-example).
+ - And we also have a [cookbook](/categories/cookbook/) for common scenarios.
+
+## Putting it Online
+
+Your next goal is to let *MonkeyCI* run the whole thing automatically.  In *MonkeyCI*, you
+can create [repositories](repos/), that refer to a [Git](https://en.wikipedia.org/wiki/Git)
+repository that resides on one of the [supported platforms](platforms/).  Whenever a build
+is [triggered](triggers/), it will be displayed on the repository page.
 
 ### Register
 
@@ -62,12 +103,4 @@ contains a build script in the `/.monkeyci` directory, *MonkeyCI* will **trigger
 From then on it's totally up to you: what [jobs](jobs/) are in the build, what
 [artifacts](artifacts/) are being produced, etc...
 
-### Your First Build Script
-
-Now it's time to write your first build script!  The best way to learn how to do that is
-by looking at **some examples**.
-
-First take a look at the [basic example](intro/basic-example/).  After that, you can
-move on to a [more advanced example](intro/useful-example/).  *MonkeyCI* also supports
-[edn](intro/edn-example), [json](intro/json-example) and [yaml](intro/yaml-example).
-We also have a [cookbook](/categories/cookbook/) for common scenarios.
+**Happy building!**

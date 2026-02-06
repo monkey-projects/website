@@ -11,6 +11,7 @@
   {"index" m/main
    "about/index" a/about
    "error-404" tc/not-found-page
+   ;; TODO Apply template to these
    "privacy-policy/index" (md/md-fn "md/privacy-policy.md")
    "terms-of-use/index" (md/md-fn "md/terms-of-use.md")})
 

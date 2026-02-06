@@ -1,14 +1,8 @@
 (ns monkey.ci.site.main
-  (:require [hiccup2.core :as h]
-            [monkey.ci.template.components :as cc]
-            [monkey.ci.site.utils :as u]))
-
-(defn head [config]
-  (conj (cc/head config)
-        ;; Used in scripts
-        [:script (h/raw (format "var apiUrl='%s';" (cc/api-url config)))]))
-
-(def header cc/header-dark)
+  (:require [monkey.ci.site
+             [template :as t]
+             [utils :as u]]
+            [monkey.ci.template.components :as cc]))
 
 (def input-card
   [:div.text-center.mx-auto.mb-7
@@ -138,15 +132,6 @@
        {:href "https://app.monkeyci.com"}
        "Go To Application" [:i.bi.bi-chevron-right.ms-1]]]]]])
 
-(def shape-1
-  [:div.shape-container
-   [:div.shape.shape-bottom.zi-1
-    [:svg {:viewbox "0 0 3000 600"
-           :fill "none"
-           :xmlns "http://www.w3.org/2000/svg"}
-     [:path {:d "M0 600V350.234L3000 0V600H0Z"
-             :fill "#fff"}]]]])
-
 (def shape-2
   [:div.shape-container
    [:div.shape.shape-bottom.zi-3
@@ -243,7 +228,7 @@
         "over your build.  Harness the" [:b.mx-1 "power and flexibility"] "of code to deploy applications."]]
       input-card
       code-fragment]]
-    shape-1
+    t/shape-1
     clients]
    [:div.border-top.mx-auto {:style "max-width: 25rem;"}]
    features
@@ -252,18 +237,7 @@
    features-expanded
    call-to-action])
 
-(defn footer [config]
-  [(cc/footer config)
-   (cc/script (cc/script-url config "bootstrap.min.js"))
-   (cc/script (cc/script-url config "theme.min.js"))
-   (cc/script (cc/site-url config "/js/site.js"))])
-
 (defn main [config]
-  [:html
-   (head config)
-   (vec
-    (concat
-     [:body
-      (header config)
-      (content config)]
-     (footer config)))])
+  (t/wrap-template config
+                   (t/header config)
+                   (content config)))

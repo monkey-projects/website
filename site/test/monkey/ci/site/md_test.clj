@@ -14,3 +14,4 @@
   (testing "removes :<> from content"
     (is (= [:li "content"]
            (sut/strip-<> [:li [:<> "content"]])))))
+

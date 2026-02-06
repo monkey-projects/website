@@ -90,9 +90,10 @@ is [triggered](triggers/), it will be displayed on the repository page.
 
 First off, go to [the login page](https://app.monkeyci.com/login) and [register as a new
 user](registration/).  Currently, you can only register if you either have a
-[GitHub](https://github.com) or a [Bitbucket](https://bitbucket.org) account, but we will
-expand this in the future.  Choosing one of these will make it easier for you to start
-watching changes in [repositories](repos/) hosted on those respective platforms.
+[GitHub](https://github.com), a [Bitbucket](https://bitbucket.org) or a [Codeberg](https://codeberg.org)
+account, but we may expand this in the future.  Choosing one of these will make it easier
+for you to start watching changes in [repositories](repos/) hosted on those respective
+platforms.
 
 ### Add Repositories
 

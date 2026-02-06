@@ -45,9 +45,8 @@ The easiest way to get started is by **creating a simple build script in a new d
 on your local machine.  Then use the [CLI](cli) to build the script locally.
 
 ```shell
-$ mkdir monkeyci-intro
+$ mkdir -p monkeyci-intro/.monkeyci
 $ cd monkeyci-intro
-monkeyci-intro$ mkdir .monkeyci
 ```
 
 The `.monkeyci/` directory is where *MonkeyCI* will look for your build script by default.

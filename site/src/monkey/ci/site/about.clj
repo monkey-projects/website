@@ -1,5 +1,5 @@
 (ns monkey.ci.site.about
-  (:require [monkey.ci.site.main :as m]
+  (:require [monkey.ci.site.template :as t]
             [monkey.ci.template
              [components :as tc]
              [svg :as svg]]))
@@ -84,10 +84,10 @@
 
 (defn about [config]
   [:html
-   (m/head config)
+   (t/head config)
    (vec
     (concat
      [:body
       (tc/header-light config)
       (content config)]
-     (m/footer config)))])
+     (t/footer config)))])

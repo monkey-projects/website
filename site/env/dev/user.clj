@@ -15,10 +15,10 @@
 (defn build-site
   "Builds the site to target directory"
   []
-  (tb/site {:output "target"
-            :pages sc/site-pages
-            :config (merge
-                     {:base-url "staging.monkeyci.com"
-                      :assets-url "http://localhost:8083/assets"
-                      :api-url "http://localhost:3000"}
-                     (load-config))}))
+  (sc/build {:output "target"
+             :pages sc/site-pages
+             :config (merge
+                      {:base-url "staging.monkeyci.com"
+                       :assets-url "http://localhost:8083/assets"
+                       :api-url "http://localhost:3000"}
+                      (load-config))}))

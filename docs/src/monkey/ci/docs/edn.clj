@@ -4,8 +4,8 @@
              [edn :as edn]
              [walk :as w]]
             [monkey.ci.docs
-             [md :as md]
-             [input :as i]]))
+             [input :as i]
+             [md :as md]]))
 
 (defn- process-md [[_ c] conf]
   (md/parse-raw c))

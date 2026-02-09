@@ -15,7 +15,7 @@
 
 (defn- apply-template [conf p]
   [:html
-   (head conf)
+   (head (assoc conf :title "MonkeyCI - Blog"))
    (vec
     (concat
      [:body
@@ -29,10 +29,9 @@
       [:script "hljs.highlightAll();"]]))])
 
 (defn generate-blog [conf f]
-  {:src f
-   :contents (->> (slurp (fs/file f))
-                  (md/md-page)
-                  (apply-template conf))})
+  (-> (md/parse f)
+      (assoc :src f)
+      (update :contents (partial apply-template conf))))
 
 (defn write-blog [dest entry]
   (let [f (fs/path dest (fs/strip-ext (fs/file-name (:src entry))))]

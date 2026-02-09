@@ -1,4 +1,5 @@
-(ns monkey.ci.docs.input
+(ns monkey.ci.template.input
+  "Various ways to convert something into a reader"
   (:require [babashka.fs :as fs]
             [clojure.java.io :as io]))
 

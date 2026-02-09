@@ -6,7 +6,8 @@
             [clojure.tools.logging :as log]
             [hiccup2.core :as hiccup]
             [nextjournal.markdown :as md]
-            [nextjournal.markdown.transform :as mdt])
+            [nextjournal.markdown.transform :as mdt]
+            [monkey.ci.template.input :as i])
   (:import [java.io BufferedReader PushbackReader Reader]))
 
 (defn- transform-heading [ctx {:keys [attrs] :as node}]
@@ -49,3 +50,33 @@
   (->> s
        (md/parse)
        (mdt/->hiccup renderers)))
+
+(defn read-header
+  "Given a reader, tries to read the leading metadata edn structure.  Input should be 
+   a `java.io.BufferedReader`"
+  [^BufferedReader b]
+  (let [r (PushbackReader. b)]
+    (try
+      (.mark b 1000)         ; Support up to 1k buffer for invalid edn
+      (let [h (edn/read r)]
+        (if (map? h)
+          h
+          (.reset b)))
+      (catch Exception ex
+        (if (.startsWith (ex-message ex) "No dispatch macro")
+          (.reset b)                   ; No edn at start, so ignore it
+          (throw ex))))))
+
+(defn ^BufferedReader buffered [^Reader r]
+  (BufferedReader. r))
+
+(defn parse
+  "Parses the given markdown content and returns it as a hiccup style structure,
+   using the specified renderers.  Any leading edn structure is added to the metadata,
+   and the parsed markdown is returned in the `:content`."
+  [content renderers]
+  (with-open [b (buffered (i/->reader content))]
+    (let [meta (read-header b)
+          s (slurp b)]
+      (->> (parse-raw s renderers)
+           (assoc meta :contents)))))

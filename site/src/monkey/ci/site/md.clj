@@ -26,6 +26,9 @@
   [contents]
   (tmd/parse-raw contents renderers))
 
+(defn parse [contents]
+  (tmd/parse contents renderers))
+
 (defn md-resource [f]
   (-> (io/resource f)
       (slurp)

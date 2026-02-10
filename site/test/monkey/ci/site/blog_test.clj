@@ -20,12 +20,23 @@
     (let [conf {:src (fs/path dir "src")
                 :dest (fs/path dir "dest")}]
       (is (nil? (spit (fs/file (fs/create-dirs (:src conf)) "test.md") "This is a test")))
-      (not-empty (sut/blog-pages {:blog conf}))
-      
-      (testing "generates directory per page"
-        (is (fs/exists? (:dest conf))))
+      (let [r (sut/blog-pages {:blog conf})]
+        (is (not-empty r))
+        
+        (testing "generates directory per page"
+          (for [f r]
+            (is (fs/exists? (:dest f)))))
 
-      (testing "generates archive page"))))
+        (testing "generates archive page"
+          (is (fs/exists? (fs/path (:dest conf) "archive"))))
+
+        (testing "puts last blog as index"
+          (is (fs/exists? (fs/path (:dest conf) "index.html")))))
+
+      (testing "ignores unsupported extensions"
+        (is (some? (fs/move (fs/path (:src conf) "test.md")
+                            (fs/path (:src conf) "test.txt"))))
+        (is (empty? (sut/blog-pages {:blog conf})))))))
 
 (deftest generate-blog
   (with-tmp-dir dir

@@ -47,9 +47,28 @@
     (fs/create-dirs f)
     (assoc entry :dest (tb/generate f (constantly (:contents entry))))))
 
+(defn copy-home [dest entries]
+  (let [{d :dest :as latest} (->> entries
+                                  (sort-by :date)
+                                  (last))]
+    (cond-> entries
+      latest (conj {:type :latest
+                    :src d
+                    :dest (fs/copy d (fs/path dest "index.html"))}))))
+
+(defn write-archive
+  "Builds an archive page that holds an overview of all blog entires"
+  [dest entries]
+  (cond-> entries
+    (not-empty entries) (conj {:type :archive
+                               ;; TODO File contents
+                               :dest (fs/create-dirs (fs/path dest "archive"))})))
+
 (defn blog-pages [{{:keys [src dest]} :blog :as conf}]
-  (->> (fs/list-dir src)
+  (->> (fs/list-dir src "*.md")
        (map (partial generate-blog conf))
        (sort-by :date)
        (map (partial write-blog dest))
+       (copy-home dest)
+       (write-archive dest)
        (doall)))

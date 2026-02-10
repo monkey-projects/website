@@ -15,7 +15,7 @@
 
 (defn test-config []
   (merge
-   {:base-url "staging.monkeyci.com"
+   {:base-url "localhost:8083"
     :assets-url "http://localhost:8083/assets"
     :api-url "http://localhost:3000"}
    (load-config)))

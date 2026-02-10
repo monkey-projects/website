@@ -31,20 +31,20 @@
       ;; Activate syntax highlighting
       [:script "hljs.highlightAll();"]]))])
 
-(defn- entry-page [entry]
+(defn- entry-page [conf entry]
   [:div
    [:h2.text-primary (:title entry)]
    [:p.mb-4 [:em (:author entry) " - " (:date entry)]]
    (:contents entry)
    [:div
-    [:a {:href "archive"} "More blog posts"]]])
+    [:a {:href (blog-url conf "archive")} "More blog posts"]]])
 
 (defn generate-blog [conf f]
   (let [p (md/parse f)]
     (assoc p
            :src f
            :name (fs/strip-ext (fs/file-name f))
-           :contents (apply-template (entry-page p) conf))))
+           :contents (apply-template (entry-page conf p) conf))))
 
 (defn dest-file
   "Generates destination file name for the blog entry, using the original name and date."
@@ -78,11 +78,13 @@
        [:p (:summary e)]]]]]])
 
 (defn generate-archive [conf entries]
-  (->> entries
-       (sort-by :date)
-       (reverse)
-       (map (partial archive-entry conf))
-       (into [:div.d-flex.gap-4])))
+  [:div
+   [:h2.text-primary.mb-3 "MonkeyCI Blog Archive"]
+   (->> entries
+        (sort-by :date)
+        (reverse)
+        (map (partial archive-entry conf))
+        (into [:div.d-flex.gap-4]))])
 
 (defn write-archive
   "Builds an archive page that holds an overview of all blog entries"

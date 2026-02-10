@@ -2,7 +2,7 @@
   (:require [clojure.java.io :as io]
             [clojure.walk :as cw]
             [monkey.ci.site.template :as t]
-            [nextjournal.markdown :as md]
+            [monkey.ci.template.md :as tmd]
             [nextjournal.markdown.transform :as mdt]))
 
 (defn strip-<> [v]
@@ -18,14 +18,16 @@
   (strip-<> (mdt/into-markup [:li] ctx node)))
 
 (def renderers
-  (assoc mdt/default-hiccup-renderers
+  (assoc tmd/hiccup-renderers
          :list-item transform-li))
 
 (defn md-page
   "Converts markdown contents in to a hiccup page"
   [contents]
-  (->> (md/parse contents)
-       (mdt/->hiccup renderers)))
+  (tmd/parse-raw contents renderers))
+
+(defn parse [contents]
+  (tmd/parse contents renderers))
 
 (defn md-resource [f]
   (-> (io/resource f)

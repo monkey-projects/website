@@ -3,9 +3,8 @@
   (:require [clojure
              [edn :as edn]
              [walk :as w]]
-            [monkey.ci.docs
-             [md :as md]
-             [input :as i]]))
+            [monkey.ci.docs.md :as md]
+            [monkey.ci.template.input :as i]))
 
 (defn- process-md [[_ c] conf]
   (md/parse-raw c))

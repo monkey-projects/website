@@ -68,7 +68,9 @@ MonkeyCI supports two kinds of jobs:
 
 **Container Jobs**: Traditional containerized execution for things like Docker builds, database migrations, or running in specific environments.
 
-**Action Jobs**: Pure Clojure functions that run in the build agent's JVM. No container overhead for simple tasks like posting to Slack, updating a database record, or even coordinating other jobs.
+**Action Jobs**: Pure Clojure functions that run in your build script's JVM. No container
+overhead for simple tasks like posting to Slack, updating a database record, or even
+coordinating other jobs.
 ```clojure
 (m/action-job
   "notify-slack"
@@ -98,7 +100,7 @@ Then your build script can become even simpler:
 (clj/deps-library)
 ```
 
-The sky is the limit!
+Since a build script is just code, you can do just about anything.  The sky is the limit!
 
 ## Features That Matter
 

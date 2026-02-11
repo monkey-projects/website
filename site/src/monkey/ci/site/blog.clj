@@ -73,8 +73,10 @@
       [:img.img-fluid {:src (tc/site-url conf (:header-img e)) :alt "Blog header image"}]]
      [:div.col-md-6
       [:div.ps-md-5
-       [:h3.mb-3.mb-md-5
-        [:a.text-dark {:href (blog-url conf (:name e))} (:title e)]]
+       [:div.mb-3.mb-md-5
+        [:h4
+         [:a.text-dark {:href (blog-url conf (:name e))} (:title e)]]
+        [:i (:author e) " - " (:date e)]]
        [:p (:summary e)]]]]]])
 
 (defn generate-archive [conf entries]

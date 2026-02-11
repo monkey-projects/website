@@ -48,7 +48,7 @@
   "Parses raw markdown, i.e. without header.  Returns a hiccup structure."
   [s renderers]
   (->> s
-       (md/parse)
+       (md/parse {:disable-inline-formulas true})
        (mdt/->hiccup renderers)))
 
 (defn read-header

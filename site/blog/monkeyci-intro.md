@@ -151,7 +151,7 @@ The repo is at [github.com/monkey-projects/monkeyci](https://github.com/monkey-p
 
 ## Who's This For?
 
-MonkeyCI is probably overkill if you just need to run lein test and deploy a JAR. The existing tools work fine for that.
+MonkeyCI is probably overkill if you just need to run `lein test` and deploy a JAR. The existing tools may be good enough for you.
 But if you've ever:
  - Spent hours debugging complex CI logic 
  - Wished you could test your pipeline locally 
@@ -191,8 +191,9 @@ A: It's possible, but this is not my main priority.  In addition to NATS, Monkey
 
 **Q: How does pricing work?**
 <br/>
-A: I first want to make MonkeyCI better before I charge money.  But it will be probably something
-along the lines of $5/user/month for basic usage (e.g. startups), and $30/user/month for larger enterprises.
+A: First I want to make MonkeyCI better before I charge money.  But it will be probably something
+along the lines of $5/user/month for basic usage (e.g. startups, teams up to 3 people), and $30/user/month
+for larger enterprises (larger teams, more credits).
 
 **Q: What about [Feature X]?**
 <br/>

@@ -9,7 +9,7 @@
 ## The YAML Problem We've All Lived Through
 
 You know the drill. Your project starts simple: run tests, maybe publish to [Clojars](https://clojars.org).
-A few lines of YAML in .gitlab-ci.yml or .github/workflows/, and you're done.
+A few lines of YAML in `.gitlab-ci.yml` or `.github/workflows/`, and you're done.
 
 Then reality hits:
 ```yaml
@@ -46,7 +46,7 @@ Here's what a MonkeyCI build script looks like:
 (def publish
   (-> (m/container-job "publish")
       (m/image clojure-img)
-      (m/script ["clojure -X:test"])
+      (m/script ["clojure -X:publish"])
       (m/depends-on "test")))
 
 ;; Return a list of jobs (or a fn that returns jobs based on context)
@@ -86,7 +86,8 @@ A great way to reuse code is to use libraries.  MonkeyCI supports this as well! 
 include any Java or Clojure lib in your script and call its functions, including your own
 libs.
 
-First add the dependency to the `.monkeyci/deps.edn`:
+First add the dependency to the `.monkeyci/deps.edn`, in this case the
+[clj plugin](https://github.com/monkey-projects/plugin-clj):
 ```clojure
 {:deps {com.monkeyci/plugin-clj {:mvn/version "0.4.0"}}}
 ```

@@ -198,11 +198,11 @@ for larger enterprises (larger teams, more credits).
 
 **Q: What about [Feature X]?**
 <br/>
-A: Tell me about it! That's why I'm looking for beta testers.
+A: [Tell me about it](https://github.com/monkey-projects/monkeyci/issues)! That's why I'm looking for beta testers.
 
 ## Links:
  - GitHub: [github.com/monkey-projects/monkeyci](https://github.com/monkey-projects/monkeyci)
  - App: [app.monkeyci.com](https://app.monkeyci.com)
  - Mailman (event lib): [github.com/monkey-projects/mailman](https://github.com/monkey-projects/mailman)
 
-Looking forward to hearing from the community. Let's build something better than YAML together.
+Looking forward to [hearing from the community](https://clojurians.slack.com/team/U014Z1HN0GP). Let's build something better than YAML together.

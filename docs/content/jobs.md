@@ -85,6 +85,51 @@ which is probably not what you want.  The second `spit` uses the `in-work` funct
 which will correctly calculate the absolute path to use for the job, given the
 build checkout directory and the "subdir" subdirectory the job runs in.
 
+### Access Other Jobs' Results
+
+Often jobs that are dependent on other jobs, will want to do something with the
+output of those jobs.  This can be done by restoring their [artifacts](artifacts),
+in the form of files.  But when using action jobs, it's also possible to read the
+results of other jobs as a structure using [API](api) calls.  For this, you need
+to use the `get-job` function.  This will return the full details of another job
+in the build.  If the job is already executed, it will also contain it's results.
+
+```clojure
+(ns build
+  (:require [monkey.ci.api :as m]))
+
+(def first-job
+  (m/action-job
+   "first-job"
+   (fn [ctx]
+     ;; Purely informational
+     (println "This is the first job")
+     ;; Return something
+     (-> m/success
+         (m/with-message "The first job has succeeded")
+	 ;; Add a custom value to the result
+	 (assoc :some-key "some value")))))
+
+(def second-job
+  (-> (m/action-job
+       "second-job"
+       (fn [ctx]
+         ;; Retrieve details of first job
+         (let [f (m/get-job ctx "first-job")]
+	   (println "The result of the first job is:" (get-in f [:result :some-key])))))
+      (m/depends-on ["first-job"])))
+
+[first-job
+ second-job]
+```
+
+In this (contrived) example, there are two jobs, and the second one depends on the first.  So it
+will only execute when the first job has succeeded.  The first one adds a custom value
+to its result, in this case `{:some-key "some value"}`.  The second job prints out
+that value.  This illustrates how action jobs can **access each others results**.  In
+case of container jobs, this is not possible, but you can inspect its properties and
+also any values that are added to the result by [extensions](plugins).
+
 ## Container Jobs
 
 As the name suggests, container jobs are **executed in their own container**.  You

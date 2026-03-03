@@ -9,9 +9,9 @@
   (-> (tc/head (assoc config :title "MonkeyCI: Documentation Center"))
       ;; Syntax highlighting lib
       ;; See https://github.com/highlightjs/highlight.js/tree/main/src/styles for more styles
-      (conj (tc/stylesheet "/css/github-dark.min.css"))
-      (conj (tc/script "/js/highlight.min.js"))
-      (conj (tc/script "/js/clojure.min.js"))
+      (conj (tc/stylesheet (tc/assets-url config "/css/github-dark.min.css")))
+      (conj (tc/script (tc/script-url config "highlight.min.js")))
+      (conj (tc/script (tc/script-url config "clojure.min.js")))
       (conj [:script "hljs.highlightAll();"])))
 
 (defn header
@@ -164,7 +164,7 @@
          content]]
        [:div.mt-auto
         (tc/footer config)]]]]
-    (tc/script (tc/script-url config "vendor.min.js"))
+    (tc/script (tc/script-url config "bootstrap.min.js"))
     (tc/script (tc/script-url config "theme.min.js"))]])
 
 (defn md->page

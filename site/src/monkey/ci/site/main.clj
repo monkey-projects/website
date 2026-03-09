@@ -120,6 +120,62 @@
     [:div.d-grid.d-sm-flex.justify-content-sm-center.gap-3.mb-7
      [:a.btn.btn-primary {:href (cc/docs-url config) :target :_blank} "Explore our Documentation"]]]])
 
+(defn- pricing-card [{:keys [amount title summary features footer]}]
+  [:div.col-md.mb-3.mb-md-0
+   [:div.card.card-lg
+    [:div.card-header.text-center
+     [:div.mb-2
+      ;; TODO Euro currency
+      (if (pos? amount)
+        [:div
+         [:span.fs-5.align-top.text-dark.fw-bold "$"]
+         [:span.fs-2.text-dark.fw-bold amount]
+         [:span "/user/mo"]]
+        [:span.fs-2.text-dark.fw-bold "Free"])
+      [:h5.card-title title]
+      [:p.card-text summary]]]
+    [:div.card-body.d-flex.justify-content-center.h-100.py-0
+     (->> features
+          (map (fn [f]
+                 [:li.list-checked-item f]))
+          (into [:ul.list-checked.list-checked-primary]))]
+    (when footer
+      [:div.card-footer.text-center
+       [:smal.text-muted footer]])]])
+
+(defn pricing [config]
+  [:div.container
+   [:div.w-lg-65.text-center.mx-lg-auto.mb-7
+    [:h3 "Find the right plan for your team"]
+    [:p.fs-6 "Pay as you go service, cancel anytime."]]
+   [:div.w-lg-85.shadow-lg.rounded.mx-lg-auto.mb-7
+    [:div.row.card-group-md-row.card-group-md-3
+     (pricing-card {:amount 0
+                    :title "Basic"
+                    :summary "For private use or to try it out."
+                    :features ["1 organization with 1 user"
+                               "Unlimited repos"
+                               "1.000 monthly credits"
+                               "Access to all plugins"
+                               "Public and private repo's"]
+                    :footer "No card required."})
+
+     (pricing-card {:amount 5
+                    :title "Startup"
+                    :summary "For starting businesses."
+                    :features ["Everything in Basic plan, plus:"
+                               "1 organization with 3 users"
+                               "5.000 monthly credits"]
+                    :footer "Cancel anytime"})
+
+     (pricing-card {:amount 30
+                    :title "Professional"
+                    :summary "For enterprises with large teams."
+                    :features ["Everything in Startup plan, plus:"
+                               "5 organizations with unlimited users"
+                               "30.000 monthly credits per org"]
+                    :footer "Cancel anytime"})]]])
+
 (def call-to-action
   [:div.bg-soft-primary-light
    [:div.container.content-space-1.content-space-md-3
@@ -235,6 +291,7 @@
    (mockups config)
    shape-2
    features-expanded
+   (pricing config)
    call-to-action])
 
 (defn main [config]

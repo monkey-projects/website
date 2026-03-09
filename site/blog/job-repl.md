@@ -1,5 +1,5 @@
 {:title "Run a REPL in a MonkeyCI job"
- :description "People have told me several times they would really like it if their CI/CD pipeline allowed them to start a REPL so they could fix hard to debug problems in their builds.  Well, now MonkeyCI can do that!"
+ :summary "MonkeyCI's latest powerful feature allows you to run a REPL in a build job for remote inspection or debugging.  Read on for a detailed example on how to do this."
  :author "Wout Neirynck"
  :date "2026-03-06"
  :header-img "/img/blog-job-repl-intro.png"}

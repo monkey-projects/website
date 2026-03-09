@@ -68,7 +68,8 @@
 (defn- archive-entry [conf i e]
   (let [img
         [:div.col-md-6.mb-3.mb-md-0
-         [:img.img-fluid {:src (tc/site-url conf (:header-img e)) :alt "Blog header image"}]]
+         [:a {:href (blog-url conf (:name e))}
+          [:img.img-fluid {:src (tc/site-url conf (:header-img e)) :alt "Blog header image"}]]]
         summary
         [:div.col-md-6
          [:div.ps-md-5

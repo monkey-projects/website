@@ -15,24 +15,25 @@ up in your remote build pipelines.
 
 ## Murphy's Law
 
-But one of the corollary's of Murphy's Law (which holds more power in IT than anywhere
-else, I think) is the following: *"If things can go wrong in four different ways, and
-you protect against each of them, a fifth way will promptly develop."*
+But one of the corollaries of Murphy's Law (which holds more power in IT than anywhere
+else, I think) is the following: *"If things can go wrong in several different ways, and
+you protect against each of them, an additional way will promptly develop."*
 
 In those situations you can add more logging, but this leads to a frustrating cycle of
 trial-and-error that wastes all your precious build credits.  Fortunately, Clojure is one
 of those enlightened languages that provides a [REPL](https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop).  Now, while we all like to go on and on about the virtues of that wonderful feature,
-I don't want to make this blog post too long.  You can even connect to the REPL remotely,
-using [nREPL](https://nrepl.org).  Wouldn't it be wonderful if you could do that in your
-build pipeline as well?
+I don't want to make this blog post too long.  Suffice to say that you can even connect to
+the REPL remotely, using [nREPL](https://nrepl.org).  Wouldn't it be wonderful if you could
+do that in your build pipelines as well?
 
 ## A Contrived Example
 
 MonkeyCI's [latest version](https://app.monkeyci.com) has a new, powerful feature that
 allows container jobs to expose ports to the outside world.  Even though CI/CD pipelines
 should behave in a predictable and reproducible manner, there are some situations where
-you want to be able to connect to some kind of server that a job has started.  This could
-be a webserver, a database, or, in this case. an `nREPL` server.
+you want to be able to connect to some kind of server that a job has started, e.g. for
+verification or debugging purposes.  This could be a webserver, a database, or, in this
+example. an `nREPL` server.
 
 Let's set up a small example.  This is a simple build script that runs Clojure unit tests:
 ```clojure

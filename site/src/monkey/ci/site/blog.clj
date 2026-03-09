@@ -65,19 +65,24 @@
                     :src d
                     :dest (fs/copy d (fs/path dest "index.html") {:replace-existing true})}))))
 
-(defn- archive-entry [conf e]
-  [:div.card.card-sm
-   [:div.card-body
-    [:div.row.align-items-md-center
-     [:div.col-md-6.mb-3.mb-md-0
-      [:img.img-fluid {:src (tc/site-url conf (:header-img e)) :alt "Blog header image"}]]
-     [:div.col-md-6
-      [:div.ps-md-5
-       [:div.mb-3.mb-md-5
-        [:h4
-         [:a.text-dark {:href (blog-url conf (:name e))} (:title e)]]
-        [:i (:author e) " - " (:date e)]]
-       [:p (:summary e)]]]]]])
+(defn- archive-entry [conf i e]
+  (let [img
+        [:div.col-md-6.mb-3.mb-md-0
+         [:img.img-fluid {:src (tc/site-url conf (:header-img e)) :alt "Blog header image"}]]
+        summary
+        [:div.col-md-6
+         [:div.ps-md-5
+          [:div.mb-3.mb-md-5
+           [:h4
+            [:a.text-dark {:href (blog-url conf (:name e))} (:title e)]]
+           [:i (:author e) " - " (:date e)]]
+          [:p (:summary e)]]]]
+    [:div.card.card-sm
+     [:div.card-body
+      (->> (if (even? i)
+             [img summary]
+             [summary img])
+           (into [:div.row.align-items-md-center]))]]))
 
 (defn generate-archive [conf entries]
   [:div
@@ -85,8 +90,8 @@
    (->> entries
         (sort-by :date)
         (reverse)
-        (map (partial archive-entry conf))
-        (into [:div.d-flex.gap-4]))])
+        (map-indexed (partial archive-entry conf))
+        (into [:div.d-flex.flex-column.gap-4]))])
 
 (defn write-archive
   "Builds an archive page that holds an overview of all blog entries"

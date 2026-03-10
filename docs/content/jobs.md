@@ -204,12 +204,13 @@ Environment variables an also be constructed from the [build parameters](params)
 ### Resources
 
 By default container jobs use **1 CPU and 2 GB of memory**, but you can override
-this by specifying the `:cpus` and `:memory` options when creating the job, or you
-can use the `cpus` and `memory` functions:
+this by specifying the `:size` option when creating the job, or you can use the
+`size` function.  The size is a multiplication of the default resource values.
+So size 2 means 2 CPU's and 4 GB of memory, etc...
 
 ```clojure
 (def heavy-job
-  (-> (container-job "heavy-lifting" {:cpus 2 :memory 16})
+  (-> (container-job "heavy-lifting" {:size 2})
       (image "...")
       ;; other properties here
       )
@@ -217,19 +218,18 @@ can use the `cpus` and `memory` functions:
 (def another-heavy-job
   (-> (container-job "more-heavy-lifting")
       (image "...")
-      (cpus 2)
-      (memory 16)))
+      (size 3)
 ```
-This will create a container job that uses 2 cpu cores and 16GB of memory.  This will
+This will create a container job that uses 3 cpu cores and 6 GB of memory.  This will
 of course count towards the [consumed credits](pricing).  They also have maximum
 values, as shown in this table:
 
 |Resource|Default|Minimum|Maximum|
 |---|---|---|---|
 |CPU|1|1|16|
-|Memory|2 GB|1 GB|64 GB|
+|Memory|2 GB|2 GB|32 GB|
 
-Note that configuring cpu's or memory **on an action job does not have any effect**.
+Note that configuring the size **on an action job does not have any effect**.
 Also, setting the required memory for a job too low may result in job failure due to
 *out-of-memory*.
 

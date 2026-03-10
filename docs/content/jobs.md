@@ -268,6 +268,80 @@ example.
 Assuming the available architectures are `:arm` and `:amd`, the above example
 creates two jobs, called `job-for-arch-arm` and `job-for-arch-amd`, respectively.
 
+### Timeouts
+
+By default, *MonkeyCI* imposes a maximum job duration of 20 minutes.  This is a safeguard
+against jobs that have blocked for some reason, otherwise they would continue to use up
+build credits until the build itself is stopped.  You can override this by setting the
+`:timeout` property:
+```clojure
+(def long-job
+  ;; Job with 2 hour timeout
+  (-> (m/container-job "long-job" {:timeout (* 120 60 1000)})
+      (m/image "...")
+      ;; ... more settings
+      )
+```
+Timeouts are calculated in milliseconds.  There is still a hardcoded maximum limit 6 hours,
+since we think that nobody would ever need to run a job for a longer period.
+
+### Exposing Ports
+
+A unique feature *MonkeyCI* offers is the possibility to **expose ports from container
+jobs to the outside world**.  This could be useful for instance to allow for additional
+debugging (for those hard to find issues that even unit tests can't pinpoint), or
+to allow for 3rd party tools to run analysis on a service started in your job, like
+a MySQL database.
+
+To expose one or more ports, simply use the `expose` function with a list of ports
+as arguments.  These ports will then be mapped to an external port in a range configured
+on the agent.  You can retrieve this information either from within your build by querying
+the job that exposes the port using the `get-job-exposed-addr` function, or from the
+"Details" tab in the job screen from the UI.
+
+```clojure
+(def repl-job
+  (-> (container-job "repl-job")
+      (image "docker.io/clojure:tools-deps-trixie")
+      ;; Start a clojure CLI process that runs an nREPL server
+      (script ["clojure -Sdeps '{:deps {nrepl/nrepl {:mvn/version "1.5.2"}}}' -M -m nrepl.cmdline -p 7888 -b 0.0.0.0"])
+      (expose [7888])))
+```
+
+The above example will start a container job that runs a [Clojure nREPL](https://nrepl.org/)
+server at port `7888`.  By exposing the port, the agent that runs the container job will
+map it to some externally accessible port.
+
+Now in order to find out the exact address to access that service, you can use the
+`get-job-exposed-addr` function from the api from within an action job in your build.
+Since the above job must still run in order to access it, you can't just wait for it to
+finish.  You need to do this in a parallel job.  This could be done in a wait loop.  Like
+so:
+
+```clojure
+(def wait-for-repl
+  (action-job "wait-for-repl"
+    (fn [ctx]
+      (letfn [(exposed-addr []
+                (get-job-exposed-addr ctx "repl-job" 7888))]
+        ;; Loop until port 7888 is exposed in the other job
+        (while (not (exposed-addr))
+          (Thread/sleep 1000))
+        ;; Send a notification, using a fictituous Slack function
+        (slack-notify ctx (str "The nREPl server is available at " (exposed-addr)))))))
+```
+The above action job will check every second if port `7888` is exposed in job `repl-job`,
+and when it is, it will send a message on Slack.  There you will receive the information you
+need to connect to that service.
+
+**Be careful!**  Note that the exposed ports are accessible **to the entire world**,
+so make sure to add some security measures (credentials or a certificate check) to
+make sure only the authorized users are allowed access to those services!  Also, since
+you can only connect to a running job, you need to make sure the job does not terminate
+before you have the chance to connect to it.  By default, *MonkeyCI* will automatically
+kill a job after 20 minutes, by you can override that by setting the `:timeout` property,
+as described above.
+
 ## Startup Times
 
 Since action jobs are run inside the build script environment, and container jobs

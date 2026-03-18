@@ -125,10 +125,9 @@
    [:div.card.card-lg
     [:div.card-header.text-center
      [:div.mb-2
-      ;; TODO Euro currency
       (if (pos? amount)
         [:div
-         [:span.fs-5.align-top.text-dark.fw-bold "$"]
+         [:span.fs-5.align-top.text-dark.fw-bold "€"]
          [:span.fs-2.text-dark.fw-bold amount]
          [:span "/user/mo"]]
         [:span.fs-2.text-dark.fw-bold "Free"])
@@ -154,8 +153,8 @@
                     :title "Basic"
                     :summary "For private use or to try it out."
                     :features ["1 organization with 1 user"
-                               "Unlimited repos"
                                "1.000 monthly credits"
+                               "Unlimited repos"
                                "Access to all plugins"
                                "Public and private repo's"]
                     :footer "No card required."})
@@ -163,18 +162,30 @@
      (pricing-card {:amount 5
                     :title "Startup"
                     :summary "For starting businesses."
-                    :features ["Everything in Basic plan, plus:"
-                               "1 organization with 3 users"
-                               "5.000 monthly credits"]
+                    :features ["1 organization with 3 users *"
+                               "5.000 monthly credits"
+                               "Unlimited repos"
+                               "Access to all plugins"
+                               "Public and private repo's"
+                               "Email support"
+                               "For commercial purposes"]
                     :footer "Cancel anytime"})
 
      (pricing-card {:amount 30
                     :title "Professional"
                     :summary "For enterprises with large teams."
-                    :features ["Everything in Startup plan, plus:"
-                               "5 organizations with unlimited users"
-                               "30.000 monthly credits per org"]
-                    :footer "Cancel anytime"})]]])
+                    :features ["5 organizations with unlimited users *"
+                               "30.000 monthly credits per org"
+                               "Unlimited repos"
+                               "Access to all plugins"
+                               "Public and private repo's"
+                               "Email + Slack support"
+                               "For commercial purposes"]
+                    :footer "Cancel anytime"})]]
+   [:div.w-lg-65.text-center.mx-lg-auto.mb-7
+    [:p.fs-6.fst-italic
+     "* Paying plans allow you to add multiple users to your organizations, up to the "
+     "number of users in your plan, or the maximum users allowed by the plan."]]])
 
 (def call-to-action
   [:div.bg-soft-primary-light

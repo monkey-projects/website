@@ -59,4 +59,4 @@ out most of the kinks, since this is a very young product.  If you do wish to us
 *MonkeyCI* in your company, please <a href="mailto:sales@monkeyci.com">send us an e-mail</a>
 and we can work out a solution.
 
-Not that, unlike free credits, paid-for credits will never expire.
+Note that, unlike free credits, paid-for credits will never expire.

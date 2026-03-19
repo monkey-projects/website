@@ -76,7 +76,8 @@
       [:h4.text-primary
        [:a {:href "https://codeberg.org"
             :target :_blank}
-        "Codeberg"]]]]]])
+        "Codeberg"]]]]
+    [:div [:i "But you can use any remotely accessible git repository, even private ones."]]]])
 
 (defn- feature [img title desc]
   [:div.col-md-6.mb-3.mb-md-7
@@ -157,7 +158,7 @@
                                "Unlimited repos"
                                "Access to all plugins"
                                "Public and private repo's"]
-                    :footer "No card required."})
+                    :footer "No credit card required."})
 
      (pricing-card {:amount 5
                     :title "Startup"
@@ -174,8 +175,8 @@
      (pricing-card {:amount 30
                     :title "Professional"
                     :summary "For enterprises with large teams."
-                    :features ["5 organizations with unlimited users *"
-                               "30.000 monthly credits per org"
+                    :features ["1 organization with unlimited users *"
+                               "30.000 monthly credits"
                                "Unlimited repos"
                                "Access to all plugins"
                                "Public and private repo's"
@@ -258,7 +259,7 @@
      {:class "overflow-hidden"}
      [[:span "(" (k "require") " '[monkey.ci.plugin.clj " (k ":as") " clj]))"]
       ""
-      (c ";; Contains both test and publish jobs")
+      (c ";; Provides both test and publish jobs")
       "(clj/deps-library)"])))
 
 (def features-expanded

@@ -2,11 +2,13 @@
  :category :cookbook
  :index 10
  :related [["intro/basic-example" "Basic Example"]
-           ["intro/useful-example" "A more Useful Example"]]}
+           ["intro/useful-example" "A more Useful Example"]
+		   ["jobs" "Jobs"]
+		   ["cookbook/conditions" "Condition Cookbook"]]}
 
 This page provides some examples for generic commands, either using [containers or actions](jobs).
 
-## Shell Commands
+## Shell Commands in Container
 
 Run some shell commands in a container, using the default shell (`/bin/sh`) and using `YAML`:
 
@@ -19,9 +21,9 @@ script:
   - echo "This is another command"
 ```
 
-## Command with Environment Variables
+## Container with Environment Variables
 
-Run a shell script with env vars passed in:
+Run a shell script in a container with env vars passed in:
 
 ```yaml
 - id: env-commands
@@ -32,7 +34,18 @@ Run a shell script with env vars passed in:
     TEST_VAR: test value
 ```
 
-## Generic Clojure Functions
+Or, using Clojure:
+```clojure
+(ns build
+  (:require [monkey.ci.api :as m]))
+
+(-> (m/container-job "env-commands")
+    (m/image "docker.io/debian:latest")
+    (m/script ["echo \"Value of env var is $TEST_VAR\""])
+    (m/env {"TEST_VAR" "test value"}))
+```
+
+## Basic Action Job
 
 Create an action job that executes an arbitrary Clojure function:
 
@@ -78,3 +91,18 @@ is triggered on the `main` branch:
         (m/image "docker.io/alpine:latest")
         (m/script ["echo \"I'm in the main branch!\""]))))
 ```
+
+If you've configured the *main branch* property in the [repository](repos), you can also just use this:
+
+```clojure
+(ns build
+  (:require [monkey.ci.api :as m]))
+
+(defn main-job [ctx]
+  (when (m/main-branch? ctx)
+    (-> (m/container-job "on-main")
+        (m/image "docker.io/alpine:latest")
+        (m/script ["echo \"I'm in the main branch!\""]))))
+```
+
+See also the [condition cookbook](cookbook/conditions) for more examples.

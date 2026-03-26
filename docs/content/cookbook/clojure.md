@@ -1,8 +1,9 @@
 {:title "Clojure Cookbook"
  :category :cookbook
- :index 20
+ :index 30
  :related [["intro/basic-example" "Basic Example"]
-           ["intro/useful-example" "A More Useful Example"]]}
+           ["intro/useful-example" "A More Useful Example"]
+		   ["cookbook/generic" "Generic Cookbook"]]}
 
 This is a collection of examples on how to build various kinds of [Clojure](https://clojure.org)
 sources.  There is a [Clojure plugin](https://github.com/monkey-projects/plugin-clj.git)

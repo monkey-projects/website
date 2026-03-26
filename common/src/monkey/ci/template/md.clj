@@ -23,12 +23,15 @@
    "Copy"])
 
 (defn- transform-code [ctx {:keys [info] :as node}]
+  ;; Assign a random id so the clipboard lib knows what to copy
   (let [id (str (random-uuid))]
-    [:pre {:class (cond-> "viewer-code not-prose mb-2"
-                    info (str " language-" info))}
-     [:div
-      (md/into-hiccup [:code {:id id}] ctx node)
-      (copy-btn id)]]))
+    [:div
+     [:small info]
+     [:pre {:class (cond-> "viewer-code not-prose mb-2"
+                     info (str " language-" info))}
+      [:div
+       (md/into-hiccup [:code {:id id}] ctx node)
+       (copy-btn id)]]]))
 
 (defn- relative? [x]
   (nil? (re-matches #"^(http://|https://|/).*$" x)))

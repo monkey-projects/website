@@ -120,15 +120,7 @@
      (related-articles related config))])
 
 (defn- render-categories [cats]
-  ;; Attempting to make the nav sticky, but needs more js
-  [:div.js-sticky-block
-   {:data-hs-sticky-block-options
-    "'{\"parentSelector\": \"#sticky-block-start\",
-     \"targetSelector\": \"#header\",
-     \"breakpoint\": \"md\",
-     \"startPoint\": \"#sticky-block-start\",
-     \"endPoint\": \"#sticky-block-end\",
-     \"stickyOffsetTop\": 20}'"}
+  [:div.sticky-top
    (->> cats
         (map (fn [{:keys [label active?] :as c}]
                [:li.nav-item
@@ -143,11 +135,10 @@
   "Add categories to the given page"
   [page cats]
   [:div.row
-   [:div#sticky-block-start.col-md-4
+   [:div.col-md-4
     (render-categories cats)]
    [:div.col-md-8
-    page
-    [:div#sticky-block-end]]])
+    page]])
 
 (defn- ->page [content bc config]
   [:html
@@ -160,13 +151,12 @@
       [:div.container.py-4
        [:div.w-lg-75.mx-lg-auto
         bc]]]
-     [:div.overflow-hidden
-      [:div.d-flex.flex-column.min-vh-100
-       [:div.container.content-space-1
-        [:div.w-lg-75.mx-lg-auto
-         content]]
-       [:div.mt-auto
-        (tc/footer config)]]]]
+     [:div.d-flex.flex-column.min-vh-100
+      [:div.container.content-space-1
+       [:div.w-lg-75.mx-lg-auto
+        content]]
+      [:div.mt-auto
+       (tc/footer config)]]]
     (tc/script (tc/script-url config "bootstrap.min.js"))
     (tc/script (tc/script-url config "theme.min.js"))
     ;; Enable clipboard copying for all code fragments

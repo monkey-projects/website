@@ -47,10 +47,12 @@ jobs in this case:
   (mvn-job "unit-test" ["mvn verify"]))
 
 (def install
-  (mvn-job "install" ["mvn install"]))
+  (-> (mvn-job "install" ["mvn install"])
+      (m/depends-on "unit-test")))
 
 (def publish
-  (mvn-job "publish" ["mvn publish"]))
+  (-> (mvn-job "publish" ["mvn publish"])
+      (m/depends-on "unit-test")))
 
 (defn jobs [ctx]
   [unit-test     ; Always run this

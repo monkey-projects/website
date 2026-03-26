@@ -1,5 +1,6 @@
 (ns monkey.ci.docs.main
   (:require [babashka.fs :as fs]
+            [hiccup2.core :as hiccup]
             [monkey.ci.docs.config :as dc]
             [monkey.ci.template
              [components :as tc]
@@ -10,9 +11,11 @@
       ;; Syntax highlighting lib
       ;; See https://github.com/highlightjs/highlight.js/tree/main/src/styles for more styles
       (conj (tc/stylesheet (tc/assets-url config "/css/github-dark.min.css")))
+      (conj (tc/stylesheet (tc/assets-url config "/css/monkeyci.css")))
       (conj (tc/script (tc/script-url config "highlight.min.js")))
       (conj (tc/script (tc/script-url config "clojure.min.js")))
-      (conj [:script "hljs.highlightAll();"])))
+      (conj (tc/script (tc/script-url config "clipboard.min.js")))
+      (conj [:script (hiccup/raw "hljs.highlightAll();")])))
 
 (defn header
   "Renders docs header"
@@ -165,7 +168,9 @@
        [:div.mt-auto
         (tc/footer config)]]]]
     (tc/script (tc/script-url config "bootstrap.min.js"))
-    (tc/script (tc/script-url config "theme.min.js"))]])
+    (tc/script (tc/script-url config "theme.min.js"))
+    ;; Enable clipboard copying for all code fragments
+    [:script (hiccup/raw "new ClipboardJS('.copy-btn');")]]])
 
 (defn md->page
   "Given a parsed markdown structure, renders it into the resulting hiccup structure as a 

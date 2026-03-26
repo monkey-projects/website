@@ -13,6 +13,7 @@
   []
   (-> {:output doc-root
        :config {:base-url "staging.monkeyci.com"
+                :assets-url "http://localhost:8083/assets"
                 :api-url "http://localhost:3000"
                 :path-prefix "/"}}
       (db/build-all)

@@ -1,0 +1,24 @@
+.copy-btn {
+    display: none;
+    float: right;
+    position: absolute;
+    color: white;
+    border: solid 1px white;
+    z-index: 1000;
+    top: 5px;
+    right: 5px;
+    cursor: pointer;
+}
+
+.viewer-code {
+    position: relative;
+}
+
+code:hover + .copy-btn, .copy-btn.hover {
+    display: inline-block;
+}
+
+code {
+    overflow: hidden;
+    position: relative;
+}

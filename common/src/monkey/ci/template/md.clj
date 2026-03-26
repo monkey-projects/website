@@ -6,7 +6,6 @@
             [clojure.tools.logging :as log]
             [hiccup2.core :as hiccup]
             [nextjournal.markdown :as md]
-            [nextjournal.markdown.transform :as mdt]
             [monkey.ci.template.input :as i])
   (:import [java.io BufferedReader PushbackReader Reader]))
 
@@ -16,30 +15,38 @@
         ;; Transform all h1 headers into h4
         (update :heading-level + 3)
         (heading-markup)
-        (mdt/into-markup ctx node))))
+        (md/into-hiccup ctx node))))
+
+(defn- copy-btn [id]
+  [:button.btn.btn-sm.copy-btn
+   {:data-clipboard-target (str "#" id)}
+   "Copy"])
 
 (defn- transform-code [ctx {:keys [info] :as node}]
-  [:pre {:class (cond-> "viewer-code not-prose mb-2"
-                  info (str " language-" info))}
-   (mdt/into-markup [:code] ctx node)])
+  (let [id (str (random-uuid))]
+    [:pre {:class (cond-> "viewer-code not-prose mb-2"
+                    info (str " language-" info))}
+     [:div
+      (md/into-hiccup [:code {:id id}] ctx node)
+      (copy-btn id)]]))
 
 (defn- relative? [x]
   (nil? (re-matches #"^(http://|https://|/).*$" x)))
 
-(def transform-quote (partial mdt/into-markup [:blockquote.blockquote.blockquote-sm.mb-2]))
+(def transform-quote (partial md/into-hiccup [:blockquote.blockquote.blockquote-sm.mb-2]))
 
 (defn- transform-img [ctx node]
-  (let [orig (:image mdt/default-hiccup-renderers)]
+  (let [orig (:image md/default-hiccup-renderers)]
     (->> (orig ctx node)
          (vector :div.shadow.text-center))))
 
 (def hiccup-renderers
-  (assoc mdt/default-hiccup-renderers
+  (assoc md/default-hiccup-renderers
          :heading transform-heading
-         :plain (partial mdt/into-markup [:span])
+         :plain (partial md/into-hiccup [:span])
          :code transform-code
          :blockquote transform-quote
-         :table (partial mdt/into-markup [:table.table])
+         :table (partial md/into-hiccup [:table.table])
          :image transform-img
          :html-inline (comp hiccup/raw md/node->text)
          :html-block (comp hiccup/raw md/node->text)))
@@ -49,7 +56,7 @@
   [s renderers]
   (->> s
        (md/parse {:disable-inline-formulas true})
-       (mdt/->hiccup renderers)))
+       (md/->hiccup renderers)))
 
 (defn read-header
   "Given a reader, tries to read the leading metadata edn structure.  Input should be 

@@ -59,3 +59,37 @@ jobs in this case:
      [install
       publish])])
 ```
+
+## Parameter Condition
+
+Only run a job if a parameter has a specific value.
+
+```clojure
+(ns build
+  (:require [monkey.ci.api :as m]))
+
+(defn param-job [ctx]
+  ;; Only run if TEST_VAR=run!
+  (when (= "run!" (get (m/params ctx) "TEST_VAR"))
+    (-> (m/container-job "some-job")
+        (m/image "docker.io/alpine:latest")
+        (m/script ["echo 'I am running'"]))))
+```
+
+## Run on Changed Files
+
+Run a job if file matching a regex have changed.
+
+```clojure
+(ns build
+  (:require [monkey.ci.api :as m]))
+
+(defn unit-test [ctx]
+  ;; Run unit tests if any of the files in `java/` dir have changed
+  (when (m/touched? ctx #"^java/.*$")
+    (-> (m/container-job "unit-tests")
+        (m/image "docker.io/maven:latest")
+        ;; Run in the java/ dir
+        (m/work-dir "java")
+        (m/script ["mvn verify"]))))
+```

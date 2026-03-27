@@ -65,7 +65,6 @@ jobs in this case:
 ## Parameter Condition
 
 Only run a job if a parameter has a specific value.
-
 ```clojure
 (ns build
   (:require [monkey.ci.api :as m]))
@@ -81,7 +80,6 @@ Only run a job if a parameter has a specific value.
 ## Run on Changed Files
 
 Run a job if file matching a regex have changed.
-
 ```clojure
 (ns build
   (:require [monkey.ci.api :as m]))
@@ -95,3 +93,48 @@ Run a job if file matching a regex have changed.
         (m/work-dir "java")
         (m/script ["mvn verify"]))))
 ```
+
+## Regular Expressions
+
+Regular expressions in string matches are possible.  For instance, when you only
+want to release if a tag matches the pattern `v[0-9]+.[0-9]+`, you can do somethink
+like this:
+```clojure
+(ns build
+  (:require [monkey.ci.api :as m]))
+
+(defn release-job [ctx]
+  (when (re-matches #"^v\d+\.\d+$" (m/tag ctx))
+    (-> (m/container-job "unit-tests")
+        (m/image "docker.io/maven:latest")
+        (m/script ["mvn release"]))))
+```
+Note that with pattern groups you can even parse your tags and act accordingly.
+See the [Java Pattern Documentation](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/regex/Pattern.html) for more details on how to use regular expressions.
+
+## Composite Conditions
+
+You can extract conditions into reusable functions, and also compose them into
+new conditions.
+```clojure
+(ns build
+  (:require [monkey.ci.api :as m]))
+
+(defn release? [ctx]
+  (re-matches #"^v\d+\.\d+$" (m/tag ctx)))
+  
+(def src-changed? (m/touched? #"src/.*"))
+
+;; Run tests when either there is a release, OR the files in src/ have changed.
+(def should-test? (some-fn release? src-changed?))
+
+(defn unit-test [ctx]
+  (when (should-test? ctx)
+    (-> (m/container-job "unit-tests")
+        (m/image "docker.io/maven:latest")
+        (m/script ["mvn verify"]))))
+```
+
+We're using the built-in [some-fn](https://clojuredocs.org/clojure.core/some-fn) function
+to run the unit tests when either we're on a release tag, or when the source files have
+changed.

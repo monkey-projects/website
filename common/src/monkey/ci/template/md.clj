@@ -10,12 +10,14 @@
   (:import [java.io BufferedReader PushbackReader Reader]))
 
 (defn- transform-heading [ctx {:keys [attrs] :as node}]
-  (letfn [(heading-markup [{l :heading-level}] [(keyword (str "h" (or l 1))) attrs])]
-    (-> node
-        ;; Transform all h1 headers into h4
-        (update :heading-level + 3)
-        (heading-markup)
-        (md/into-hiccup ctx node))))
+  (letfn [(heading-markup [{l :heading-level}]
+            [(keyword (str "h" (or l 1) ".mt-5")) attrs])]
+    [:a {:href (str "#" (:id attrs))}
+     (-> node
+         ;; Transform all h1 headers into h4
+         (update :heading-level + 3)
+         (heading-markup)
+         (md/into-hiccup ctx node))]))
 
 (defn- copy-btn [id]
   [:button.btn.btn-sm.copy-btn
@@ -25,7 +27,7 @@
 (defn- transform-code [ctx {:keys [info] :as node}]
   ;; Assign a random id so the clipboard lib knows what to copy
   (let [id (str (random-uuid))]
-    [:div
+    [:div.mb-2
      [:small info]
      [:pre {:class (cond-> "viewer-code not-prose mb-2"
                      info (str " language-" info))}

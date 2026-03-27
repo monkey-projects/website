@@ -9,7 +9,8 @@
 (deftest parse
   (let [md "# Test page\nTest contents"
         expected [:div
-                  [:h4 {:id "test-page"} "Test page"]
+                  [:a {:href "#test-page"}
+                   [:h4.mt-5 {:id "test-page"} "Test page"]]
                   [:p "Test contents"]]]
     
     (testing "parses markdown content from string to hiccup structure"

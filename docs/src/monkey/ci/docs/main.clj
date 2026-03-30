@@ -77,7 +77,7 @@
             :alt "SVG"
             :width 250}]]]])
 
-(defn breadcrumb [path conf]
+(defn breadcrumb [path _]
   (letfn [(bc-item [{:keys [path label]}]
             [:li.breadcrumb-item
              [:a {:href path} label]])]
@@ -90,18 +90,18 @@
 
 (defn- related-articles [related conf]
   (let [rows (partition-all 2 related)]
-    (letfn [(render-col [items]
-              [:div.col-sm-6
-               (->> items
-                    (remove nil?)
-                    (map render-item)
-                    (into [:ul.list-unstyled.list-py-2.mb-0]))])
-            (render-item [[path lbl]]
+    (letfn [(render-item [[path lbl]]
               [:li.d-flex
                [:div.flex-shrink-0
                 (i/icon :file-earmark)]
                [:div.flex-grow-1.ms-2
-                [:a.text-body {:href (dc/apply-prefix path (dc/articles-prefix conf))} lbl]]])]
+                [:a.text-body {:href (dc/apply-prefix path (dc/articles-prefix conf))} lbl]]])
+            (render-col [items]
+              [:div.col-sm-6
+               (->> items
+                    (remove nil?)
+                    (map render-item)
+                    (into [:ul.list-unstyled.list-py-2.mb-0]))])]
       [:div.mt-7
        [:div.text-center.mb-7
         [:h4 "Related articles"]]

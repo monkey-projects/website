@@ -2,7 +2,9 @@
   (:require [monkey.ci.site
              [template :as t]
              [utils :as u]]
-            [monkey.ci.template.components :as cc]))
+            [monkey.ci.template
+             [components :as cc]
+             [plans :as p]]))
 
 (def input-card
   [:div.text-center.mx-auto.mb-7
@@ -149,40 +151,9 @@
     [:h3 "Find the right plan for your team"]
     [:p.fs-6 "Pay as you go service, cancel anytime."]]
    [:div.w-lg-85.shadow-lg.rounded.mx-lg-auto.mb-7
-    [:div.row.card-group-md-row.card-group-md-3
-     (pricing-card {:amount 0
-                    :title "Basic"
-                    :summary "For private use or to try it out."
-                    :features ["1 organization with 1 user"
-                               "1.000 monthly credits"
-                               "Unlimited repos"
-                               "Access to all plugins"
-                               "Public and private repo's"]
-                    :footer "No credit card required."})
-
-     (pricing-card {:amount 5
-                    :title "Startup"
-                    :summary "For starting businesses."
-                    :features ["1 organization with 3 users *"
-                               "5.000 monthly credits"
-                               "Unlimited repos"
-                               "Access to all plugins"
-                               "Public and private repo's"
-                               "Email support"
-                               "For commercial purposes"]
-                    :footer "Cancel anytime"})
-
-     (pricing-card {:amount 30
-                    :title "Professional"
-                    :summary "For enterprises with large teams."
-                    :features ["1 organization with unlimited users *"
-                               "30.000 monthly credits"
-                               "Unlimited repos"
-                               "Access to all plugins"
-                               "Public and private repo's"
-                               "Email + Slack support"
-                               "For commercial purposes"]
-                    :footer "Cancel anytime"})]]
+    (->> p/plans
+         (map pricing-card)
+         (into [:div.row.card-group-md-row.card-group-md-3]))]
    [:div.w-lg-65.text-center.mx-lg-auto.mb-7
     [:p.fs-6.fst-italic
      "* Paying plans allow you to add multiple users to your organizations, up to the "

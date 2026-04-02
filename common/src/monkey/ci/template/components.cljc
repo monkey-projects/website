@@ -156,7 +156,7 @@
                   ["Report an Issue" "https://github.com/monkey-projects/monkeyci/issues/new"]])
      (footer-col "Company"
                  [["About us" (site-url config "/about")]
-                  ["Contact" (site-url config "/contact")]])
+                  ["Contact" "mailto:contact@monkeyci.com"]])
      (footer-col "Legal"
                  [["Terms of use" (site-url config "/terms-of-use")]
                   ["Privacy policy" (site-url config "/privacy-policy")]])

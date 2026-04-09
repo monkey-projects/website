@@ -224,3 +224,19 @@ is similarly applicable if you use `json` or `edn` to declare your jobs.)
 In addition to the `before-job` there is also an `after-job` function, which is 
 executed when the job has finished.  There you can manipulate or inspect the job results,
 send a notification, or anything else you want to.
+
+### Limitations
+
+Extensions are very powerful, but they still have limitations.  This section lists
+some of them.  Even though `before-job` extensions can manipulate the current job,
+what they can't do is change it's **dependencies**.  This is because those have
+already been calculated beforehand, and extensions are only executed when the job
+is queued.  This happens *after* it's dependencies have already been executed, so
+it's not use changing them at this point.
+
+Similarly, you can't [block](blocking) in a `before-job` handler because this verification
+has already been applied when the extension is called.
+
+Even though you can change a job result, it's currently not possible to change 
+a job status.  This means you can't make a successful job fail, or vice versa, in
+an `after-job` handler.

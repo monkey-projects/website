@@ -56,6 +56,18 @@
     {:lang "clojure"
      :show-lang? false})])
 
+(defn intro [_]
+  [:div.container.content-space-b-1.content-space-b-md-3
+   [:div.w-lg-65.text-center.mx-lg-auto
+    [:h3.mb-4
+     "Stop being constrained by your CI/CD tool"]
+    [:p
+     "Do you have complicated build scripts that require lots of maintenance? "
+     "Is it hard to debug issues that pop up intermittently? "
+     "Feeling insecure about adding new steps to your build? "
+     "Finding it hard to apply the same method of work over all your repositories? "]
+    [:p [:b "MonkeyCI"] " can help you address these problems!"]]])
+
 (defn clients [conf]
   [:div.container.content-space-b-1.content-space-b-md-3
    [:div.w-lg-65.text-center.mx-lg-auto
@@ -111,10 +123,10 @@
    [:div.row
     (feature "svg/oc-collaboration.svg"
              "Easy Extensibility"
-             "Include open-source libraries in your builds to expand functionality.")
+             "Include open-source libraries in your builds to expand functionality, or create your own.")
     (feature "svg/oc-on-the-go.svg"
              "Deploy Without Danger"
-             "Simulate builds locally or in unit tests and avoid problems when deploying your app.")]])
+             "Simulate builds locally or run unit tests and avoid problems when deploying your app.")]])
 
 (defn mockups [config]
   [:div.bg-soft-primary-light {:style {:padding-bottom "20em"}}
@@ -265,11 +277,12 @@
        [:h1.display-3.text-white.mb-md-5
         "The powerful" [:span.ms-2.text-warning "CI/CD pipeline"]]
        [:p.lead.text-white-70
-        "A" [:b.mx-1 "no-nonsense"] "CI/CD platform that gives you" [:b.mx-1 "full control"]
+        [:b.me-1 "MonkeyCI"] "is a" [:b.mx-1 "no-nonsense"] "CI/CD platform that gives you" [:b.mx-1 "full control"]
         "over your build.  Harness the" [:b.mx-1 "power and flexibility"] "of code to deploy applications."]]
       input-card
       code-fragment]]
     t/shape-1
+    (intro config)
     (clients config)]
    [:div.border-top.mx-auto {:style "max-width: 25rem;"}]
    features

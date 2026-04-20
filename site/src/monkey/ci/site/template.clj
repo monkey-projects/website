@@ -5,6 +5,8 @@
 
 (defn head [config]
   (conj (cc/head config)
+        (cc/stylesheet (cc/assets-url config "/css/github-dark.min.css"))
+        (cc/stylesheet (cc/assets-url config "/css/monkeyci.css"))
         ;; Used in scripts
         [:script (h/raw (format "var apiUrl='%s';" (cc/api-url config)))]))
 
@@ -14,7 +16,12 @@
   [(cc/footer config)
    (cc/script (cc/script-url config "bootstrap.min.js"))
    (cc/script (cc/script-url config "theme.min.js"))
-   (cc/script (cc/site-url config "/js/site.js"))])
+   (cc/script (cc/script-url config "highlight.min.js"))
+   (cc/script (cc/script-url config "clojure.min.js"))
+   (cc/script (cc/script-url config "clipboard.min.js"))
+   (cc/script (cc/site-url config "/js/site.js"))
+   (cc/enable-highlight)
+   (cc/enable-clipboard)])
 
 (def shape-1
   [:div.shape-container

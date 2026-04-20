@@ -15,7 +15,7 @@
       (conj (tc/script (tc/script-url config "highlight.min.js")))
       (conj (tc/script (tc/script-url config "clojure.min.js")))
       (conj (tc/script (tc/script-url config "clipboard.min.js")))
-      (conj [:script (hiccup/raw "hljs.highlightAll();")])))
+      (conj (tc/enable-highlight))))
 
 (defn header
   "Renders docs header"
@@ -160,7 +160,7 @@
     (tc/script (tc/script-url config "bootstrap.min.js"))
     (tc/script (tc/script-url config "theme.min.js"))
     ;; Enable clipboard copying for all code fragments
-    [:script (hiccup/raw "new ClipboardJS('.copy-btn');")]]])
+    (tc/enable-clipboard)]])
 
 (defn md->page
   "Given a parsed markdown structure, renders it into the resulting hiccup structure as a 

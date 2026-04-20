@@ -6,7 +6,9 @@
             [clojure.tools.logging :as log]
             [hiccup2.core :as hiccup]
             [nextjournal.markdown :as md]
-            [monkey.ci.template.input :as i])
+            [monkey.ci.template
+             [components :as tc]
+             [input :as i]])
   (:import [java.io BufferedReader PushbackReader Reader]))
 
 (defn- transform-heading [ctx {:keys [attrs] :as node}]
@@ -19,21 +21,12 @@
          (heading-markup)
          (md/into-hiccup ctx node))]))
 
-(defn- copy-btn [id]
-  [:button.btn.btn-sm.copy-btn
-   {:data-clipboard-target (str "#" id)}
-   "Copy"])
-
 (defn- transform-code [ctx {:keys [info] :as node}]
   ;; Assign a random id so the clipboard lib knows what to copy
-  (let [id (str (random-uuid))]
+  (let [id (str "code_" (random-uuid))]
     [:div.mb-2
-     [:small info]
-     [:pre {:class (cond-> "viewer-code not-prose mb-2"
-                     info (str " language-" info))}
-      [:div
-       (md/into-hiccup [:code {:id id}] ctx node)
-       (copy-btn id)]]]))
+     (tc/code-block (md/into-hiccup [:code {:id id}] ctx node)
+                    {:lang info :id id})]))
 
 (defn- relative? [x]
   (nil? (re-matches #"^(http://|https://|/).*$" x)))

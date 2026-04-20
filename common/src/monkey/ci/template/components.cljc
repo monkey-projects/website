@@ -197,3 +197,32 @@
        (not-found config)
        [:div.mt-auto
         (footer config)]]]]]])
+
+(defn- copy-btn [id]
+  [:button.btn.btn-sm.copy-btn
+   {:data-clipboard-target (str "#" id)}
+   "Copy"])
+
+(defn code-block
+  "Generates a code block that is syntax highlighted using javascript"
+  [code {:keys [lang show-lang? id] :or {show-lang? true}}]
+  ;; Assign a random id so the clipboard lib knows what to copy
+  (let [id (or id (str "code_" (random-uuid)))]
+    [:div.w-100
+     (when (and lang show-lang?)
+       [:small lang])
+     [:pre {:class (cond-> "viewer-code not-prose mb-0"
+                     lang (str " language-" lang))}
+      [:div
+       (if (string? code)
+         [:code {:id id} code]
+         code) 
+       (copy-btn id)]]]))
+
+(defn enable-highlight []
+  [:script (h/raw "hljs.highlightAll();")])
+
+(defn enable-clipboard
+  "Script component that enables clipboard copying"
+  []
+  [:script (h/raw "new ClipboardJS('.copy-btn');")])

@@ -1,5 +1,6 @@
 (ns monkey.ci.site.main
-  (:require [monkey.ci.site
+  (:require [clojure.string :as cs]
+            [monkey.ci.site
              [template :as t]
              [utils :as u]]
             [monkey.ci.template
@@ -38,44 +39,50 @@
      [:i.bi.bi-chevron-right.small.ms-1]]]])
 
 (def code-fragment
-  (letfn [(p [s]
-            [:span.text-primary s])
-          (c [s]
-            [:span.text-muted s])
-          (k [s]
-            [:span.text-danger s])]
-    (u/code-editor
-     {:style "width: 46rem;"}
-     ;; TODO Auto code formatting
-     [[:span "(" (p "ns") " build"]
-      [:span.ps-3 "(" (k ":require") " [monkey.ci.api " (k ":as") " m]))"]
-      ""
-      [:span "(" (p "def") " unit-test"]
-      [:span.ps-3 "(-> (m/container-job " (k "\"unit-test\"") ")"]
-      [:span.ps-8 "(m/image " (k "\"docker.io/maven:4.5\"") ")"]
-      [:span.ps-8 "(m/script [" (k "\"mvn verify\"") "])))"]
-      ""
-      (c ";; The jobs to execute")
-      "[unit-test]"])))
+  [:div.code-editor.mx-auto
+   {:style "width: 46rem;"}
+   (cc/code-block
+    (->> ["(ns build"
+          "  (:require [monkey.ci.api :as m]))"
+          ""
+          "(def unit-test"
+          "  (-> (m/container-job \"unit-test\")"
+          "      (m/image \"docker.io/maven:4.5\")"
+          "      (m/script [\"mvn verify\"])))"
+          ""
+          ";; The jobs to execute"
+          "[unit-test]"]
+         (cs/join "\n"))
+    {:lang "clojure"
+     :show-lang? false})])
 
-(def clients
+(defn clients [conf]
   [:div.container.content-space-b-1.content-space-b-md-3
    [:div.w-lg-65.text-center.mx-lg-auto
     [:div.mb-4
      [:h5 "Supports the Major Repository Providers and Platforms"]]
     [:div.row.py-3
      [:div.col.text-center
-      [:h4.text-primary [:i.bi.bi-github.me-1]
+      [:h4.text-primary
+       [:img {:src (cc/assets-url conf "/svg/github.svg")
+              :style {:height "1em"
+                      :margin-right "0.3em"}}]
        [:a {:href "https://github.com"
             :target :_blank}
         "Github"]]]
      [:div.col.text-center
       [:h4.text-primary
+       [:img {:src (cc/assets-url conf "/svg/bitbucket.svg")
+              :style {:height "1em"
+                      :margin-right "0.3em"}}]
        [:a {:href "https://bitbucket.org"
             :target :_blank}
         "Bitbucket"]]]
      [:div.col.text-center
       [:h4.text-primary
+       [:img {:src (cc/assets-url conf "/svg/codeberg.svg")
+              :style {:height "1em"
+                      :margin-right "0.3em"}}]
        [:a {:href "https://codeberg.org"
             :target :_blank}
         "Codeberg"]]]]
@@ -220,18 +227,13 @@
      "organizations."]]])
 
 (def code-fragment-2
-  (letfn [(p [s]
-            [:span.text-primary s])
-          (c [s]
-            [:span.text-muted s])
-          (k [s]
-            [:span.text-danger s])]
-    (u/code-editor
-     {:class "overflow-hidden"}
-     [[:span "(" (k "require") " '[monkey.ci.plugin.clj " (k ":as") " clj]))"]
-      ""
-      (c ";; Provides both test and publish jobs")
-      "(clj/deps-library)"])))
+  (cc/code-block
+   (->> ["(require '[monkey.ci.plugin.clj :as clj])"
+         ""
+         ";; Provides both test and publish jobs"
+         "(clj/deps-library)"]
+        (cs/join "\n"))
+   {:lang "clojure"}))
 
 (def features-expanded
   [:div.overflow-hidden
@@ -268,7 +270,7 @@
       input-card
       code-fragment]]
     t/shape-1
-    clients]
+    (clients config)]
    [:div.border-top.mx-auto {:style "max-width: 25rem;"}]
    features
    (mockups config)

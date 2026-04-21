@@ -317,8 +317,7 @@
         [:b.me-1 "MonkeyCI"] "is a" [:b.mx-1 "no-nonsense"] "CI/CD platform that gives you" [:b.mx-1 "full control"]
         "over your build.  Harness the" [:b.mx-1 "power and flexibility"] "of code to deploy applications."]]
       input-card
-      code-carousel
-      #_code-fragment]]
+      code-carousel]]
     t/shape-1
     (intro config)
     (clients config)]
@@ -327,7 +326,7 @@
    (mockups config)
    shape-2
    features-expanded
-   (pricing config)
+   #_(pricing config)
    call-to-action])
 
 (defn main [config]

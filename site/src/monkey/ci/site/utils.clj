@@ -22,3 +22,13 @@
     [:div.position-absolute.zi-n1 {:style "bottom: -8rem; right: -8rem;"}
      [:img.img-fluid {:src "./svg/shape-7.svg"
                       :style "width: 9rem"}]]]])
+
+(defn make-same-line-count
+  "Ensures each text has same number of lines.  Pads with empty lines."
+  [txts]
+  (let [m (apply max (map count txts))]
+    (map (fn [t]
+           (cond-> t
+             (< (count t) m) (concat (repeat (- m (count t)) ""))))
+         txts)))
+

@@ -1,11 +1,17 @@
 (ns monkey.ci.site.main
-  (:require [clojure.string :as cs]
+  (:require [babashka.fs :as fs]
+            [clojure.java.io :as io]
+            [clojure.string :as cs]
             [monkey.ci.site
              [template :as t]
              [utils :as u]]
             [monkey.ci.template
              [components :as cc]
              [plans :as p]]))
+
+(defn- read-code [p]
+  (with-open [r (io/reader (fs/file p))]
+    (doall (line-seq r))))
 
 (def input-card
   [:div.text-center.mx-auto.mb-7
@@ -38,23 +44,54 @@
      "Sign up for free"
      [:i.bi.bi-chevron-right.small.ms-1]]]])
 
-(def code-fragment
+(defn code-fragment [lines]
   [:div.code-editor.mx-auto
    {:style "width: 46rem;"}
    (cc/code-block
-    (->> ["(ns build"
-          "  (:require [monkey.ci.api :as m]))"
-          ""
-          "(def unit-test"
-          "  (-> (m/container-job \"unit-test\")"
-          "      (m/image \"docker.io/maven:4.5\")"
-          "      (m/script [\"mvn verify\"])))"
-          ""
-          ";; The jobs to execute"
-          "[unit-test]"]
-         (cs/join "\n"))
+    (cs/join "\n" lines)
     {:lang "clojure"
      :show-lang? false})])
+
+(defn carousel-prev-btn [id]
+  [:button.carousel-control-prev
+   {:type :button
+    :data-bs-target (str "#" (name id))
+    :data-bs-slide "prev"}
+   [:span.carousel-control-prev-icon
+    {:aria-hidden true}]
+   [:span.visually-hidden "Previous"]])
+
+(defn carousel-next-btn [id]
+  [:button.carousel-control-next
+   {:type :button
+    :data-bs-target (str "#" (name id))
+    :data-bs-slide "next"}
+   [:span.carousel-control-next-icon
+    {:aria-hidden true}]
+   [:span.visually-hidden "Next"]])
+
+(defn carousel [id parts]
+  [:div.carousel.slide
+   {:id (name id)
+    :data-bs-ride "carousel"}
+   (->> parts
+        (map-indexed (fn [idx p]
+                       [:div.carousel-item
+                        (cond-> {:data-bs-interval 10000}
+                          (zero? idx)
+                          (assoc :class [:active]))
+                        p]))
+        (into [:div.carousel-inner]))
+   (carousel-prev-btn id)
+   (carousel-next-btn id)])
+
+(def code-carousel
+  (->> (fs/list-dir "dev-resources/intro" "*.clj")
+       (sort)
+       (map read-code)
+       (u/make-same-line-count)
+       (map code-fragment)
+       (carousel "intro-examples")))
 
 (defn intro [_]
   [:div.container.content-space-b-1.content-space-b-md-3
@@ -280,7 +317,8 @@
         [:b.me-1 "MonkeyCI"] "is a" [:b.mx-1 "no-nonsense"] "CI/CD platform that gives you" [:b.mx-1 "full control"]
         "over your build.  Harness the" [:b.mx-1 "power and flexibility"] "of code to deploy applications."]]
       input-card
-      code-fragment]]
+      code-carousel
+      #_code-fragment]]
     t/shape-1
     (intro config)
     (clients config)]

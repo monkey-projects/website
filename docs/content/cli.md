@@ -10,7 +10,12 @@ verify build scripts or run unit tests.
 
 ## Installation
 
-In order to install the CLI, you will first need to [install Java](https://www.oracle.com/javadownload).  You'll need **Java 21 or later** for the CLI to work correctly.  Then run this script:
+There is a native CLI (currently only for Linux), or the Java-based CLI, which requires 
+[install Java](https://www.oracle.com/javadownload).  You'll need **Java 21 or later**
+for the CLI to work correctly.
+
+You can either [download the native CLI](https://monkeyci-artifacts.s3.fr-par.scw.cloud/monkeyci)
+or install the Java CLI using this script:
 
 ```shell
 $ wget https://monkeyci-artifacts.s3.fr-par.scw.cloud/install-cli.sh -O - | bash
@@ -26,28 +31,26 @@ added to your path.
 Running the CLI is done by invoking the `monkeyci` command:
 
 ```shell
-$ monkeyci build --help
+$ monkeyci --help
 
 NAME:
-  build - Build commands
+ monkey-ci - Clojure-powered CI/CD tool
 
 USAGE:
-  build [global-options] command [command options] [arguments...]
+ monkey-ci [global-options] command [command options] [arguments...]
 
 VERSION:
- 0.23.0
+ 0.27.1
 
 COMMANDS:
-   run                  Runs build locally
-   verify               Verifies local build script
-   test                 Runs build script unit tests
+   version              Prints current version
+   verify               Verifies the syntax of the build script files
+   test                 Run unit tests in the specified directory
+   build                Run a local build of the MonkeyCI script in the given directory
 
 GLOBAL OPTIONS:
    -?, --help
 ```
-
-Although there are other commands, they are intended for internal use and so only
-the `build` command will be discussed here.
 
 ### Running Builds Locally
 
@@ -61,28 +64,26 @@ This can be useful to run a one-of, or to try something out.  For actual testing
 to write [unit tests](tests).  Below are the possible options you can pass to the command:
 
 ```shell
+$ monkeyci build --help
+
 NAME:
-  build run - Runs build locally
+ monkey-ci build - Run a local build of the MonkeyCI script in the given directory
 
 USAGE:
-  build run [command options] [arguments...]
+ monkey-ci build [command options] [arguments...]
 
 OPTIONS:
-   -d, --dir S          .monkeyci  Script location
-   -u, --git-url S                 Git repository url
-   -b, --branch S                  Repository branch
-   -t, --tag S                     Repository tag
-       --commit-id S               Commit id
-       --sid S                     Repository sid
-   -p, --param S                   Build param
-       --params-file S             Build params file
+   -d, --dir S          .  Project directory
+       --lib-version S     MonkeyCI Library version
+   -N, --[no-]clean        Do not delete workspace after build completes
+   -r, --runner S          Explicitly specify runner
    -?, --help
 ```
 
 Normally, you will navigate to your git repository directory.  There you will run
 the build command:
 ```bash
-$ monkeyci build run
+$ monkeyci build
 ```
 
 This will execute the build script found in the local `.monkeyci/` directory.  If you
@@ -107,12 +108,12 @@ option, or by putting them all in a file, and passing its path using the `--para
 option.  Each of these support multiple occurrances.  For example:
 
 ```bash
-$ monkeyci build test -p PARAM1=value1 -p PARAM2=VALUE2
+$ monkeyci test -p PARAM1=value1 -p PARAM2=VALUE2
 ```
 
 Or, using a file:
 ```bash
-$ monkeyci build test -p PARAM1=value1 --params-file params.edn
+$ monkeyci test -p PARAM1=value1 --params-file params.edn
 ```
 
 The `--params-file` option accepts `edn`, `json`, `yaml` or Java Properties files.
@@ -146,7 +147,7 @@ command is ideal.  It does not run any jobs or tests, but it does a static code 
 of the build script itself, and will flag any syntax errors or warnings.
 
 ```shell
-$ monkeyci build verify
+$ monkeyci verify
 
 Build script is valid!
 ```

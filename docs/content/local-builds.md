@@ -14,17 +14,17 @@ on your machine.
 
 First of all, you need to install the [command-line interface](cli).  After that, open
 up a command shell and go to your repository directory (the one where `.monkeyci/` is
-located).  Then invoke the `build` command:
+located).  Then invoke the `monkeyci` command:
 
 ```shell
-$ monkeyci build
+$ monkeyci
 ```
 
 There are of course **many parameters** you can customize.  But more on that later!  You can
 start by asking for help:
 
 ```shell
-$ monkeyci build --help
+$ monkeyci --help
 ```
 
 Needless to say, we advise to **use this feature sparingly** and certainly **not for
@@ -34,10 +34,10 @@ database by accident...
 ## Running a Build Script
 
 In order to run the build script that is present in the local `.monkeyci/` subdirectory,
-just execute thie `build run` command:
+just execute the `build` command:
 
 ```shell
-$ monkeyci build run
+$ monkeyci build
 ```
 
 This will load the [build scripts](builds), and execute the [jobs](jobs) they declare.
@@ -51,7 +51,7 @@ To pass parameters on the command line, you can specify literal values using
 the `--param` argument (or `-p` in short):
 
 ```shell
-$ monkeyci build run --param some-param=some-value -p other-param=other-value
+$ monkeyci build --param some-param=some-value -p other-param=other-value
 ```
 
 As you can see, you can specify multiple parameters at once.
@@ -60,7 +60,7 @@ Alternatively, you can put multiple parameters into a configuration file and ref
 it in your command:
 
 ```shell
-$ monkeyci build run --param-file path/to/file
+$ monkeyci build --param-file path/to/file
 ```
 
 The file can be a `json`, `yaml`, `edn` or [Java Properties](https://docs.oracle.com/cd/E23095_01/Platform.93/ATGProgGuide/html/s0204propertiesfileformat01.html) file.  For example, using
@@ -101,7 +101,7 @@ this.
 In addition, you can **specify these values on the command line**, for example:
 
 ```shell
-$ monkeyci build --api-key mysecretkey run -o monkey-projects -r monkeyci
+$ monkeyci build --api-key mysecretkey -o monkey-projects -r monkeyci
 ```
 
 The above example will build the code using the parameters for organization

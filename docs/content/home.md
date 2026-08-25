@@ -12,7 +12,7 @@
 	   ["security" "Security"]]}
 
 Welcome to the [MonkeyCI](https://monkeyci.com) documentation center!  Here you will
-find everything you need to know about *MonkeyCI*.
+find everything you need to know about *MonkeyCI*, the powerful CI/CD pipeline runner.
 
 ## What is MonkeyCI?
 
@@ -38,6 +38,21 @@ that unit tests cannot capture.
 For any coding project that has more than the most basic build flow, *MonkeyCI* is surely
 something you may consider using.  If you also require the ability to [test](tests) and
 [extend](plugins) your build scripts, then *MonkeyCI* is **most definitely worth a try**.
+
+Especially with complicated build scripts, with many conditions, *MonkeyCI* shines.  The
+[plugins and extensions](plugins) allow for maximum customization that keep your build
+scripts readable.
+
+For example, using the [Maven plugin](https://github.com/monkey-projects/plugin-mvn.git),
+you can set up a Java Maven build in just a few lines:
+
+```clojure
+(ns build
+  (:require [monkey.ci.plugin.mvn :as mvn]))
+
+;; Run "mvn verify" in a container
+(mvn/mvn {:job-id "verify" :cmd "verify"})
+```
 
 ## Getting Started
 
